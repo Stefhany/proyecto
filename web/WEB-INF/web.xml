@@ -44,6 +44,10 @@
         <servlet-name>ReportOffers</servlet-name>
         <servlet-class>reports.ReportOffers</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReporteCategorias</servlet-name>
+        <servlet-class>reports.ReporteCategorias</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Conectar</servlet-name>
         <url-pattern>/con</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>ReportOffers</servlet-name>
         <url-pattern>/roff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteCategorias</servlet-name>
+        <url-pattern>/ReporteCategorias</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

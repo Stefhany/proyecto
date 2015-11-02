@@ -51,11 +51,12 @@ public class ControllerUser extends HttpServlet {
                 String correo = request.getParameter("txtcorreo").trim();
                 udto.setNombres(request.getParameter("txtnombre").trim());
                 udto.setApellidos(request.getParameter("txtpellido").trim());
-                udto.setCedula(Integer.parseInt(request.getParameter("txtcedula").trim()));
-                udto.setTelefono(Integer.parseInt(request.getParameter("txttelefono").trim()));
+                udto.setCedula(request.getParameter("txtcedula").trim());
+                udto.setTelefono(request.getParameter("txttelefono").trim());
                 udto.setDireccion(request.getParameter("txtdireccion").trim());
                 udto.setCorreo(request.getParameter("txtcorreo").trim());
                 udto.setClave(request.getParameter("txtConfirmarClave").trim());
+                udto.setGenero(Integer.parseInt(request.getParameter("txtGenero").trim()));
                 udto.setNotificacion(Integer.parseInt(request.getParameter("txtnotificacion").trim()));
                 udto.setCiudad(request.getParameter("txtciudad").trim());
                 udto.setFechaNacimiento(sdf.format(Date.valueOf(request.getParameter("txtfechanacimiento"))).toString());
@@ -74,7 +75,7 @@ public class ControllerUser extends HttpServlet {
                     } else {
                         response.sendRedirect("index.jsp?msgSalida=<strong>Hay problemas!</Strong>");
                     }
-                }else{
+                } else {
                     response.sendRedirect("index.jsp?msgSalida=<strong>No se aceptan usuarios menores de edad.</Strong>");
                 }
 
@@ -86,7 +87,7 @@ public class ControllerUser extends HttpServlet {
 
             } else if (request.getParameter("btnModificarUsuario") != null && request.getParameter("modificarUsuario") != null) {
                 //out.print("ok");
-                userDto.setTelefono(Integer.parseInt(request.getParameter("txtTelefono").trim()));
+                userDto.setTelefono(request.getParameter("txtTelefono").trim());
                 userDto.setDireccion(request.getParameter("txtDireccion").trim());
                 userDto.setCorreo(request.getParameter("txtCorreo").trim());
                 userDto.setCiudad(request.getParameter("txtCiudad").trim());
@@ -110,7 +111,7 @@ public class ControllerUser extends HttpServlet {
                 } else {
                     response.sendRedirect("pages/login.jsp?msgSalida=<strong>No se pudo hacer la operación.</Strong>");
                 }
-            }else if (request.getParameter("idUser") != null) {
+            } else if (request.getParameter("idUser") != null) {
 
                 String salidaDos = facadeUser.deshabilitarUser(Integer.parseInt(request.getParameter("idUser")));
                 response.sendRedirect("paginas/tablagestionarrol.jsp?msgSalida= <strong>El usuario ha sido deshabilitado.</Strong>");

@@ -232,6 +232,14 @@
                             <label for="txtdireccion">Dirección:</label>
                             <input class="form-control" type="text" name="txtdireccion" id="txtdireccion" placeholder="Ingrese su dirección"/>
                         </div>
+                        
+                        <div class="form-group">
+                            <label for="txtGenero">Género:</label>
+                            <select class="form-control" name="txtGenero">
+                                <option value="0">Masculino</option>
+                                <option value="1">Femenino</option>                                        
+                            </select>
+                        </div>
 
                         <div class="form-group">
                             <label for="txtcorreo">Correo:</label>

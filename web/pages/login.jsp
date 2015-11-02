@@ -60,6 +60,17 @@
                             </form>
                         </div>
                     </div>
+                    <%
+                        if (request.getParameter("msgSalida") != null) {
+                    %>
+                    <div class="alert alert-warning alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong style="text-align: center;">¡Cuidado!</strong>
+                        <p><%= request.getParameter("msgSalida")%></p>
+                    </div>
+                    <%
+                        }
+                    %>
                 </div>
             </div>
         </div>

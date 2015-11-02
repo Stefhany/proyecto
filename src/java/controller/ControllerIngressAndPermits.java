@@ -52,30 +52,30 @@ public class ControllerIngressAndPermits extends HttpServlet {
                     menuAPintar = registro.getValue();
                 }
                 // out.print("documento " + datosUsuario.getDocumento());
-                if (datosUsuario.getCedula() != 0 && datosUsuario.getEstado() == 1 || datosUsuario.getEstado() == 2) {
+                if (datosUsuario.getCedula().equals("") && datosUsuario.getEstado() == 1 || datosUsuario.getEstado() == 2) {
                     HttpSession miSesion = request.getSession(true);
                     miSesion.setAttribute("usr", datosUsuario);
                     miSesion.setAttribute("mp", menuAPintar);
                     response.sendRedirect("pages/profile.jsp");
 
-                } else if (datosUsuario.getCedula() != 0 && datosUsuario.getEstado() == 0) {
+                } else if (datosUsuario.getCedula().equals("") && datosUsuario.getEstado() == 0) {
                     String mensaje = "Usuario no validado (Solicitar permisos)";
-                    response.sendRedirect("index.jsp?msgSalida= "+mensaje);
+                    response.sendRedirect("pages/login.jsp?msgSalida= "+mensaje);
                     
-                }else if (datosUsuario.getCedula() != 0 && datosUsuario.getEstado() == 3) {
+                }else if (datosUsuario.getCedula().equals("") && datosUsuario.getEstado() == 3) {
                     String mensaje = "Usuario deshabilitado, contáctese con nosotros para conocer su inquietud.";
-                    response.sendRedirect("index.jsp?msgSalida=<strong> "+mensaje+" </strong>");
+                    response.sendRedirect("pages/login.jsp?msgSalida=<strong> "+mensaje+" </strong>");
                     
-                } else if (datosUsuario.getCedula() == 0) {
+                } else if (datosUsuario.getCedula().equals("")) {
                     String mensaje = "Datos incorrectos, revise e ingrese nuevamente.";
-                    response.sendRedirect("index.jsp?msgSalida=<strong> "+mensaje+" </strong>");
+                    response.sendRedirect("pages/login.jsp?msgSalida=<strong> "+mensaje+" </strong>");
                     
                 }else {
                     String prueba = "No eres parte del sistema, te invitamos a que te registres.";
-                    response.sendRedirect("index.jsp?msg= "+prueba);
+                    response.sendRedirect("pages/login.jsp?msgSalida= "+prueba);
                 }
             } else {        
-                response.sendRedirect("index.jsp?msg=No se realizo la solicitud.");
+                response.sendRedirect("pages/login.jsp?msgSalida=No se realizo la solicitud.");
             }
     }
 

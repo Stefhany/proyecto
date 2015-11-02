@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="38f28659-a714-48b5-9d10-9248f89a2fff">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     categorias.`idCategorias` AS categorias_idCategorias,
+     categorias.`nombreCategoria` AS categorias_nombreCategoria,
+     productos.`idProductos` AS productos_idProductos,
+     productos.`nombreProducto` AS productos_nombreProducto,
+     productos.`unidad` AS productos_unidad,
+     productos.`categoriasId` AS productos_categoriasId,
+     productos.`estado` AS productos_estado
+FROM
+     `categorias` categorias INNER JOIN `productos` productos ON categorias.`idCategorias` = productos.`categoriasId`]]>
+	</queryString>
+	<field name="categorias_idCategorias" class="java.lang.Integer"/>
+	<field name="categorias_nombreCategoria" class="java.lang.String"/>
+	<field name="productos_idProductos" class="java.lang.Integer"/>
+	<field name="productos_nombreProducto" class="java.lang.String"/>
+	<field name="productos_unidad" class="java.lang.String"/>
+	<field name="productos_categoriasId" class="java.lang.Integer"/>
+	<field name="productos_estado" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="57" y="15" width="100" height="20" uuid="f5579b15-d4dd-4a4b-910e-e06679c27818"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="229" y="15" width="100" height="20" uuid="1d9a375e-3380-4a0c-b754-940f6125edf2"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="15" width="100" height="20" uuid="134d4e70-63c6-4845-8679-96df4cc4ccdd"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Unidad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="57" y="1" width="100" height="20" uuid="10b0d234-6c4e-4366-a119-ff04f162c881"/>
+				<textFieldExpression><![CDATA[$F{categorias_nombreCategoria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="229" y="0" width="100" height="20" uuid="13d96aab-3490-4262-ac5e-1af778b8fa80"/>
+				<textFieldExpression><![CDATA[$F{productos_nombreProducto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="379" y="0" width="100" height="20" uuid="873fb5a5-bed9-460f-9eb9-a7c616bc9118"/>
+				<textFieldExpression><![CDATA[$F{productos_unidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

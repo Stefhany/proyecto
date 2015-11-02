@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <object type="application/pdf" data="http://localhost:8080/ProyectoSIGAA/ReportOffers" width="500" height="650"></object>
+        <object type="application/pdf" data="http://localhost:8080/proyectosigaa/ReporteCategorias" width="500" height="650"></object>
     </body>
 </html>

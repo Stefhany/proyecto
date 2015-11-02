@@ -7,6 +7,7 @@ package utilities;
 
 import daos.Consultas;
 import daos.UsuariosDAO;
+import dtos.EstadoUsuarioDTO;
 import dtos.ProductosAsociadosUsuariosDTO;
 import dtos.UsuariosDTO;
 import facade.FacadeProductosAsociadosUsuarios;
@@ -49,10 +50,33 @@ public class TestConsult {
 //        for (ProductosAsociadosUsuariosDTO r :p) {
 //            System.out.println(r.getProducto().getNombre()+" ");
 //        }
-        Consultas c = new Consultas();
-        //System.out.println(c.consultarFechaActual(utilities.Connection.getInstance()));
+//        Consultas c = new Consultas();
+//        //System.out.println(c.consultarFechaActual(utilities.Connection.getInstance()));
+//        
+//        UsuariosDAO u = new UsuariosDAO();
+        //System.out.println(u.buscarCorreoPorId(13, utilities.Connection.getInstance()));
         
-        UsuariosDAO u = new UsuariosDAO();
-        System.out.println(u.buscarCorreoPorId(13, utilities.Connection.getInstance()));
+        FacadeUsuarios f = new FacadeUsuarios();
+        UsuariosDTO u = new UsuariosDTO();
+        
+        u.setNombres("Juan");
+        u.setApellidos("Perez");
+        u.setCedula("12344");
+        u.setTelefono("17555");
+        u.setDireccion("Cra x con y");
+        u.setCorreo("juan@hotmail.com");
+        u.setClave("123");
+        u.setNotificacion(1);
+        u.setCiudad("Bogota");
+        u.setFechaNacimiento("1987/11/05");
+//        EstadoUsuarioDTO e = new EstadoUsuarioDTO();
+//        e.setIdEstadoUsuario(1);
+//        u.setEstado(e);        
+        u.setGenero(0);
+        System.out.println(f.ingresarRegistro(u));
+        
+        
+        
+        
 }
 }

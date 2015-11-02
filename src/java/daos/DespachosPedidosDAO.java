@@ -71,7 +71,7 @@ public class DespachosPedidosDAO {
             if (rs != null) {
                 while (rs.next()) {
                     UsuariosDTO user = new UsuariosDTO(rs.getInt("idUsuarios"), rs.getString("Solicitante"),
-                            rs.getInt("telefono"), rs.getString("direccion"));
+                            rs.getString("telefono"), rs.getString("direccion"));
                     ProductoDTO pro = new ProductoDTO(rs.getInt("idProductos"), rs.getString("nombreProducto"));
                     SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO(user, pro);
                     solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
@@ -100,7 +100,7 @@ public class DespachosPedidosDAO {
         try {
             String querrySolicitudesDistribuidor = " select idSolicitudDistribuidor, idUsuarios, "
                     + " CONCAT(u.nombres,' ',u.apellidos) as Solicitante, "
-                    + " direccion,idProductos, nombreProducto, "
+                    + " direccion,idProductos, nombreProducto, correo,"
                     + " fechaSolicitud from usuarios u inner join "
                     + " solicituddistribuidor s on u.idUsuarios = s.distribuidorId "
                     + " inner join productos p on s.productosId = p.idProductos "
@@ -111,6 +111,7 @@ public class DespachosPedidosDAO {
             if (rs != null) {
                 while (rs.next()) {
                     UsuariosDTO user = new UsuariosDTO(rs.getInt("idUsuarios"), rs.getString("Solicitante"), rs.getString("direccion"));
+                    user.setCorreo(rs.getString("correo"));
                     ProductoDTO pro = new ProductoDTO(rs.getInt("idProductos"), rs.getString("nombreProducto"));
                     solicitud = new SolicitudDistribuidorDTO(user, pro);
                     solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));

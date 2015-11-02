@@ -14,22 +14,27 @@ public class UsuariosDTO {
     private int idUsuarios = 0;
     private String nombres = "";
     private String apellidos = "";
-    private int cedula = 0;
-    private int telefono = 0;
+    private String cedula = "";
+    private String telefono = "";
     private String direccion  = "";
     private String correo = "";
     private String clave = "";
     private int notificacion = 0;
     private String ciudad = "";
     private String fechaNacimiento = "";
+    private EstadoUsuarioDTO estadoInt = null;
     private int estado = 0;
+    private int genero = 0;
     
     public UsuariosDTO(){}
+//    public UsuariosDTO(EstadoUsuarioDTO estadoUser){
+//        this.estadoInt = estadoUser;
+//    }
     
     /*
     * Este constructor me facilita listar los pedidos que se van a despachar.
     */
-    public UsuariosDTO(int idUsuarios, String nombres, int telefono, String direccion) {
+    public UsuariosDTO(int idUsuarios, String nombres, String telefono, String direccion) {
         this.idUsuarios = idUsuarios;
         this.nombres = nombres;
         this.telefono = telefono;
@@ -104,28 +109,28 @@ public class UsuariosDTO {
     /**
      * @return the cedula
      */
-    public int getCedula() {
+    public String getCedula() {
         return cedula;
     }
 
     /**
      * @param cedula the cedula to set
      */
-    public void setCedula(int cedula) {
+    public void setCedula(String cedula) {
         this.cedula = cedula;
     }
 
     /**
      * @return the telefono
      */
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
     /**
      * @param telefono the telefono to set
      */
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
@@ -214,17 +219,17 @@ public class UsuariosDTO {
     }
     
     /**
-     * @return the estado
+     * @return the genero
      */
-    public int getEstado() {
-        return estado;
+    public int getGenero() {
+        return genero;
     }
 
     /**
-     * @param estado the estado to set
+     * @param genero the genero to set
      */
-    public void setEstado(int estado) {
-        this.estado = estado;
+    public void setGenero(int genero) {
+        this.genero = genero;
     }
 
     @Override
@@ -240,7 +245,36 @@ public class UsuariosDTO {
                 + ", notificacion=" + notificacion
                 + ", ciudad=" + ciudad
                 + ", fechaNacimiento=" + fechaNacimiento
-                + ", estado=" + estado + '}';
+                + ", estado=" + getEstadoInt()
+                +", genero="+ genero;
     }   
-    
+
+    /**
+     * @return the estadoInt
+     */
+    public EstadoUsuarioDTO getEstadoInt() {
+        return estadoInt;
+    }
+
+    /**
+     * @param estadoInt the estadoInt to set
+     */
+    public void setEstadoInt(EstadoUsuarioDTO estadoInt) {
+        this.estadoInt = estadoInt;
+    }
+
+    /**
+     * @return the estado
+     */
+    public int getEstado() {
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
 }

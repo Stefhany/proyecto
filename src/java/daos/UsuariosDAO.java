@@ -5,6 +5,7 @@
  */
 package daos;
 
+import dtos.EstadoUsuarioDTO;
 import dtos.UsuariosDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,18 +32,21 @@ public class UsuariosDAO {
         this.cnn = cnn;
         int rtdo = 0;
         String msgSalida = "";
+        EstadoUsuarioDTO estadoUser = new EstadoUsuarioDTO();
         try {
-            pstmt = cnn.prepareStatement("INSERT INTO usuarios VALUES (null,?, ?, ?, ?, ?, ?, md5(?), ?, ?, ?, 0)");
+            pstmt = cnn.prepareStatement("INSERT INTO usuarios VALUES (null,?, ?, ?, ?, ?, ?, md5(?), ?, ?, ?, 1,?)");
             pstmt.setString(1, usuario.getNombres());
             pstmt.setString(2, usuario.getApellidos());
-            pstmt.setInt(3, usuario.getCedula());
-            pstmt.setInt(4, usuario.getTelefono());
+            pstmt.setString(3, usuario.getCedula());
+            pstmt.setString(4, usuario.getTelefono());
             pstmt.setString(5, usuario.getDireccion());
             pstmt.setString(6, usuario.getCorreo());
             pstmt.setString(7, usuario.getClave());
             pstmt.setInt(8, usuario.getNotificacion());
             pstmt.setString(9, usuario.getCiudad());
             pstmt.setString(10, usuario.getFechaNacimiento());
+            pstmt.setInt(11, usuario.getGenero());           
+            
             //mensaje = pstmt.toString();
             rtdo = pstmt.executeUpdate();
             if (rtdo != 0) {
@@ -65,7 +69,7 @@ public class UsuariosDAO {
                     + " direccion=?, correo=?, "
                     + " ciudad=? WHERE idUsuarios=?;";
             pstmt = cnn.prepareStatement(queryUpDateUser);
-            pstmt.setInt(1, usuario.getTelefono());
+            pstmt.setString(1, usuario.getTelefono());
             pstmt.setString(2, usuario.getDireccion());
             pstmt.setString(3, usuario.getCorreo());
             pstmt.setString(4, usuario.getCiudad());
@@ -105,8 +109,11 @@ public class UsuariosDAO {
         this.cnn = cnn;
         ArrayList<UsuariosDTO> listaUsuarios = new ArrayList<UsuariosDTO>();
         try {
-            pstmt = cnn.prepareStatement("SELECT idUsuarios, nombres, apellidos, cedula, telefono, direccion, "
-                    + " correo, clave, notificaciones, ciudad, fechaNacimiento FROM usuarios WHERE estadoUser = 0;");
+            pstmt = cnn.prepareStatement("SELECT idUsuarios, nombres, apellidos, cedula, telefono, direccion,"
+                    + " correo, clave, notificaciones, ciudad, fechaNacimiento, estadoUser "
+                    + " FROM usuarios"
+                    + " WHERE notificaciones = 1"
+                    + " and (estadoUser != 0);");
             rs = pstmt.executeQuery();
             if (rs != null) {
                 while (rs.next()) {
@@ -114,14 +121,15 @@ public class UsuariosDAO {
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     user.setDireccion(rs.getString("direccion"));
                     user.setCorreo(rs.getString("correo"));
                     user.setClave(rs.getString("clave"));
                     user.setNotificacion(rs.getInt("notificaciones"));
                     user.setCiudad(rs.getString("ciudad"));
                     user.setFechaNacimiento(rs.getString("fechaNacimiento"));
+                    user.setEstado(rs.getInt("estadoUser"));
                     listaUsuarios.add(user);
                 }
             } else {
@@ -148,8 +156,8 @@ public class UsuariosDAO {
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     user.setDireccion(rs.getString("direccion"));
                     user.setCorreo(rs.getString("correo"));
                     user.setClave(rs.getString("clave"));
@@ -183,8 +191,8 @@ public class UsuariosDAO {
                     udto.setIdUsuarios(rs.getInt("id"));
                     udto.setNombres(rs.getString("nombres"));
                     udto.setApellidos(rs.getString("apellidos"));
-                    udto.setCedula(rs.getInt("cedula"));
-                    udto.setTelefono(rs.getInt("telefono"));
+                    udto.setCedula(rs.getString("cedula"));
+                    udto.setTelefono(rs.getString("telefono"));
                     udto.setDireccion(rs.getString("direccion"));
                     udto.setCorreo(rs.getString("correo"));
                     udto.setClave(rs.getString("clave"));
@@ -255,8 +263,8 @@ public class UsuariosDAO {
                     UsuariosDTO user = new UsuariosDTO();
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     usuarios.add(user);
                 }
             }
@@ -294,8 +302,8 @@ public class UsuariosDAO {
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     user.setDireccion(rs.getString("direccion"));
                     user.setCorreo(rs.getString("correo"));
                     user.setClave(rs.getString("clave"));
@@ -533,8 +541,8 @@ public class UsuariosDAO {
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     user.setDireccion(rs.getString("direccion"));
                     user.setCorreo(rs.getString("correo"));
                     user.setClave(rs.getString("clave"));
@@ -565,8 +573,8 @@ public class UsuariosDAO {
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     user.setDireccion(rs.getString("direccion"));
                     user.setCorreo(rs.getString("correo"));
                     user.setClave(rs.getString("clave"));
@@ -598,8 +606,8 @@ public class UsuariosDAO {
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     user.setDireccion(rs.getString("direccion"));
                     user.setCorreo(rs.getString("correo"));
                     user.setClave(rs.getString("clave"));
@@ -636,8 +644,8 @@ public class UsuariosDAO {
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     user.setDireccion(rs.getString("direccion"));
                     user.setCorreo(rs.getString("correo"));
                     user.setClave(rs.getString("clave"));
@@ -676,8 +684,8 @@ public class UsuariosDAO {
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     user.setDireccion(rs.getString("direccion"));
                     user.setCorreo(rs.getString("correo"));
                     user.setClave(rs.getString("clave"));
@@ -767,57 +775,57 @@ public class UsuariosDAO {
         String res = "";
         try {
             String queryConsultConfirmation = "select correo from usuarios where idusuarios = ? + 2;";
-        pstmt = cnn.prepareStatement(queryConsultConfirmation);
-        pstmt.setInt(1, iduser);
-        rs = pstmt.executeQuery();
+            pstmt = cnn.prepareStatement(queryConsultConfirmation);
+            pstmt.setInt(1, iduser);
+            rs = pstmt.executeQuery();
 
-        if (rs != null) {
-            while (rs.next()) {
-                res = rs.getString("correo");
+            if (rs != null) {
+                while (rs.next()) {
+                    res = rs.getString("correo");
+                }
             }
-        }
-        }catch(SQLException sqle){
-            res = "Ocurrio la siguiente exepción: "+sqle.getMessage();
+        } catch (SQLException sqle) {
+            res = "Ocurrio la siguiente exepción: " + sqle.getMessage();
         }
         return res;
     }
-    
+
     public String confirmarRecupecionClaveNombreUser(int iduser, Connection cn) {
         this.cnn = cn;
         String res = "";
         try {
             String queryConsultConfirmation = "select nombres from usuarios where idusuarios = ? + 2;";
-        pstmt = cnn.prepareStatement(queryConsultConfirmation);
-        pstmt.setInt(1, iduser);
-        rs = pstmt.executeQuery();
+            pstmt = cnn.prepareStatement(queryConsultConfirmation);
+            pstmt.setInt(1, iduser);
+            rs = pstmt.executeQuery();
 
-        if (rs != null) {
-            while (rs.next()) {
-                res = rs.getString("nombres");
+            if (rs != null) {
+                while (rs.next()) {
+                    res = rs.getString("nombres");
+                }
             }
-        }
-        }catch(SQLException sqle){
-            res = "Ocurrio la siguiente exepción: "+sqle.getMessage();
+        } catch (SQLException sqle) {
+            res = "Ocurrio la siguiente exepción: " + sqle.getMessage();
         }
         return res;
     }
-    
+
     public String buscarCorreoPorId(int iduser, Connection cn) {
         this.cnn = cn;
         String res = "";
         try {
             String queryConsultConfirmation = "select correo from usuarios where idusuarios = ?;";
-        pstmt = cnn.prepareStatement(queryConsultConfirmation);
-        pstmt.setInt(1, iduser);
-        rs = pstmt.executeQuery();
+            pstmt = cnn.prepareStatement(queryConsultConfirmation);
+            pstmt.setInt(1, iduser);
+            rs = pstmt.executeQuery();
 
-        if (rs != null) {
-            while (rs.next()) {
-                res = rs.getString("correo");
+            if (rs != null) {
+                while (rs.next()) {
+                    res = rs.getString("correo");
+                }
             }
-        }
-        }catch(SQLException sqle){
-            res = "Ocurrio la siguiente exepción: "+sqle.getMessage();
+        } catch (SQLException sqle) {
+            res = "Ocurrio la siguiente exepción: " + sqle.getMessage();
         }
         return res;
     }

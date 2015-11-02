@@ -48,7 +48,7 @@ public class ProductosAsociadosUsuariosDAO {
                 while (rs.next()) {
                     UsuariosDTO nUser = new UsuariosDTO();
                     nUser.setIdUsuarios(rs.getInt("u.idUsuarios"));
-                    nUser.setCedula(rs.getInt("u.cedula"));
+                    nUser.setCedula(rs.getString("u.cedula"));
                     nUser.setNombres(rs.getString("u.nombres"));
                     CategoriaDTO c = new CategoriaDTO(rs.getInt("c.idCategorias"), rs.getString("nombreCategoria"));
                     ProductoDTO nProduct = new ProductoDTO(c);
@@ -84,7 +84,7 @@ public class ProductosAsociadosUsuariosDAO {
             if (rs != null) {
                 while (rs.next()) {
                     UsuariosDTO nUser = new UsuariosDTO();
-                    nUser.setCedula(rs.getInt("u.cedula"));
+                    nUser.setCedula(rs.getString("u.cedula"));
                     nUser.setNombres(rs.getString("u.nombres"));
                     CategoriaDTO c = new CategoriaDTO();
                     c.setIdCategoria(rs.getInt("c.idCategorias"));

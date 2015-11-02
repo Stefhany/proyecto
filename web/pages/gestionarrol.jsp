@@ -260,7 +260,7 @@
 
                         <input name="cambiarRol" id="cambiarRol" type="hidden"/>
 
-                        <button id="btnSolicitar" type="submit" name="btnCambiarRol" class="btn btn-success btn-lg btn-block">Actualizar Rol</button>
+                        <button id="btnSolicitar" type="submit" name="btnCambiarRol" class="btn btn-success btn-lg btn-block">Vincular a Asociación</button>
 
                     </form>
                     <%} else {

@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.util.HashMap;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -29,7 +28,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
  *
  * @author Mona
  */
-public class ReportOffers extends HttpServlet {
+public class ReporteCategorias extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,21 +46,21 @@ public class ReportOffers extends HttpServlet {
         
         {
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=\"Reporte Ofertas.pdf\";");
+            response.setHeader("Content-Disposition", "attachment; filename=\"Reporte Categorías.pdf\";");
             response.setHeader("Cache-Control", "no-cache");
             response.setHeader("Pragma", "no-cache");
             response.setDateHeader("Expires", 0);
             ServletOutputStream out = response.getOutputStream();
             Connection con = utilities.Connection.getInstance();
 
-            JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(getServletContext().getRealPath("offers.jasper")));
+            JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(getServletContext().getRealPath("categorias.jasper")));
 //                parametros
 //                Map parametros = new HashMap();
 //                parametros.put("Codigo", "1");
 //                parametros.put("titulo", "Reporte");
 //            HashMap<String, Object> parametros = new HashMap<>();
 //            parametros.put("logo", getServletContext().getRealPath("img/logoFinal.png"));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, Conectar.conectar());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, con);
             JRExporter exporter = new JRPdfExporter();
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
             exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);

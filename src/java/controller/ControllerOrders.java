@@ -182,7 +182,7 @@ public class ControllerOrders extends HttpServlet {
 
                 } else {
                     String msj = "No puede ingresar una cantidad mayor a la solicitada";
-                    response.sendRedirect("paginas/listarsolicitudesproductores.jsp?msgSalida = <strong>" + msj + " </Strong>");
+                    response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida = <strong>" + msj + " </Strong>");
                 }
             } else if (request.getParameter("btnDespacharPedido") != null && request.getParameter("despacharPedido") != null) {
 
@@ -193,6 +193,7 @@ public class ControllerOrders extends HttpServlet {
                 dto.setObservaciones(request.getParameter("txtObservacion").trim());
                 dto.setSolicitudId(Integer.parseInt(request.getParameter("txtSolicitud").trim()));
                 dto.setUsuariosId(Integer.parseInt(request.getParameter("txtUser").trim()));
+                String correoDistribuidor = request.getParameter("txtCorreoDistribuidor").trim();
 
                 int idSolicitud = Integer.parseInt(request.getParameter("txtSolicitud").trim());
 
@@ -206,6 +207,7 @@ public class ControllerOrders extends HttpServlet {
 
                         if (salida.equals("ok")) {
                             facadeDespachoPedidos.cambiarEstadoSolicitud(idSolicitud);
+                            Mail.sendMail("Su pedido le ha sido enviado", "Su pedido ha sido enviado satisfactoriamente.", correoDistribuidor);
                             response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>El despacho ha sido realizado.</Strong>");
                         } else {
                             response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>No se pudo realizar el cambio del estado.</Strong>");

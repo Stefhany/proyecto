@@ -46,6 +46,7 @@
         <link rel="icon" href="../img/portfolio/favicon.ico" type="image/x-ico"/>
 
         <script src="http://code.jquery.com/jquery-latest.js" <meta charset="utf-8"> type = "text/javascript" ></script>
+        
         <script type="text/javascript">
                     $(document).ready(function () {
 
@@ -77,10 +78,7 @@
                 FacadeUsuarios facadeUsers = new FacadeUsuarios();
                 ArrayList<UsuariosDTO> lista = new ArrayList<UsuariosDTO>();
                 lista = (ArrayList<UsuariosDTO>) facadeUsers.consultarRegistros();
-
         %>
-
-
     </head>
 
     <body>

@@ -186,7 +186,7 @@ public class OfertasDAO {
                     udto.setIdUsuarios(rs.getInt("idUsuarios"));
                     udto.setNombres(rs.getString("Productor"));
                     udto.setCorreo(rs.getString("correoProductor"));
-                    udto.setTelefono(rs.getInt("telefonoProductor"));
+                    udto.setTelefono(rs.getString("telefonoProductor"));
                     CategoriaDTO cdto = new CategoriaDTO();
                     cdto.setIdCategoria(rs.getInt("idCategorias"));
                     cdto.setNombre(rs.getString("nombreCategoria"));
@@ -232,7 +232,7 @@ public class OfertasDAO {
             if (rs != null) {
                 while (rs.next()) {
                     UsuariosDTO nUser = new UsuariosDTO();
-                    nUser.setCedula(rs.getInt("u.cedula"));
+                    nUser.setCedula(rs.getString("u.cedula"));
                     nUser.setNombres(rs.getString("u.nombres"));
                     CategoriaDTO c = new CategoriaDTO();
                     c.setIdCategoria(rs.getInt("c.idCategorias"));

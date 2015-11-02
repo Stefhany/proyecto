@@ -55,8 +55,8 @@ public class PermisosDAO {
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     user.setNombres(rs.getString("nombres"));
                     user.setApellidos(rs.getString("apellidos"));
-                    user.setCedula(rs.getInt("cedula"));
-                    user.setTelefono(rs.getInt("telefono"));
+                    user.setCedula(rs.getString("cedula"));
+                    user.setTelefono(rs.getString("telefono"));
                     user.setDireccion(rs.getString("direccion"));
                     user.setCorreo(rs.getString("correo"));
                     user.setClave(rs.getString("clave"));
