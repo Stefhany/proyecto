@@ -182,8 +182,7 @@ public class DespachosPedidosDAO {
         int rtdo = 0;
         String mensaje = "";
         try {
-            String sqlInsert = "update `solicituddistribuidor` set estadosPedidosId = 4 "
-                    + " where idSolicitudDistribuidor=?;";
+            String sqlInsert = "update solicituddistribuidor set estadoSolicitudDistribuidorId = 5 where idSolicitudDistribuidor=?;";
             pstmt = cnn.prepareStatement(sqlInsert);
 
             pstmt.setInt(1, idSolicitud);

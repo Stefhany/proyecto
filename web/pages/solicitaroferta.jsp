@@ -201,7 +201,7 @@
                                %>"/>
 
                         <!-- =================================================================== -->
-                        <input type="hidden" name="txtCorreoDistribuidor" value="salfonso9@misena.edu.co">
+                        
                         <!-- =================================================================== -->
                         <input name="txtIdOferta" id="txtIdOferta" type="hidden" 
                                value="<%if (offerdto != null) {
@@ -240,7 +240,7 @@
                                %>">
 
                         <div class="form-group">
-                            <label for="txtCantidadOfertada">Cantidad ofertada: </label> 
+                            <label for="txtCantidadOfertada">Cantidad que el productor oferto: </label> 
                             <input type="text" id="txtCantidadOfertada" name="txtCantidadOfertada" 
                                    value="<%if (offerdto != null) {
                                            out.print(offerdto.getCantidad());
@@ -260,8 +260,8 @@
                         </div>     
                         
                         <div class="form-group">
-                            <label for="txtFecha"> Fecha fin: </label>
-                            <input type="date" id="txtFecha" name="txtFecha" 
+                            <label for="txtFecha"> Fecha de expiración de la oferta:</label>
+                            <input type="date" id="txtFecha" name="txtFecha" readonly="true"
                                    value="<% if (offerdto != null) {
                                            out.print(offerdto.getFechaFin());
                                        }                                   
@@ -270,7 +270,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="txtFechaSolicitud"> Fecha solicitud: </label>
+                            <label for="txtFechaSolicitud">Fecha de entrega del producto:</label>
                             <input type="date" id="txtFechaSolicitud" name="txtFechaSolicitud" 
                                    onblur="javascript:validarSolicitud();" class="form-control">
                             <div id="result" class="mensajeError"><span></span></div>
@@ -278,7 +278,7 @@
 
                         <input type="hidden" name="solicitar" id="solicitar" value="solicitar" />
 
-                        <button id="btnSolicitar" type="submit" name="btnSolicitar" class="btn btn-success btn-lg btn-block">Solicitar Oferta</button>
+                        <button id="btnSolicitar" type="submit" name="btnSolicitar" class="btn btn-success btn-lg btn-block">Solicitar Producto de Oferta</button>
 
                     </form>  
 

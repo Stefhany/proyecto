@@ -49,6 +49,7 @@ public class ControllerOffers extends HttpServlet {
                 ofDto.setProductosAsociadosUsuariosId(Integer.parseInt(request.getParameter("txtIdProAso")));
                 ofDto.setCantidad(Integer.parseInt(request.getParameter("txtCantidad").trim()));
                 ofDto.setPrecio(Float.parseFloat(request.getParameter("txtPrecio").trim()));
+                ofDto.setCantidadFinal(Integer.parseInt(request.getParameter("txtCantidad").trim()));
                 
                 String salidaDos = facadeOffer.registrarOferta(ofDto);
                 

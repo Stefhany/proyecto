@@ -152,8 +152,8 @@
                         <input name="txtIdSolicitud" id="txtIdSolicitud" value="<%if (solDto != null) {
                                 out.print(solDto.getIdSolicitud());
                             }%>" type="hidden">
-                        <input name="txtIdAso" id="txtIdAso" value="<%if (solDto != null) {
-                                out.print(solDto.getUser().getIdUsuarios());
+                        <input name="txtIdAso" id="txtIdAso" value="<%if (uregistrado != null) {
+                                out.print(uregistrado.getIdUsuarios());
                             }%>" type="hidden"> 
 
                         <div class="form-group">

@@ -13,8 +13,8 @@
     </head>
     <div>
         <h2>Reporte Ofertas</h2>
-        <form id="formGenerarReportes" method="POST" action="prueba.jsp">
-            <input type="submit" class="btn btn-success" id="btnReporte" name="btnReporte" value="Generar" class="button"/>
+        <form id="formGenerarReportes" method="POST" action="../Prueba">
+            <input type="submit" class="btn btn-success" id="btnConsultar" name="btnConsultar" value="Consultar" class="button"/>
         </form>
     </div>
 </html>

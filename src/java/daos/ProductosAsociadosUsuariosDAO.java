@@ -274,29 +274,22 @@ public class ProductosAsociadosUsuariosDAO {
         return salida;
     }
 
-    public List<ProductosAsociadosUsuariosDTO> asociarProductos(Connection cnn, int idUsuario) throws MyException {
+    public List<ProductoDTO> asociarProductos(Connection cnn, int idUsuario) throws MyException {
         this.cnn = cnn;
-        LinkedList<ProductosAsociadosUsuariosDTO> products = new LinkedList();
+        LinkedList<ProductoDTO> products = new LinkedList();
         try {
-            String queryAllPro = " select `categorias`.`idCategorias` as idCat, `categorias`.`nombreCategoria` as nomCat,"
-                    + " `productosasociadosusuarios`.`idProductosAsociadosUsuarios` as idProAso, "
-                    + " `productos`.`idProductos` as idPro, `productos`.`nombreProducto` as nomPro, "
-                    + " `usuarios`.`idUsuarios` as idusu, `productos`.`unidad`, usuarios.`nombres` "
-                    + " from `categorias` "
-                    + " inner join `productos` on `categorias`.`idCategorias` = `productos`.`categoriasId` "
-                    + " inner join `productosasociadosusuarios` on `productos`.`idProductos` = `productosasociadosusuarios`.`productosId` "
-                    + " inner join `usuarios` on `productosasociadosusuarios`.`usuariosId` = `usuarios`.`idUsuarios` "
-                    + " where if (`usuarios`.`idUsuarios` <> ?,1,0)=1 "
-                    + " order by `productosasociadosusuarios`.`idProductosAsociadosUsuarios` asc;";
-            pstmt = cnn.prepareStatement(queryAllPro);
+            String querryAsociarProductos = " select idCategorias, nombreCategoria, idProductos, nombreProducto, unidad"
+                    + " from categorias "
+                    + " inner join productos on categorias.idCategorias = productos.categoriasId "
+                    + " where idProductos not in (select productosId from productosasociadosusuarios where usuariosId=? and estado = 1)"
+                    + " order by idProductos;";
+            pstmt = cnn.prepareStatement(querryAsociarProductos);
+            pstmt.setInt(1, idUsuario);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                CategoriaDTO cdto = new CategoriaDTO(rs.getInt("idCat"), rs.getString("nomCat"));                
-                ProductoDTO prodto = new ProductoDTO(rs.getInt("idPro"), rs.getString("nomPro"), rs.getString("unidad"), cdto);
-                UsuariosDTO user = new UsuariosDTO(rs.getInt("idUsuarios"), rs.getString("nombres"));
-                ProductosAsociadosUsuariosDTO proAso = new ProductosAsociadosUsuariosDTO(user, prodto);
-                proAso.setIdProductosAsociadosUsuarios(rs.getInt("idProAso"));                
-                products.add(proAso);
+                CategoriaDTO cdto = new CategoriaDTO(rs.getInt("idCategorias"), rs.getString("nombreCategoria"));
+                ProductoDTO prodto = new ProductoDTO(rs.getInt("idProductos"), rs.getString("nombreProducto"), rs.getString("unidad"), cdto);
+                products.add(prodto);
             }
         } catch (SQLException sqle) {
             throw new MyException("Ocurrio este error al listar los elementos: " + sqle.getSQLState() + " - " + sqle.getMessage());

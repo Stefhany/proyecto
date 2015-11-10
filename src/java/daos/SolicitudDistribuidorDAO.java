@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -28,12 +29,14 @@ public class SolicitudDistribuidorDAO {
 
     public String insertarSolicitudDistribuidor(SolicitudDistribuidorDTO solicitud, Connection cnn) {
         try {
-            pstmt = cnn.prepareStatement("INSERT INTO solicituddistribuidor VALUES (null,?,current_date(),?,null,3,?,?);");
+            pstmt = cnn.prepareStatement("INSERT INTO solicituddistribuidor VALUES (null,?,current_date(),?,null,1,?,?,?);");
             pstmt.setInt(1, solicitud.getCantidadSolicitada());
             pstmt.setString(2, solicitud.getFechaSolicitud());
             //pstmt.setString(3, solicitud.getFechaEntregaInterna());
             pstmt.setInt(3, solicitud.getProductoId());
             pstmt.setInt(4, solicitud.getDistribuidorId());
+            pstmt.setInt(5, solicitud.getCantidadSolicitudFinal());
+
             resultado = pstmt.executeUpdate();
             if (resultado != 0) {
                 msgSalida = "ok";
@@ -49,15 +52,12 @@ public class SolicitudDistribuidorDAO {
     public LinkedList<SolicitudDistribuidorDTO> listarSolicitudesDistribuidor(Connection cnn) {
         LinkedList<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
         try {
-            String querrySolicitudesDistribuidor = " select idSolicitudDistribuidor, idUsuarios, "
-                    + " concat(nombres,' ',apellidos) as Distribuidor, idProductos, "
-                    + " nombreProducto, cantidadSolicitada, fechaSolicitud "
-                    + " from solicituddistribuidor  s "
-                    + " inner join productos p on "
-                    + " p.idProductos = s.productosId "
-                    + " inner join usuarios u on "
-                    + " u.idUsuarios = s.distribuidorId"
-                    + " where estadosPedidosId = 3;";
+            String querrySolicitudesDistribuidor = "select idSolicitudDistribuidor, idUsuarios, concat(nombres,' ',apellidos) as Distribuidor, "
+                    + " idProductos, nombreProducto, cantidadSolicitada, fechaSolicitud "
+                    + " from solicituddistribuidor s "
+                    + " inner join productos p on p.idProductos = s.productosId "
+                    + " inner join usuarios u on u.idUsuarios = s.distribuidorId "
+                    + " where estadoSolicitudDistribuidorId = 1;";
             pstmt = cnn.prepareStatement(querrySolicitudesDistribuidor);
             rs = pstmt.executeQuery();
             if (rs != null) {
@@ -137,6 +137,51 @@ public class SolicitudDistribuidorDAO {
             }
         } catch (SQLException sqle) {
             msgSalida = "Ha ocurrido lo siguiente... " + sqle.getMessage();
+        }
+        return msgSalida;
+    }
+
+    public List<SolicitudDistribuidorDTO> listarMisPedidosDeUnaAsociacion(int idUsuario, Connection cnn) {
+        List<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
+        try {
+            String querrySolicitudesDistribuidor = "select idUsuarios, nombreProducto, cantidadSolicitada,idSolicitudDistribuidor, fechaSolicitud, idProductos "
+                    + " from usuarios "
+                    + " inner join solicituddistribuidor on solicituddistribuidor.distribuidorId = usuarios.idUsuarios "
+                    + " inner join productos on solicituddistribuidor.productosId = productos.idProductos "
+                    + " where idusuarios = ?;";
+            pstmt = cnn.prepareStatement(querrySolicitudesDistribuidor);
+            pstmt.setInt(1, idUsuario);
+            rs = pstmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    UsuariosDTO user = new UsuariosDTO();
+                    user.setIdUsuarios(rs.getInt("idUsuarios"));
+                    ProductoDTO pro = new ProductoDTO(rs.getInt("idProductos"), rs.getString("nombreProducto"));
+                    SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO(user, pro);
+                    solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
+                    solicitud.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
+                    solicitud.setFechaSolicitud(rs.getString("fechaSolicitud"));
+                    solicitudes.add(solicitud);
+                }
+            }
+        } catch (SQLException sqle) {
+            msgSalida = "Mira lo que ocurrio! " + sqle.getMessage() + " y " + sqle.getSQLState();
+        }
+        return solicitudes;
+    }
+    
+    public String modificarCantidadSolicitud(int cantidadFinal, int idSolicitud, Connection cn) throws SQLException {
+        this.cnn = cn;
+        String msgSalida;
+        int rtdo;
+        pstmt = cnn.prepareStatement(" update solicituddistribuidor set cantidadSolicitada = ? where idSolicitudDistribuidor = ?;");
+        pstmt.setInt(1, cantidadFinal);
+        pstmt.setInt(2, idSolicitud);
+        rtdo = pstmt.executeUpdate();
+        if (rtdo > 0) {
+            msgSalida = "ok";
+        } else {
+            msgSalida = "no";
         }
         return msgSalida;
     }

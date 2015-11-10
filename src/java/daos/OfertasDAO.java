@@ -40,10 +40,11 @@ public class OfertasDAO {
         int rtdo = 0;
         String msgSalida = "";
         try {
-            pstmt = cnn.prepareStatement("INSERT INTO ofertas VALUES (null, ?,?,?,current_date(), date_add(curdate(), interval 15 day),1);");
+            pstmt = cnn.prepareStatement("INSERT INTO ofertas VALUES (null, ?,?,?,current_date(), date_add(curdate(), interval 15 day),1,?);");
             pstmt.setInt(1, nuevaOferta.getProductosAsociadosUsuariosId());
-            pstmt.setInt(3, nuevaOferta.getCantidad());
             pstmt.setFloat(2, nuevaOferta.getPrecio());
+            pstmt.setInt(3, nuevaOferta.getCantidad());
+            pstmt.setInt(4, nuevaOferta.getCantidadFinal());
             rtdo = pstmt.executeUpdate();
 
             if (rtdo != 0) {

@@ -21,6 +21,7 @@ public class OfertasDTO {
     private UsuariosDTO user = null;    // no se usa en esta versión
     private ProductosAsociadosUsuariosDTO idAso = null;
     private String fechaFin = "";
+    private int cantidadFinal = 0;
     
     public OfertasDTO(){
         
@@ -156,7 +157,8 @@ public class OfertasDTO {
             + ", productosAsociadosUsuariosId = " + getIdAso().getIdProductosAsociadosUsuarios()
             + ", products = " + idAso.getProducto().getNombre()
             + ", user = " + idAso.getUsuario().getNombres()
-            + ", correoProuctor = "+ idAso.getUsuario().getCorreo();
+            + ", correoProuctor = "+ idAso.getUsuario().getCorreo()
+            + ", cantidadFinal = "+cantidadFinal;
         
     }
       
@@ -187,5 +189,19 @@ public class OfertasDTO {
      */
     public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
+    }
+
+    /**
+     * @return the cantidadFinal
+     */
+    public int getCantidadFinal() {
+        return cantidadFinal;
+    }
+
+    /**
+     * @param cantidadFinal the cantidadFinal to set
+     */
+    public void setCantidadFinal(int cantidadFinal) {
+        this.cantidadFinal = cantidadFinal;
     }
 }

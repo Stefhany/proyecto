@@ -62,18 +62,22 @@ public class ControllerOrders extends HttpServlet {
                 String correoDistribuidor = request.getParameter("txtCorreoDistribuidor").trim();
                 String nombreProductor = request.getParameter("txtNombreProductor").trim();
                 int telefonoProductor = Integer.parseInt(request.getParameter("txtTelefonoProductor").trim());
+                
                 PedidoSobreOfertaDAO p = new PedidoSobreOfertaDAO();
                 int contar = facadePedidoSobreOferta.calcularCantidad(Integer.parseInt(request.getParameter("txtIdOferta")));
                 int canasta = contar - cantidadSolicitada;
+                
                 Date fechaSolicitada = Date.valueOf(request.getParameter("txtFechaSolicitud").trim());
                 Date fechaRegistrada = Date.valueOf(request.getParameter("txtFecha").trim());
+                
                 FacadeConsultas facadeConsults = new FacadeConsultas();
                 int fechasHabiles = facadeConsults.diferenciasDeFechas(fechaSolicitada, fechaRegistrada);
                 if (fechasHabiles > 0) {
                     if (contar >= cantidadSolicitada) {
                         FacadePedidoSobreOferta facadeOrderOffer = new FacadePedidoSobreOferta();
                         String salidaDos = facadeOrderOffer.registrarPedidoSobreOferta(Integer.parseInt(request.getParameter("txtCantidadSolicitada").trim()),
-                                Integer.parseInt(request.getParameter("txtIdOferta").trim()), request.getParameter("txtFechaSolicitud").trim());
+                                Integer.parseInt(request.getParameter("txtIdOferta").trim()), request.getParameter("txtFechaSolicitud").trim(),
+                                Integer.parseInt(request.getParameter("txtIdDistribuidor").trim()));
                         if (salidaDos.equals("ok")) {
                             Mail.sendMail("Noticia de oferta", "Te informamos que el distribuidor " + nombreDistribuidor
                                     + ", le solicito " + cantidadSolicitada + " kilogramos de " + nombreProducto
@@ -96,12 +100,11 @@ public class ControllerOrders extends HttpServlet {
                                     + "Gracias por pertenecer a SIGAA <br>"
                                     + " Persona encargada: Stefhany Alfonso Rincón <br>"
                                     + "Líneas de atención: 3213018539", correoDistribuidor);
-                            response.sendRedirect("pages/listarofertasactuales.jsp?msgSalida= <strong>Su solicitud ha sido registrada. Se le enviara"
-                                    + " la notificación al productor.</Strong>");
+                            response.sendRedirect("pages/listarofertasactuales.jsp?msgSalida=alert('Ojo! Debe tener en cuenta los terminos y condiciones de los pedidos al momento de solicitarlos')");
                         }
                     } else {
                         String msj = "No puede ingresar una cantidad mayor a la solicitada";
-                        response.sendRedirect("pages/listarofertasactuales.jsp?msgSalida = <strong>No puede ingresar una cantidad mayor a la solicitada</Strong>");
+                        response.sendRedirect("pages/listarofertasactuales.jsp?msgSalida = <strong>"+msj+"</Strong>");
                     }
                 } else {
                     String mensaje = "La fecha que selecciono no esta disponible para el termino de esta oferta.";
@@ -109,9 +112,10 @@ public class ControllerOrders extends HttpServlet {
                 }
 
             } else if (request.getParameter("btnSolicitarAsociacion") != null && request.getParameter("solicitarAsociacion") != null) {
-                out.print("ok");
+                //out.print("ok");
                 solicitud.setCantidadSolicitada(Integer.parseInt(request.getParameter("txtCantidad").trim()));
                 solicitud.setFechaSolicitud(request.getParameter("txtFechaSolicitud").trim());
+                solicitud.setCantidadSolicitudFinal(Integer.parseInt(request.getParameter("txtCantidad  ").trim()));            
                 solicitud.setProductoId(Integer.parseInt(request.getParameter("subcategoria").trim()));
                 solicitud.setDistribuidorId(Integer.parseInt(request.getParameter("txtId").trim()));
                 String correo = request.getParameter("txtCorreo");
@@ -140,8 +144,10 @@ public class ControllerOrders extends HttpServlet {
                     if (fechaAnticipacion == 1) {
                         salida = facadeRequestDistributor.modificarSolicitudDistribuidor(solicitud);
                         if (salida.equals("ok")) {
-                            facadeDespachoPedidos.cambiarEstadoAProductores(idSolicitud);
                             response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?msgSalida=<strong>El pedido ha sido enviado a los productores.</Strong>");
+                            
+                            facadeDespachoPedidos.cambiarEstadoAProductores(idSolicitud);
+                            
                         } else {
                             response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?msgSalida=<strong>No se pudo realizar el cambio del estado.</Strong>");
                         }
@@ -174,17 +180,17 @@ public class ControllerOrders extends HttpServlet {
 
                             response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida= <strong>Su aporte ha sido registrado. Gracias por participar</Strong> ");
                         } else {
-                            response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?msgSalida=<strong>La fecha para el envío del producto debe ser anterior a la fecha estipulada por la asociación.</Strong>");
+                            response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida=<strong>La fecha para el envío del producto debe ser anterior a la fecha estipulada por la asociación.</Strong>");
                         }
                     } else {
-                        response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?msgSalida=<strong>Esta seleccionando una fecha anterior de la actual.</Strong>");
+                        response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida=<strong>Esta seleccionando una fecha anterior de la actual.</Strong>");
                     }
 
                 } else {
                     String msj = "No puede ingresar una cantidad mayor a la solicitada";
                     response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida = <strong>" + msj + " </Strong>");
                 }
-            } else if (request.getParameter("btnDespacharPedido") != null && request.getParameter("despacharPedido") != null) {
+            }  else if (request.getParameter("btnDespacharPedido") != null && request.getParameter("despacharPedido") != null) {
 
                 DespachosPedidosDTO dto = new DespachosPedidosDTO();
                 String fechaEnvio = request.getParameter("txtFechaEnvio").trim();

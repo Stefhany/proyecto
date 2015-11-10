@@ -9,7 +9,9 @@ import connection.Conectar;
 import daos.SolicitudDistribuidorDAO;
 import dtos.SolicitudDistribuidorDTO;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -45,5 +47,13 @@ public class FacadeSolicitudDistribuidor {
     
     public String modificarSolicitudDistribuidor(SolicitudDistribuidorDTO solicitud){
         return solicitudDao.modificarSolicitudDistribuidor(solicitud, cnn);
+    }
+    
+    public List listarMisPedidosALaAsociacion(int idUser){
+        return solicitudDao.listarMisPedidosDeUnaAsociacion(idUser, cnn);
+    }
+    
+    public String modificarCantidadSolicitud(int cantidadFinal, int idSolicitud) throws SQLException {
+        return solicitudDao.modificarCantidadSolicitud(cantidadFinal, idSolicitud, cnn);
     }
 }

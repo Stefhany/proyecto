@@ -180,9 +180,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="txtCantidad">Cantidad: </label> 
+                            <label for="txtCantidad">Cantidad que necesita: </label> 
                             <input type="text" id="txtCantidad" name="txtCantidad" 
                                    placeholder="Cantidad solicitada" class="form-control">
+                        </div>
+                            
+                        <div class="form-group">
+                            <input type="hidden" id="txtCantidadSolicitadaFinal" name="txtCantidadSolicitadaFinal">
                         </div>
 
                         <div class="form-group">
@@ -209,7 +213,7 @@
 
                         <div>
                             <button type="submit" value="Solicitar Pedido" id="btn" 
-                                    name="btnSolicitarAsociacion" class="btn btn-success btn-lg btn-block">Solicitar</button>
+                                    name="btnSolicitarAsociacion" class="btn btn-success btn-lg btn-block">Registrar Pedido</button>
                         </div>
 
                     </form>   

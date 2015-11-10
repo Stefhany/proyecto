@@ -9,6 +9,7 @@ import connection.Conectar;
 import daos.PedidoSobreOfertaDAO;
 import dtos.PedidoSobreOfertaDTO;
 import java.sql.Connection;
+import java.util.List;
 
 /**
  *
@@ -26,11 +27,15 @@ public class FacadePedidoSobreOferta {
         cnn = utilities.Connection.getInstance();
     }
     
-    public String registrarPedidoSobreOferta(int cantidadPedida, int idOferta, String fechaSolicitud){
-        return pedidoDao.insertarPedidoSobreOferta(cantidadPedida, idOferta, fechaSolicitud, cnn);
+    public String registrarPedidoSobreOferta(int cantidadPedida, int idOferta, String fechaSolicitud, int idUsuario){
+        return pedidoDao.insertarPedidoSobreOferta(cantidadPedida, idOferta, fechaSolicitud, idUsuario, cnn);
     }
     
     public int calcularCantidad(int idOferta){
         return pedidoDao.calcularCantidad(idOferta, cnn);
     }
+    
+    public List<PedidoSobreOfertaDTO> listarMisPedidosSobreUnaOferta(int idUser){
+        return pedidoDao.listarMisPedidosSobreUnaOferta(idUser, cnn);
+    } 
 }

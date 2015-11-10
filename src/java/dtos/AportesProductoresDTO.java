@@ -18,7 +18,16 @@ public class AportesProductoresDTO {
     private ProductosAsociadosUsuariosDTO proAsoId = null;
     private SolicitudDistribuidorDTO solId = null;
     private int estadoId = 0;
+    private String novedad = "";
 
+    public AportesProductoresDTO() {
+    }
+
+    public AportesProductoresDTO(ProductosAsociadosUsuariosDTO proAso, SolicitudDistribuidorDTO sol) {
+        this.proAsoId = proAso;
+        this.solId = sol;
+    }
+    
     /**
      * @return the idAporteProductor
      */
@@ -117,11 +126,6 @@ public class AportesProductoresDTO {
         this.solId = solId;
     }
 
-    @Override
-    public String toString() {
-        return "AportesProductoresDTO " + " idAporteProductor = " + idAporteProductor + ", fechaEntrega=" + fechaEntrega + ", cantidad=" + cantidad + ", idAso=" + idAso + ", solicitudId=" + solicitudId + ", proAsoId=" + proAsoId + ", solId=" + solId;
-    }
-
     /**
      * @return the estadoId
      */
@@ -134,6 +138,25 @@ public class AportesProductoresDTO {
      */
     public void setEstadoId(int estadoId) {
         this.estadoId = estadoId;
+    }
+
+    /**
+     * @return the novedad
+     */
+    public String getNovedad() {
+        return novedad;
+    }
+
+    /**
+     * @param novedad the novedad to set
+     */
+    public void setNovedad(String novedad) {
+        this.novedad = novedad;
+    }
+
+    @Override
+    public String toString() {
+        return "AportesProductoresDTO{" + "idAporteProductor=" + idAporteProductor + ", fechaEntrega=" + fechaEntrega + ", cantidad=" + cantidad + ", idAso=" + idAso + ", solicitudId=" + solicitudId + ", proAsoId=" + proAsoId + ", solId=" + solId + ", estadoId=" + estadoId + ", novedad=" + novedad + '}';
     }
     
     

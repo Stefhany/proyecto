@@ -1,16 +1,16 @@
 <%-- 
-    Document   : listarsolicitudesasociaciones
-    Created on : 20-oct-2015, 12:38:19
-    Author     : Mona
+    Document   : listarmissolicitudesaunaasociacion
+    Created on : 10-nov-2015, 3:22:47
+    Author     : Stefhany Alfonso
 --%>
 
-<%@page import="dtos.RolesUsuariosDTO"%>
-<%@page import="dtos.RolesUsuariosDTO"%>
-<%@page import="facade.FacadeRolesUsuarios"%>
-<%@page import="facade.FacadeConsultas"%>
-<%@page import="dtos.SolicitudDistribuidorDTO"%>
-<%@page import="java.util.LinkedList"%>
+<%@page import="java.util.List"%>
 <%@page import="facade.FacadeSolicitudDistribuidor"%>
+<%@page import="facade.FacadeConsultas"%>
+<%@page import="dtos.SolicitudDistribuidorDTO"%>8
+<%@page import="dtos.RolesUsuariosDTO"%>
+<%@page import="java.util.LinkedList"%>
+<%@page import="facade.FacadeRolesUsuarios"%>
 <%@page import="dtos.UsuariosDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -54,11 +54,11 @@
             if (miSesion.getAttribute("usr") != null) {
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
+                int idUser = uregistrado.getIdUsuarios();
 
                 FacadeSolicitudDistribuidor facadeSolicitud = new FacadeSolicitudDistribuidor();
-
-                LinkedList<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
-                solicitudes = facadeSolicitud.listarSolicitudesDistribuidor();
+                List<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
+                solicitudes = facadeSolicitud.listarMisPedidosALaAsociacion(idUser);
         %>
 
         <script>
@@ -167,37 +167,21 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                            <thead style="text-align: center;">
                                 <tr>                    
-                                    <th>Distribuidor</th>
-                                    <th>Nombre producto</th>
+                                    <th>Nombre Producto</th>
                                     <th>Cantidad solicitada</th>
                                     <th>Unidad</th>
-                                    <th>Fecha solicitada</th>
-                                    <th>Generar pedido</th>
+                                    <th>Fecha de entrega</th>
                                 </tr>                
                             </thead>
                             <tbody id="bodyTabla">
                         <%
-                            for (SolicitudDistribuidorDTO ped : solicitudes) {
+                            for (SolicitudDistribuidorDTO solicitud : solicitudes) {
                         %>
                         <tr>
-                            <td><%=ped.getUser().getNombres()%></td>
-                            <td><%=ped.getProduct().getNombre()%></td>
-                            <td><%=ped.getCantidadSolicitada()%></td>  
+                            <td><%=solicitud.getProduct().getNombre()%></td>
+                            <td><%=solicitud.getCantidadSolicitada()%></td> 
                             <td>Kilogramos</td>
-                            <td><%=ped.getFechaSolicitud()%></td>
-                            <td><a href="generarpedidoaproductores.jsp?id=<%=ped.getIdSolicitud()%>">
-                                <span class="glyphicon glyphicon-calendar" style="font-size:140%; color:green; margin-left:35%;" title="Generar pedido"
-                                                                                                          alt="Generar pedido" align="center"></span></a>
-                            </td>
-                            <!--<td><a href="../cp?idSolicitud=<%=ped.getIdSolicitud()%>">
-                                <span class="glyphicon glyphicon-trash" style="font-size:140%; color:green; margin-left:25%;" alt="Eliminar producto" title="Eliminar producto" onclick="return confirmar();" alt="Eliminar solicitud" align="center"></span>
-                                </a>
-                            </td>
-                            <td><a href="modificarpedido.jsp?id="><img src="../imagenes/modificar.png"
-                                                                                                whith="32" height="32" title="Modificar solicitud"
-                                                                                                alt="Modificar solicitud"/>
-                                </a>
-                            </td>-->
+                            <td><%=solicitud.getFechaSolicitud()%></td>
                         </tr>
                         <%}%>
                     </tbody>

@@ -21,7 +21,8 @@ public class SolicitudDistribuidorDTO {
     private ProductoDTO product;
     private UsuariosDTO user;
     private ProductosAsociadosUsuariosDTO proAso = null;
-    
+    private int cantidadSolicitudFinal = 0;
+        
     public SolicitudDistribuidorDTO(){}
     
     
@@ -185,8 +186,23 @@ public class SolicitudDistribuidorDTO {
                 + ", productoId=" + productoId
                 + ", distribuidorId=" + distribuidorId 
                 + ", product = " + product.getIdProductos()
-                + ", user = " + user.getIdUsuarios();
+                + ", user = " + user.getIdUsuarios()
+                + ", cantidadSolicitadaFinal = " + cantidadSolicitudFinal;
 //                + ", proAso = " + getProAso().getIdProductosAsociadosUsuarios();
+    }
+
+    /**
+     * @return the cantidadSolicitudFinal
+     */
+    public int getCantidadSolicitudFinal() {
+        return cantidadSolicitudFinal;
+    }
+
+    /**
+     * @param cantidadSolicitudFinal the cantidadSolicitudFinal to set
+     */
+    public void setCantidadSolicitudFinal(int cantidadSolicitudFinal) {
+        this.cantidadSolicitudFinal = cantidadSolicitudFinal;
     }
     
     

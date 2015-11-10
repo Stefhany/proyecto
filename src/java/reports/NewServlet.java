@@ -5,30 +5,18 @@
  */
 package reports;
 
-import connection.Conectar;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  *
- * @author Mona
+ * @author Stefhany Alfonso
  */
-public class ReporteCategorias extends HttpServlet {
+public class NewServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,34 +30,17 @@ public class ReporteCategorias extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try            
-        
-        {
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=\"Reporte Categorías.pdf\";");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setHeader("Pragma", "no-cache");
-            response.setDateHeader("Expires", 0);
-            ServletOutputStream out = response.getOutputStream();
-            Connection con = utilities.Connection.getInstance();
-
-            JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(getServletContext().getRealPath("categorias.jasper")));
-//                parametros
-//                Map parametros = new HashMap();
-//                parametros.put("Codigo", "1");
-//                parametros.put("titulo", "Reporte");
-//            HashMap<String, Object> parametros = new HashMap<>();
-//            parametros.put("logo", getServletContext().getRealPath("img/logoFinal.png"));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, con);
-            JRExporter exporter = new JRPdfExporter();
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
-            exporter.exportReport();
-            out.flush();
-            out.close();
-            FacesContext.getCurrentInstance().responseComplete();
-        } catch (Exception e) {
-            e.printStackTrace();
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet NewServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

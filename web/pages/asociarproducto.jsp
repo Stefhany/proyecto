@@ -88,8 +88,8 @@
                 String menu = (String) miSesion.getAttribute("mp");
 
                 FacadeProductosAsociadosUsuarios facadeProducts = new FacadeProductosAsociadosUsuarios();
-                LinkedList<ProductosAsociadosUsuariosDTO> productos = new LinkedList();
-                productos = (LinkedList<ProductosAsociadosUsuariosDTO>) facadeProducts.asociarProductos(userdto.getIdUsuarios());
+                LinkedList<ProductoDTO> productos = new LinkedList();
+                productos = (LinkedList<ProductoDTO>) facadeProducts.asociarProductos(userdto.getIdUsuarios());
         %>
     </head>
 
@@ -204,13 +204,13 @@
                                         </thead>
                                         <tbody>
                                             <%
-                                                for (ProductosAsociadosUsuariosDTO p : productos) {
+                                                for (ProductoDTO p : productos) {
                                             %>
                                             <tr>
 
-                                                <td><%=p.getProducto().getCategoriaId().getNombre()%></td>
-                                                <td><%=p.getProducto().getNombre()%></td>
-                                                <td><%=p.getProducto().getUnidad()%></td>
+                                                <td><%=p.getCategoriaId().getNombre()%></td>
+                                                <td><%=p.getNombre()%></td>
+                                                <td><%=p.getUnidad()%></td>
                                                 <!--<td class="squaredFour">
                                                     <input type="checkbox" value="None" id="squaredFour" name="idProAsociado" />
                                                     <label for="squaredFour"></label>
@@ -219,8 +219,8 @@
                                             </td>-->
 
                                                 <td class="center">
-                                                    <a href="../caso?idProduct=<%=p.getProducto().getIdProductos()%>&idUsu=<%=userdto.getIdUsuarios()%>"><span class="glyphicon glyphicon-star-empty" style="font-size:140%; color:green; margin-left:25%;" onclick="return confirmar();" alt="Asociar: <%=p.getProducto().getNombre()%>"
-                                                                                                                                              title="Asociar: <%=p.getProducto().getNombre()%>"></span></a>
+                                                    <a href="../caso?idProduct=<%=p.getIdProductos()%>&idUsu=<%=userdto.getIdUsuarios()%>"><span class="glyphicon glyphicon-star-empty" style="font-size:140%; color:green; margin-left:25%;" onclick="return confirmar();" alt="Asociar: <%=p.getNombre()%>"
+                                                                                                                                              title="Asociar: <%=p.getNombre()%>"></span></a>
                                                 </td>
                                             </tr>
                                             <%

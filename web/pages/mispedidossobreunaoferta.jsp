@@ -1,17 +1,17 @@
 <%-- 
-    Document   : listarsolicitudesproductores
-    Created on : 20-oct-2015, 11:45:37
-    Author     : Mona
+    Document   : mispedidossobreunaoferta
+    Created on : 10-nov-2015, 0:13:59
+    Author     : Stefhany Alfonso
 --%>
 
-<%@page import="facade.FacadeConsultas"%>
-<%@page import="dtos.RolesUsuariosDTO"%>
-<%@page import="dtos.RolesUsuariosDTO"%>
-<%@page import="facade.FacadeRolesUsuarios"%>
-<%@page import="dtos.SolicitudDistribuidorDTO"%>
-<%@page import="java.util.LinkedList"%>
-<%@page import="facade.FacadeAportesProductores"%>
+<%@page import="java.util.List"%>
+<%@page import="dtos.PedidoSobreOfertaDTO"%>
+<%@page import="facade.FacadePedidoSobreOferta"%>
 <%@page import="dtos.UsuariosDTO"%>
+<%@page import="dtos.RolesUsuariosDTO"%>
+<%@page import="java.util.LinkedList"%>
+<%@page import="facade.FacadeRolesUsuarios"%>
+<%@page import="facade.FacadeConsultas"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +21,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Solicitudes A Productores - SIGAA</title>
+        <title>Mis Pedidos - SIGAA</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -54,11 +54,11 @@
             if (miSesion.getAttribute("usr") != null) {
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
+                int idUser = uregistrado.getIdUsuarios();
 
-                FacadeAportesProductores facadeAportes = new FacadeAportesProductores();
-
-                LinkedList<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
-                solicitudes = facadeAportes.listarSolicitudesDeAsociacion();
+                FacadePedidoSobreOferta facadePedidoSobreOferta = new FacadePedidoSobreOferta();
+                List<PedidoSobreOfertaDTO> pedidos = new LinkedList();
+                pedidos = facadePedidoSobreOferta.listarMisPedidosSobreUnaOferta(idUser);
         %>
     </head>
 
@@ -150,7 +150,7 @@
                     <div class="col-lg-12">
                         <div class="panel panel-success">
                             <div class="panel-heading">
-                                <i class="fa fa-group fa-fw"></i>Soliciudes a Productores
+                                <i class="fa fa-group fa-fw"></i>Mis pedidos sobre una oferta
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
@@ -158,54 +158,33 @@
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
                                             <tr>                    
-                                                <th>Distribuidor</th>
+                                                <th>Nombre Productor</th>
                                                 <th>Nombre producto</th>
                                                 <th>Cantidad solicitada</th>
                                                 <th>Unidad</th>
-                                                <th>Fecha de entrega a asoción</th>
-                                                <th>Aportar</th>
+                                                <th>Fecha a recibir</th>
                                             </tr>                
                                         </thead>
                                         <tbody id='bodyTabla'>
                                             <%
-                                                for (SolicitudDistribuidorDTO ped : solicitudes) {
+                                                for (PedidoSobreOfertaDTO pedido : pedidos) {
                                             %>
                                             <tr>
-                                                <td><%=ped.getUser().getNombres()%></td>
-                                                <td><%=ped.getProduct().getNombre()%></td>
-                                                <td><%=ped.getCantidadSolicitada()%></td>  
+                                                <td><%=pedido.getOffer().getIdAso().getUsuario().getNombres()%></td>
+                                                <td><%=pedido.getOffer().getIdAso().getProducto().getNombre()%></td>
+                                                <td><%=pedido.getCantidadSolicitada()%></td>  
                                                 <td>Kilogramos</td>
-                                                <td><%=ped.getFechaEntregaInterna()%></td>
-                                                <td><a href="aplicarsolicitudasociacion.jsp?idSolicitud=<%=ped.getIdSolicitud()%>">
-                                                        <span class="glyphicon glyphicon-calendar" style="font-size:140%; color:green; margin-left:35%;" title="Aportar pedido"
-                                                              alt="Aportar pedido" align="center"></span></a>
-                                                </td>
-                                                <!--
-                                                <td><a href="../cp?idSolicitud=<%=ped.getIdSolicitud()%>"><img src="../imagenes/eliminar.png"
-                                                                                                               whith="32" height="32" title="Eliminar solicitud"
-                                                                                                               alt="Eliminar solicitud"
-                                                                                                               onclick="return confirmar();"/>
-                                                    </a>
-                                                </td>
-                                                <td><a href="modificarpedido.jsp?id=<%=ped.getIdSolicitud()%>"><img src="../imagenes/modificar.png"
-                                                                                                                    whith="32" height="32" title="Modificar solicitud"
-                                                                                                                    alt="Modificar solicitud"/>
-                                                    </a>
-                                                </td> -->
+                                                <td><%=pedido.getFechaSolicitud()%></td>
                                             </tr>
                                             <%}%>
                                         </tbody>
                                         </tbody>
                                     </table>
-
-
-                                </div>
+                                 </div>
                                 <div style="cursor: pointer; text-align:center;" id="pageNavPosition"></div>
-
                             </div>        
                             </table>
                         </div>
-
                         <!-- /.list-group -->
                     </div>
                     <!-- /.panel-body -->
@@ -213,7 +192,6 @@
                 <!-- /.panel -->
             </div>
             <!-- /.col-lg-4 -->
-
         </div>
     </div>
     <%
@@ -265,3 +243,4 @@
 </body>
 
 </html>
+

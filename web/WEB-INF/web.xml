@@ -48,6 +48,18 @@
         <servlet-name>ReporteCategorias</servlet-name>
         <servlet-class>reports.ReporteCategorias</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Prueba</servlet-name>
+        <servlet-class>reports.Prueba</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>reports.NewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControllerAportProducer</servlet-name>
+        <servlet-class>controller.ControllerAportProducer</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Conectar</servlet-name>
         <url-pattern>/con</url-pattern>
@@ -95,6 +107,18 @@
     <servlet-mapping>
         <servlet-name>ReporteCategorias</servlet-name>
         <url-pattern>/ReporteCategorias</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Prueba</servlet-name>
+        <url-pattern>/Prueba</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerAportProducer</servlet-name>
+        <url-pattern>/cap</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -15,7 +15,18 @@ public class PedidoSobreOfertaDTO {
     private String fechaSolicitud = " ";
     private int ofertaId = 0;
     private OfertasDTO offer = null;
+    private UsuariosDTO user = null;
+    private int idUser = 0;
 
+    public PedidoSobreOfertaDTO() {
+    }
+    
+    public PedidoSobreOfertaDTO(OfertasDTO oferta, int cantidad, String fecha, int usuarioId) {
+        this.offer = oferta;
+        this.cantidadSolicitada = cantidad;
+        this.fechaSolicitud = fecha;
+        this.idUser = usuarioId;
+    }
     /**
      * @return the idPedidosOfertas
      */
@@ -86,9 +97,37 @@ public class PedidoSobreOfertaDTO {
         this.offer = offer;
     }
 
+    /**
+     * @return the user
+     */
+    public UsuariosDTO getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(UsuariosDTO user) {
+        this.user = user;
+    }
+
+    /**
+     * @return the idUser
+     */
+    public int getIdUser() {
+        return idUser;
+    }
+
+    /**
+     * @param idUser the idUser to set
+     */
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
     @Override
     public String toString() {
-        return "PedidoSobreOfertaDTO " + " idPedidosOfertas=" + idPedidosOfertas + ", cantidadSolicitada=" + cantidadSolicitada + ", fechaSolicitud=" + fechaSolicitud + ", ofertaId=" + ofertaId + ", offer=" + offer.getIdOfertas();
+        return "PedidoSobreOfertaDTO" + "idPedidosOfertas=" + idPedidosOfertas + ", cantidadSolicitada=" + cantidadSolicitada + ", fechaSolicitud=" + fechaSolicitud + ", ofertaId=" + ofertaId + ", offer=" + offer + ", user=" + user + ", idUser=" + idUser;
     }
     
     

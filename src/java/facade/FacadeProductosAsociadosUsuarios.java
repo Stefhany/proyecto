@@ -7,6 +7,7 @@ package facade;
 
 import connection.Conectar;
 import daos.ProductosAsociadosUsuariosDAO;
+import dtos.ProductoDTO;
 import dtos.ProductosAsociadosUsuariosDTO;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -62,7 +63,7 @@ public class FacadeProductosAsociadosUsuarios {
         return proAsoDao.cambiarEstadoProAsoDdeshabilitar(idProductoAso, cnn);
     }
     
-    public List<ProductosAsociadosUsuariosDTO> asociarProductos(int idUsuario) throws MyException{
+    public List<ProductoDTO> asociarProductos(int idUsuario) throws MyException{
         return proAsoDao.asociarProductos(cnn, idUsuario);
     }
 }

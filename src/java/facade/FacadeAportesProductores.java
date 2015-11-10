@@ -10,7 +10,9 @@ import daos.AportesProductoresDAO;
 import dtos.AportesProductoresDTO;
 import dtos.SolicitudDistribuidorDTO;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -44,4 +46,25 @@ public class FacadeAportesProductores {
     public static int calcularCantidad (int idSolicitud){
         return aporteDao.calcularCantidad(idSolicitud, cnn);
     }
+    
+    public String registrarAporte (AportesProductoresDTO aporte) throws SQLException{
+        return aporteDao.registrarAporte(aporte, cnn);
+    }
+    
+    public List<AportesProductoresDTO> consultarMisParticipaciones(int idUser){
+        return aporteDao.consultarMisParticipaciones(idUser, cnn);
+    }
+    
+    public String modificarEstadoACancelado (int idAporte, AportesProductoresDTO aport) throws SQLException{
+        return aporteDao.modificarEstadoACancelado(idAporte, aport, cnn);
+    }
+    
+    public int consultarCantidadAportada(int idAporte){
+        return aporteDao.consultarCantidadAportada(idAporte, cnn);
+    }
+   
+    public int consultarCantidadSolicitada(int idSolicitud){
+        return  aporteDao.consultarCantidadSolicitada(idSolicitud, cnn);
+    }
+    
 }
