@@ -104,8 +104,6 @@ public class Consultas {
     public Date consultarFechaActual(Connection cnn) {
         this.cnn = cnn;
         Date date = null;
-        ConsultasDTO c = new ConsultasDTO();
-        String salida = "";
         try {
             String querryFecha = " select Date_format(now(),'%Y/%m/%d') as fechaActual; ";
             pstmt = cnn.prepareStatement(querryFecha);
@@ -116,8 +114,9 @@ public class Consultas {
                 }
             }
         } catch (SQLException sqle) {
-            salida = "Mira lo que ocurrio! " + sqle.getMessage() + " y " + sqle.getSQLState();
+            String salida = "Mira lo que ocurrio! " + sqle.getMessage() + " y " + sqle.getSQLState();
         }
         return date;
     }
+    
 }

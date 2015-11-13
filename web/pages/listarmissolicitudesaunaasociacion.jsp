@@ -1,5 +1,5 @@
 <%-- 
-    Document   : listarmissolicitudesaunaasociacion
+    Document   :  
     Created on : 10-nov-2015, 3:22:47
     Author     : Stefhany Alfonso
 --%>
@@ -7,7 +7,7 @@
 <%@page import="java.util.List"%>
 <%@page import="facade.FacadeSolicitudDistribuidor"%>
 <%@page import="facade.FacadeConsultas"%>
-<%@page import="dtos.SolicitudDistribuidorDTO"%>8
+<%@page import="dtos.SolicitudDistribuidorDTO"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="facade.FacadeRolesUsuarios"%>
@@ -123,18 +123,30 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px;">Aqui va la imagen del usuario</i>
-                                    </button>
-                                    <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px; text-align: center;"><% if (uregistrado != null) {
-                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }
-                                            %></i>
+                                        <%
+                                                                                                  if (uregistrado.getGenero() == 1) {%>
+                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>" 
+                                                                                                  title="Eres: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>"></i>
+                                            <% } else {%>
+                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>" 
+                                                                                 title="Eres: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>"></i>
+                                            <%}
+                                            %>
                                     </button>
                                     </span>
                                 </div>
                                 <!-- /input-group -->
                             </li>
+                        </ul>
+                        <ul style="margin-left: 1,5%;">
                             <li>
                                 <%
                                     out.print(menu);

@@ -38,10 +38,10 @@ public class CorreoMasivo extends HttpServlet {
         String asunto = request.getParameter("cAsunto");
         String mensaje = request.getParameter("cCuerpo");
         int size = Integer.parseInt(request.getParameter("contador"));
+        
         FacadeUsuarios facadeUsuarios = new FacadeUsuarios();
         StringBuilder correos = new StringBuilder("");
-        PrintWriter out = response.getWriter();
-
+        
         for (int i = 0; i < size + 1; i++) {
             if (request.getParameter("idPersona[" + i + "]") != null) {
                 correos.append(facadeUsuarios.buscarCorreoPorId(Integer.parseInt(request.getParameter("idPersona[" + i + "]"))));

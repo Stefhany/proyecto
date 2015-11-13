@@ -119,29 +119,41 @@
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <button class="btn btn-default" type="button">
-                                    <i style="width:50px; height:50px;">Aqui va la imagen del usuario</i>
-                                </button>
-                                <button class="btn btn-default" type="button">
-                                    <i style="width:50px; height:50px; text-align: center;"><% if (uregistrado != null) {
-                                            out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                        }
-                                        %></i>
-                                </button>
-                                </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-                        <li>
-                            <%
-                                out.print(menu);
-                            %>
-                        </li>
-                    </ul>
-                </div>
+                        <ul class="nav" id="side-menu">
+                            <li class="sidebar-search">
+                                <div class="input-group custom-search-form">
+                                    <button class="btn btn-default" type="button">
+                                        <%
+                                                                                                  if (uregistrado.getGenero() == 1) {%>
+                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>" 
+                                                                                                  title="Eres: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>"></i>
+                                            <% } else {%>
+                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>" 
+                                                                                 title="Eres: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>"></i>
+                                            <%}
+                                            %>
+                                    </button>
+                                    </span>
+                                </div>
+                                <!-- /input-group -->
+                            </li>
+                        </ul>
+                        <ul style="margin-left: 1,5%;">
+                            <li>
+                                <%
+                                    out.print(menu);
+                                %>
+                            </li>
+                        </ul>
+                    </div>
                 <!-- /.sidebar-collapse -->
             </div>
             <!-- /.navbar-static-side -->
@@ -185,46 +197,46 @@
                                             <td><%=aport.getCantidad()%></td>  
                                             <td><%=aport.getProAsoId().getProducto().getUnidad()%></td>
                                             <td><%=aport.getFechaEntrega()%></td>
-                                            <td><button data-toggle="modal" data-target="#miventana" value="<%=aport.getIdAporteProductor()%>"
+                                            <!--<td><button data-toggle="modal" data-target="#miventana" value="<%=//aport.getIdAporteProductor()%>"
                                                         <span class="glyphicon glyphicon-remove-circle" 
                                                       style="font-size:140%; color:green; margin-left:35%;" 
-                                                      alt="Cancelar pedido de: <%=aport.getProAsoId().getProducto().getNombre()%> " 
-                                                      title="Cancelar pedido de: <%=aport.getProAsoId().getProducto().getNombre()%>"></span>
+                                                      alt="Cancelar pedido de: <%=//aport.getProAsoId().getProducto().getNombre()%> " 
+                                                      title="Cancelar pedido de: <%=//aport.getProAsoId().getProducto().getNombre()%>"></span>
                                                 </button>
+                                            </td>-->
+                                            <td><a href="newjspgreg.jsp" rel="prueba"> Ir</a>
                                             </td>
                                         </tr>
-                                    <input type="hidden" value="<%=aport.getSolId().getCantidadSolicitada()%>" name="txtCantidadSolicitada">
-                                    <input type="hidden" value="<%=aport.getFechaEntrega()%>" name="txtFechaEntrega">
-                                    <input type="hidden" value="<%=aport.getSolId().getFechaSolicitud()%>" name="txtFechaSolicitud">
-                                    <input type="hidden" value="<%=aport.getCantidad()%>" name="txtCantidadAportada">
-                                    <input type="hidden" value="<%=aport.getSolId().getIdSolicitud()%>" name="txtIdSolicitud">
+
                                     <div class="modal fade" id="miventana" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <form action="../cap">
+                                        <input type="hidden" value="<%=aport.getSolId().getCantidadSolicitada()%>" name="txtCantidadSolicitada">
+                                        <input type="hidden" value="<%=aport.getSolId().getFechaEntregaInterna()%>" name="txtFechaEntregaInterna">
+                                        <input type="hidden" value="<%=aport.getCantidad()%>" name="txtCantidadAportada">
+                                        <input type="hidden" value="<%=aport.getSolId().getIdSolicitud()%>" name="txtIdSolicitud">
+                                        <input type="hidden" value="<%=aport.getIdAporteProductor()%>" name="idAporte">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times</button>
                                                     <center><h4>Registrar Novedad</h4></center>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <!--<form action="asociarproducto.jsp">-->
                                                     <div class="form-group">
-                                                        <input type="hidden" value="<%=aport.getIdAporteProductor()%>" name="txtIdAporteProductor">
                                                         <label>Novedad:</label>
                                                         <textarea style="resize:none;" class="form-control" rows="3" name="txtNovedad" placeholder="Escribir aquí..."></textarea>
                                                     </div>
-                                                    <div>
-                                                        <span style="color:red; margin-top:45%;"> Maximo 100 letras.</span>
-                                                    </div>
-
-                                                </div>	  
-
-                                                <div class="modal-footer">
-                                                    <input type="hidden" name="cancelar" id="solicitar" value="cancelar" />
-                                                    <a href="../cap?idAport=<%=aport.getIdAporteProductor()%>"><button type="button" name="btnCancelarAporte" class="btn btn-success" style="text-align: center;">Cancelar Aporte</button></a>
+                                                    <div><span style="color:red; margin-top:45%;"> Maximo 100 letras.</span></div>
+                                                    <div style="margin-left: 40%; margin-top: 3%;"><input type="hidden" name="cancelar" id="solicitar" value="cancelar" />
+                                                        <a href="../cap?idAport=<%=aport.getIdAporteProductor()%>&solicitud=<%=aport.getSolId().getIdSolicitud()%>">
+                                                            <button type="submit" name="btnCancelar" class="btn btn-success" style="text-align: center;">Cancelar Aporte</button></a></div>
+                                                        
+                                                    
                                                 </div>
-
                                             </div>
                                         </div>
+                                        </form>
                                     </div>
                                     <%}%>
                                     </tbody>

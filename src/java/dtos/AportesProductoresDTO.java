@@ -19,13 +19,20 @@ public class AportesProductoresDTO {
     private SolicitudDistribuidorDTO solId = null;
     private int estadoId = 0;
     private String novedad = "";
-
-    public AportesProductoresDTO() {
-    }
+    private EstadoAporteProductorDTO estadoAport = null;
+    
+    public AportesProductoresDTO() {}
 
     public AportesProductoresDTO(ProductosAsociadosUsuariosDTO proAso, SolicitudDistribuidorDTO sol) {
         this.proAsoId = proAso;
         this.solId = sol;
+    }
+    
+    public AportesProductoresDTO(ProductosAsociadosUsuariosDTO proAso, SolicitudDistribuidorDTO sol, EstadoAporteProductorDTO estado) {
+        this.proAsoId = proAso;
+        this.solId = sol;
+        this.estadoAport = estado;
+        
     }
     
     /**
@@ -157,6 +164,20 @@ public class AportesProductoresDTO {
     @Override
     public String toString() {
         return "AportesProductoresDTO{" + "idAporteProductor=" + idAporteProductor + ", fechaEntrega=" + fechaEntrega + ", cantidad=" + cantidad + ", idAso=" + idAso + ", solicitudId=" + solicitudId + ", proAsoId=" + proAsoId + ", solId=" + solId + ", estadoId=" + estadoId + ", novedad=" + novedad + '}';
+    }
+
+    /**
+     * @return the estadoAport
+     */
+    public EstadoAporteProductorDTO getEstadoAport() {
+        return estadoAport;
+    }
+
+    /**
+     * @param estadoAport the estadoAport to set
+     */
+    public void setEstadoAport(EstadoAporteProductorDTO estadoAport) {
+        this.estadoAport = estadoAport;
     }
     
     

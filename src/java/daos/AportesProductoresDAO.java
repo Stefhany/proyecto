@@ -7,12 +7,15 @@ package daos;
 
 import dtos.AportesProductoresDTO;
 import dtos.CategoriaDTO;
+import dtos.EstadoAporteProductorDTO;
+import dtos.EstadoSolicitudDistribuidorDTO;
 import dtos.ProductoDTO;
 import dtos.ProductosAsociadosUsuariosDTO;
 import dtos.SolicitudDistribuidorDTO;
 import dtos.UsuariosDTO;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -176,36 +179,56 @@ public class AportesProductoresDAO {
         this.cnn = con;
         List<AportesProductoresDTO> misAportes = new LinkedList();
         try {
-            String querryMisAportes = " select usuariosId, idCategorias, nombrecategoria, productosasociadosusuarios.productosId, nombreProducto, cantidad, unidad, fechaEntrega, "
-                    + " idAportesProductores, cantidadSolicitada, fechaSolicitud, idSolicitudDistribuidor "
-                    + " from categorias "
-                    + " inner join productos on categorias.idCategorias =  productos.categoriasId "
-                    + " inner join productosasociadosusuarios on productos.idProductos = productosasociadosusuarios.productosId "
-                    + " inner join usuarios on usuarios.idUsuarios = productosasociadosusuarios.usuariosId "
-                    + " inner join aportesproductores on productosasociadosusuarios.idProductosAsociadosUsuarios = aportesproductores.idAportesProductores "
-                    + " inner join solicituddistribuidor on aportesproductores.solicitudDistribuidorId = solicituddistribuidor.idSolicitudDistribuidor "
-                    + " where usuariosId = ?;";
+            String querryMisAportes = "SELECT sd.`idSolicitudDistribuidor` as numeroSolicitud, u.idusuarios, "
+                    + " u. nombres as distribuidorSolicitante, sd.cantidadSolicitada as cantidadPorLlenar,  "
+                    + " sd.`cantidadSolicitudFinal` as cantidadPedida, p.nombreProducto, sd.fechaSolicitud, "
+                    + " sd.fechaEntregaInterna, ap.`cantidad` as cantidadAportada, ap.idAportesProductores, "
+                    + " ap.fechaEntrega as FechaDeEntregaPorElProductor, pau.usuariosId, pro.nombres, "
+                    + " p.idproductos, esd.`nombreEstadoSolicitudDistribuidor` as estadoSolicitud, "
+                    + " eap.nombreEstadoAporteProductor as estadoAporte, c.nombreCategoria, c.idCategorias FROM `solicituddistribuidor` sd"
+                    + " inner join `aportesproductores` ap on sd.`idSolicitudDistribuidor`=ap.`solicitudDistribuidorId`"
+                    + " inner join usuarios u on sd.`distribuidorId` = u.`idUsuarios`"
+                    + " inner join `productos` p on sd.`productosId`=p.`idProductos`"
+                    + " inner join `productosasociadosusuarios` pau on ap.`productosAsociadosUsuariosId`= pau.`idProductosAsociadosUsuarios`"
+                    + " inner join usuarios pro on pau.`usuariosId`=pro.`idUsuarios`"
+                    + " inner join `estadossolicitudesdistribuidores` esd on sd.`estadoSolicitudDistribuidorId`=esd.`idEstadoSolicitudDistribuidor`"
+                    + " inner join estadoaportesproductores eap on ap.estadoAporteProductorId = eap.idEstadoAporteProductor"
+                    + " inner join categorias c on p.categoriasId = c.idCategorias "
+                    + " WHERE pau.usuariosId = ? and ap.estadoAporteProductorId = 1;";
             pstmt = cnn.prepareStatement(querryMisAportes);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs != null) {
                 while (rs.next()) {
-                    UsuariosDTO user = new UsuariosDTO();
-                    user.setIdUsuarios(rs.getInt("usuariosId"));
-                    CategoriaDTO categoria = new CategoriaDTO(rs.getInt("idCategorias"), rs.getString("nombrecategoria"));
+                    UsuariosDTO user = new UsuariosDTO(rs.getInt("u.idusuarios"), rs.getString("distribuidorSolicitante"));
+                    UsuariosDTO userNew = new UsuariosDTO(rs.getString("pro.nombres"));
+                    
+                    CategoriaDTO categoria = new CategoriaDTO(rs.getInt("c.idCategorias"), rs.getString("c.nombreCategoria"));
+                    
                     ProductoDTO pro = new ProductoDTO(categoria);
-                    pro.setIdProductos(rs.getInt("productosId"));
-                    pro.setNombre(rs.getString("nombreProducto"));
-                    pro.setUnidad(rs.getString("unidad"));
-                    ProductosAsociadosUsuariosDTO proAso = new ProductosAsociadosUsuariosDTO(user, pro);
-                    SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO();
-                    solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
-                    solicitud.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
-                    solicitud.setFechaSolicitud(rs.getString("fechaSolicitud"));
-                    AportesProductoresDTO aport = new AportesProductoresDTO(proAso,solicitud);
-                    aport.setIdAporteProductor(rs.getInt("idAportesProductores"));
-                    aport.setCantidad(rs.getInt("cantidad"));
-                    aport.setFechaEntrega(rs.getString("fechaEntrega"));
+                    pro.setIdProductos(rs.getInt("p.idproductos"));
+                    pro.setNombre(rs.getString("p.nombreProducto"));
+                    
+                    ProductosAsociadosUsuariosDTO proAso = new ProductosAsociadosUsuariosDTO(userNew, pro);
+                    proAso.setUsuarioId(rs.getInt("pau.usuariosId"));
+                    
+                    EstadoSolicitudDistribuidorDTO estadoSolicitud = new EstadoSolicitudDistribuidorDTO();
+                    estadoSolicitud.setNombreEstadosSolicitudDistribuidor(rs.getString("estadoSolicitud"));
+                    
+                    SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO(user,estadoSolicitud);
+                    solicitud.setIdSolicitud(rs.getInt("numeroSolicitud"));
+                    solicitud.setCantidadSolicitada(rs.getInt("cantidadPorLlenar"));
+                    solicitud.setCantidadSolicitudFinal(rs.getInt("cantidadPedida"));
+                    solicitud.setFechaSolicitud(rs.getString("sd.fechaSolicitud"));
+                    solicitud.setFechaEntregaInterna(rs.getString("sd.fechaEntregaInterna"));
+                    
+                    EstadoAporteProductorDTO estadoAporte = new EstadoAporteProductorDTO();
+                    estadoAporte.setNombreEstadoAporteProductor(rs.getString("estadoAporte"));
+                    
+                    AportesProductoresDTO aport = new AportesProductoresDTO(proAso, solicitud,estadoAporte);
+                    aport.setIdAporteProductor(rs.getInt("ap.idAportesProductores"));
+                    aport.setCantidad(rs.getInt("cantidadAportada"));
+                    aport.setFechaEntrega(rs.getString("FechaDeEntregaPorElProductor"));
                     misAportes.add(aport);
                 }
             } else {
@@ -217,7 +240,7 @@ public class AportesProductoresDAO {
         }
         return misAportes;
     }
-    
+
     public String modificarEstadoACancelado(int idAporte, AportesProductoresDTO aporte, Connection cn) throws SQLException {
         this.cnn = cn;
         String msgSalida;
@@ -234,7 +257,7 @@ public class AportesProductoresDAO {
         }
         return msgSalida;
     }
-    
+
     public int consultarCantidadSolicitada(int idSolicitud, Connection cn) {
         this.cnn = cn;
         int res = 0;
@@ -254,7 +277,7 @@ public class AportesProductoresDAO {
         }
         return res;
     }
-    
+
     public int consultarCantidadAportada(int idAporte, Connection cn) {
         this.cnn = cn;
         int res = 0;
@@ -266,6 +289,31 @@ public class AportesProductoresDAO {
             if (rs != null) {
                 while (rs.next()) {
                     res = rs.getInt("cantidad");
+                }
+            }
+
+        } catch (SQLException sql) {
+            System.out.println("Mire: " + sql.getMessage());
+        }
+        return res;
+    }
+
+    public int buscarMisIdAsociados(int idProduct, int idUser, Connection con) {
+        this.cnn = con;
+
+        int res = 0;
+        try {
+            pstmt = cnn.prepareStatement("select idProductosAsociadosUsuarios "
+                    + " from productosasociadosusuarios "
+                    + " where productosasociadosusuarios.productosId = ? "
+                    + " and productosasociadosusuarios.usuariosId = ?;");
+            pstmt.setInt(1, idProduct);
+            pstmt.setInt(2, idUser);
+            rs = pstmt.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    res = rs.getInt("idProductosAsociadosUsuarios");
                 }
             }
 

@@ -134,18 +134,30 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px;">Aqui va la imagen del usuario</i>
-                                    </button>
-                                    <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px; text-align: center;"><% if (uregistrado != null) {
-                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }
-                                            %></i>
+                                        <%
+                                                                                                  if (uregistrado.getGenero() == 1) {%>
+                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>" 
+                                                                                                  title="Eres: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>"></i>
+                                            <% } else {%>
+                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>" 
+                                                                                 title="Eres: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>"></i>
+                                            <%}
+                                            %>
                                     </button>
                                     </span>
                                 </div>
                                 <!-- /input-group -->
                             </li>
+                        </ul>
+                        <ul style="margin-left: 1,5%;">
                             <li>
                                 <%
                                     out.print(menu);
@@ -212,8 +224,8 @@
                                                     %>
                                                     <tr>
                                                         <td class="squaredFour">
-                                                            <input type="checkbox" value="None" id="squaredFour" name="idProAsociado" 
-                                                                   value='<%=user.getIdUsuarios()%>' name="idPersona[<%= i%>]"/>
+                                                            <input type="checkbox"
+                                                                   value='<%=user.getIdUsuarios()%>' name="idPersona[<%=i%>]"/>
                                                             <label for="squaredFour"></label>
                                                         </td>  
                                                         <td><%=user.getNombres()%></td>
@@ -221,11 +233,11 @@
                                                         <td><%=user.getTelefono()%></td>
                                                         <td><%=user.getDireccion()%></td>
                                                         <td><%=user.getCorreo()%></td>
+                                                    </tr>    
                                                         <%i++;
                                                             }%>
                                                 </tbody>
                                             </table>          
-                                            <input type="hidden" name="contador" value="<%= i%>">   
                                         </div>
                                         <div style="cursor: pointer; text-align:center;" id="pageNavPosition"></div>
                                     </div>   
@@ -236,6 +248,7 @@
                             <!-- /.panel-body -->
                         </div>
                         <!-- /.panel -->
+                                            <input type="hidden" name="contador" value="<%= i%>">   
                     </form></div>
                 <!-- /.col-lg-4 -->
             </div>

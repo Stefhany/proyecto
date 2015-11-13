@@ -110,7 +110,7 @@ public class UsuariosDAO {
         ArrayList<UsuariosDTO> listaUsuarios = new ArrayList<UsuariosDTO>();
         try {
             pstmt = cnn.prepareStatement("SELECT idUsuarios, nombres, apellidos, cedula, telefono, direccion,"
-                    + " correo, clave, notificaciones, ciudad, fechaNacimiento, estadoUser "
+                    + " correo, clave, notificaciones, ciudad, fechaNacimiento, estadoUser, genero "
                     + " FROM usuarios"
                     + " WHERE notificaciones = 1"
                     + " and (estadoUser != 0);");
@@ -130,6 +130,7 @@ public class UsuariosDAO {
                     user.setCiudad(rs.getString("ciudad"));
                     user.setFechaNacimiento(rs.getString("fechaNacimiento"));
                     user.setEstado(rs.getInt("estadoUser"));
+                    user.setGenero(rs.getInt("genero"));
                     listaUsuarios.add(user);
                 }
             } else {
@@ -283,7 +284,7 @@ public class UsuariosDAO {
         try {
             pstmt = cnn.prepareStatement(" SELECT u.idUsuarios, u.nombres,u.apellidos, u.cedula, u.telefono, "
                     + " u.direccion, u.correo, u.clave, u.notificaciones, u.ciudad, u.fechaNacimiento, "
-                    + " u.estadoUser, r.idRoles, p.nombre, p.url, p.idPermisos "
+                    + " u.estadoUser, r.idRoles, p.nombre, p.url, p.idPermisos, u.genero "
                     + " FROM usuarios u "
                     + " INNER JOIN rolesusuarios ru on u.idUsuarios = ru.usuariosId "
                     + " INNER JOIN roles r on ru.rolesId = r.idRoles "
@@ -311,6 +312,7 @@ public class UsuariosDAO {
                     user.setCiudad(rs.getString("ciudad"));
                     user.setFechaNacimiento(rs.getString("Fechanacimiento"));
                     user.setEstado(rs.getInt("estadoUser"));
+                    user.setGenero(rs.getInt("genero"));
                     menu += "<li>";
                     // menu+="<a href='"+rs.getString("url")+"'>"+rs.getString("descripcion")+"</a>";
                     menu += rs.getString("nombre");
@@ -319,7 +321,7 @@ public class UsuariosDAO {
                             + " WHERE padre = " + rs.getInt("idPermisos")
                             + " AND pr.rolesId = " + rs.getInt("idRoles")).executeQuery();
 
-                    menu += "<ul class=\"children\"";
+                    menu += "<ul>";
                     while (rsSub.next()) {
                         menu += "<li>";
                         menu += "<a href='" + rsSub.getString("url") + "'>" + rsSub.getString("p.nombre") + "</a>";
@@ -829,4 +831,5 @@ public class UsuariosDAO {
         }
         return res;
     }
+    
 }

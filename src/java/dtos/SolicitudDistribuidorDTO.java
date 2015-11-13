@@ -22,6 +22,8 @@ public class SolicitudDistribuidorDTO {
     private UsuariosDTO user;
     private ProductosAsociadosUsuariosDTO proAso = null;
     private int cantidadSolicitudFinal = 0;
+    private EstadoSolicitudDistribuidorDTO estadoSolicitud = null;
+    private String observacion = "";
         
     public SolicitudDistribuidorDTO(){}
     
@@ -29,6 +31,11 @@ public class SolicitudDistribuidorDTO {
     public SolicitudDistribuidorDTO(UsuariosDTO u, ProductoDTO pro){
         this.user = u;
         this.product = pro;
+    }
+    
+    public SolicitudDistribuidorDTO(UsuariosDTO u, EstadoSolicitudDistribuidorDTO estado){
+        this.user = u;
+        this.estadoSolicitud = estado;
     }
     
     public SolicitudDistribuidorDTO(ProductoDTO pro){
@@ -177,18 +184,7 @@ public class SolicitudDistribuidorDTO {
 
     @Override
     public String toString() {
-        return "SolicitudDistribuidorDTO " 
-                + ", idSolicitud=" + idSolicitud 
-                + ", cantidadSolicitada=" + cantidadSolicitada 
-                + ", fechaSolicitud=" + fechaSolicitud
-                + ", fechaEntregaInterna=" + fechaEntregaInterna
-                + ", estadoId=" + estadoId 
-                + ", productoId=" + productoId
-                + ", distribuidorId=" + distribuidorId 
-                + ", product = " + product.getIdProductos()
-                + ", user = " + user.getIdUsuarios()
-                + ", cantidadSolicitadaFinal = " + cantidadSolicitudFinal;
-//                + ", proAso = " + getProAso().getIdProductosAsociadosUsuarios();
+        return "SolicitudDistribuidorDTO{" + "idSolicitud=" + idSolicitud + ", cantidadSolicitada=" + cantidadSolicitada + ", fechaSolicitud=" + fechaSolicitud + ", fechaEntregaInterna=" + fechaEntregaInterna + ", estadoId=" + estadoId + ", productoId=" + productoId + ", distribuidorId=" + distribuidorId + ", product=" + product + ", user=" + user + ", proAso=" + proAso + ", cantidadSolicitudFinal=" + cantidadSolicitudFinal + ", estadoSolicitud=" + estadoSolicitud + ", observacion=" + observacion + '}';
     }
 
     /**
@@ -203,6 +199,34 @@ public class SolicitudDistribuidorDTO {
      */
     public void setCantidadSolicitudFinal(int cantidadSolicitudFinal) {
         this.cantidadSolicitudFinal = cantidadSolicitudFinal;
+    }
+
+    /**
+     * @return the estadoSolicitud
+     */
+    public EstadoSolicitudDistribuidorDTO getEstadoSolicitud() {
+        return estadoSolicitud;
+    }
+
+    /**
+     * @param estadoSolicitud the estadoSolicitud to set
+     */
+    public void setEstadoSolicitud(EstadoSolicitudDistribuidorDTO estadoSolicitud) {
+        this.estadoSolicitud = estadoSolicitud;
+    }
+
+    /**
+     * @return the observacion
+     */
+    public String getObservacion() {
+        return observacion;
+    }
+
+    /**
+     * @param observacion the observacion to set
+     */
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
     
     

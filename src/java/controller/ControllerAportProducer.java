@@ -8,6 +8,7 @@ package controller;
 import dtos.AportesProductoresDTO;
 import facade.FacadeAportesProductores;
 import facade.FacadeConsultas;
+import facade.FacadeRoles;
 import facade.FacadeSolicitudDistribuidor;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,21 +42,33 @@ public class ControllerAportProducer extends HttpServlet {
         PrintWriter out = response.getWriter();
         FacadeAportesProductores facadeAport = new FacadeAportesProductores();
         FacadeSolicitudDistribuidor facadeSolicitud = new FacadeSolicitudDistribuidor();
-        AportesProductoresDTO aport = new AportesProductoresDTO();
+        FacadeRoles facadeRoles = new FacadeRoles();
+        AportesProductoresDTO aport = null;
         try{
-            if (request.getParameter("idAport") != null) {
+            if (request.getParameter("btnCancelar") != null && request.getParameter("idAport") != null && request.getParameter("solicitud") != null) {
+                out.println("ok");
                 FacadeConsultas facadeConsult = new FacadeConsultas();
-                Date fechaEntrega = Date.valueOf("txtFechaEntrega");
-                Date fechaSolicitud = Date.valueOf("txtFechaSolicitud");
-                int diasFaltantes = facadeConsult.diferenciasDeFechas(fechaEntrega,fechaSolicitud);
-                if (diasFaltantes <= 3) {
-                    aport.setNovedad(request.getParameter("txtNovedad"));
-                    facadeAport.modificarEstadoACancelado(Integer.parseInt(request.getParameter("txtIdAporteProductor").trim()), aport);
-                    int cantidadAportada = facadeAport.consultarCantidadAportada(Integer.parseInt(request.getParameter("txtIdAporteProductor").trim()));
-                    int cantidadSolicitada = facadeAport.consultarCantidadSolicitada(Integer.parseInt(request.getParameter("txtIdSolicitud").trim()));
+                
+                Date fechaEntregaInterna = Date.valueOf(request.getParameter("txtFechaEntregaInterna"));
+                Date fechaActual = facadeRoles.consultarFechaActual();
+                
+                int diasFaltantes = facadeConsult.diferenciasDeFechas(fechaActual,fechaEntregaInterna);
+                
+                if (diasFaltantes >= 3) {
+                    
+                    aport = new AportesProductoresDTO();
+                    aport.setNovedad(request.getParameter("txtNovedad").trim());
+                    
+                    facadeAport.modificarEstadoACancelado(Integer.parseInt(request.getParameter("idAport").trim()), aport);
+                    
+                    int cantidadAportada = facadeAport.consultarCantidadAportada(Integer.parseInt(request.getParameter("idAport").trim()));
+                    int cantidadSolicitada = facadeAport.consultarCantidadSolicitada(Integer.parseInt(request.getParameter("solicitud").trim()));
+                    
                     int cantidadFinal = cantidadSolicitada + cantidadAportada;
-                    String cambioCantidad = facadeSolicitud.modificarCantidadSolicitud(cantidadFinal, Integer.parseInt(request.getParameter("txtIdSolicitud").trim()));
-                    if (cambioCantidad.equals("ok")) {
+                    
+                    int cambioCantidad = facadeSolicitud.modificarCantidadSolicitud(cantidadFinal, Integer.parseInt(request.getParameter("solicitud").trim()));
+                    
+                    if (cambioCantidad > 0) {
                         String salida = "Ha sido cancelada la participación que realizo para el pedido de la asociación";
                         response.sendRedirect("pages/misparticipaciones.jsp?msgSalida = <strong>"+salida+"</Strong>");
                     }else{

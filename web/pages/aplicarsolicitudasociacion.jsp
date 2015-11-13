@@ -118,18 +118,30 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px;">Aqui va la imagen del usuario</i>
-                                    </button>
-                                    <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px; text-align: center;"><% if (uregistrado != null) {
+                                                                                              <%
+                                            if (uregistrado.getGenero() == 1) {%>
+                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
                                                 out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }
-                                            %></i>
+                                            }%>" 
+                                                                                              title="Eres: <%if (uregistrado != null) {
+                                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                      }%>"></i>
+                                            <% } else {%>
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
+                                                                                 title="Eres: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>"></i>
+                                            <%}
+                                            %>
                                     </button>
                                     </span>
                                 </div>
                                 <!-- /input-group -->
                             </li>
+                        </ul>
+                        <ul style="margin-left: 1,5%;">
                             <li>
                                 <%
                                     out.print(menu);
@@ -152,8 +164,12 @@
                         <input name="txtIdSolicitud" id="txtIdSolicitud" value="<%if (solDto != null) {
                                 out.print(solDto.getIdSolicitud());
                             }%>" type="hidden">
-                        <input name="txtIdAso" id="txtIdAso" value="<%if (uregistrado != null) {
+                        <input name="txtIdUser" id="txtIdUser" value="<%if (uregistrado != null) {
                                 out.print(uregistrado.getIdUsuarios());
+                            }%>" type="hidden"> 
+
+                        <input name="txtIdProducto" id="txtIdProducto" value="<%if (solDto != null) {
+                                out.print(solDto.getProduct().getIdProductos());
                             }%>" type="hidden"> 
 
                         <div class="form-group">

@@ -67,4 +67,8 @@ public class FacadeAportesProductores {
         return  aporteDao.consultarCantidadSolicitada(idSolicitud, cnn);
     }
     
+    public int buscarMisIdAsociados(int idProduct, int idUser){
+        return aporteDao.buscarMisIdAsociados(idProduct, idUser, cnn);
+    }
+    
 }

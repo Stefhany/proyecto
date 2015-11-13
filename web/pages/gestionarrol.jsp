@@ -127,18 +127,30 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px;">Aqui va la imagen del usuario</i>
-                                    </button>
-                                    <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px; text-align: center;"><% if (userdto != null) {
-                                                out.print(userdto.getNombres() + " " + userdto.getApellidos());
-                                            }
-                                            %></i>
+                                        <%
+                                                                                                  if (userdto.getGenero() == 1) {%>
+                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (userdto != null) {
+                                                                                                      out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                                  }%>" 
+                                                                                                  title="Eres: <%if (userdto != null) {
+                                                                                                      out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                                  }%>"></i>
+                                            <% } else {%>
+                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (userdto != null) {
+                                                                                         out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                     }%>" 
+                                                                                 title="Eres: <%if (userdto != null) {
+                                                                                         out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                     }%>"></i>
+                                            <%}
+                                            %>
                                     </button>
                                     </span>
                                 </div>
                                 <!-- /input-group -->
                             </li>
+                        </ul>
+                        <ul style="margin-left: 1,5%;">
                             <li>
                                 <%
                                     out.print(menu);

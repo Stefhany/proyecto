@@ -53,7 +53,7 @@ public class FacadeSolicitudDistribuidor {
         return solicitudDao.listarMisPedidosDeUnaAsociacion(idUser, cnn);
     }
     
-    public String modificarCantidadSolicitud(int cantidadFinal, int idSolicitud) throws SQLException {
+    public int modificarCantidadSolicitud(int cantidadFinal, int idSolicitud) throws SQLException {
         return solicitudDao.modificarCantidadSolicitud(cantidadFinal, idSolicitud, cnn);
     }
 }

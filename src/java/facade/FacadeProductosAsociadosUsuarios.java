@@ -66,4 +66,8 @@ public class FacadeProductosAsociadosUsuarios {
     public List<ProductoDTO> asociarProductos(int idUsuario) throws MyException{
         return proAsoDao.asociarProductos(cnn, idUsuario);
     }
+    
+    public List<ProductosAsociadosUsuariosDTO> enviarCorreoAProductores(int idProduct){
+        return proAsoDao.enviarCorreoAProductores(idProduct, cnn);
+    }
 }

@@ -166,27 +166,6 @@ public class ProductosAsociadosUsuariosDAO {
         return msgSalida;
     }
 
-//    public int consultarProductosAsociados(int idUser) {
-//        int[] asociados = new int[10];
-////        this.cnn = cnn;
-//        String msgSalida;
-//        pstmt = cnn.prepareStatement("select idUsuarios, idproductos"
-//                + " from productos p"
-//                + " inner join `productosasociadosusuarios` pro on p.`idProductos` = pro.productosId"
-//                + " inner join usuarios u on pro.usuariosId = u.idUsuarios"
-//                + " where idusuarios = 1;");
-//        pstmt.setInt(1, idUser);
-//
-//        rs = pstmt.executeQuery();
-//        if (rs != null) {
-//            for (int i = 0; i < 10; i++) {
-//                
-//            }
-//        } else {
-//            msgSalida = "no";
-//        }
-//        return msgSalida;
-//    }
     public ProductosAsociadosUsuariosDTO listarProductoAsociadoParaOfertar(int idProAso, Connection cnn) {
         ProductosAsociadosUsuariosDTO proAsoDto = null;
         try {
@@ -295,5 +274,38 @@ public class ProductosAsociadosUsuariosDAO {
             throw new MyException("Ocurrio este error al listar los elementos: " + sqle.getSQLState() + " - " + sqle.getMessage());
         }
         return products;
+    }
+
+    public List<ProductosAsociadosUsuariosDTO> enviarCorreoAProductores(int idProduct, Connection con) {
+        this.cnn = con;
+        List<ProductosAsociadosUsuariosDTO> asociados = new ArrayList();
+        try {
+            pstmt = cnn.prepareStatement("SELECT DISTINCT idUsuarios, nombres, correo, idproductos, nombreproducto, "
+                    + " idProductosAsociadosUsuarios, productosId, usuariosId "
+                    + " FROM productos p "
+                    + " INNER JOIN productosasociadosusuarios psu ON psu.productosId = p.idProductos "
+                    + " INNER JOIN usuarios u ON psu.usuariosId = u.idUsuarios "
+                    + " WHERE psu.productosId=?;");
+            pstmt.setInt(1, idProduct);
+            rs = pstmt.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    UsuariosDTO nUser = new UsuariosDTO(rs.getInt("idUsuarios"), rs.getString("nombres"));
+                    nUser.setCorreo(rs.getString("correo"));
+                    ProductoDTO nProduct = new ProductoDTO(rs.getInt("idproductos"), rs.getString("nombreproducto"));
+                    ProductosAsociadosUsuariosDTO psodto = new ProductosAsociadosUsuariosDTO(nUser, nProduct);
+                    psodto.setIdProductosAsociadosUsuarios(rs.getInt("idProductosAsociadosUsuarios"));
+                    psodto.setUsuarioId(rs.getInt("usuariosId"));
+                    psodto.setProductoId(rs.getInt("productosId"));
+                    asociados.add(psodto);
+                }
+            } else {
+                System.out.println("No se encuetran registros de usuarios con este producto asociado. ");
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Se ha producido esta excepción.. " + sqle.getMessage());
+        }
+        return asociados;
     }
 }

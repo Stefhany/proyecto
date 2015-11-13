@@ -63,7 +63,7 @@ public class UsuariosDTO {
         this.nombres = nom;
         this.direccion = dir;
     }
-    
+     
     /**
      * @return the idUsuarios
      */

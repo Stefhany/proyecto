@@ -29,14 +29,14 @@ public class SolicitudDistribuidorDAO {
 
     public String insertarSolicitudDistribuidor(SolicitudDistribuidorDTO solicitud, Connection cnn) {
         try {
-            pstmt = cnn.prepareStatement("INSERT INTO solicituddistribuidor VALUES (null,?,current_date(),?,null,1,?,?,?);");
+            pstmt = cnn.prepareStatement("INSERT INTO solicituddistribuidor VALUES (null,?,current_date(),?,null,1,?,?,?,?);");
             pstmt.setInt(1, solicitud.getCantidadSolicitada());
             pstmt.setString(2, solicitud.getFechaSolicitud());
             //pstmt.setString(3, solicitud.getFechaEntregaInterna());
             pstmt.setInt(3, solicitud.getProductoId());
             pstmt.setInt(4, solicitud.getDistribuidorId());
             pstmt.setInt(5, solicitud.getCantidadSolicitudFinal());
-
+            pstmt.setString(6, solicitud.getObservacion());
             resultado = pstmt.executeUpdate();
             if (resultado != 0) {
                 msgSalida = "ok";
@@ -170,19 +170,18 @@ public class SolicitudDistribuidorDAO {
         return solicitudes;
     }
     
-    public String modificarCantidadSolicitud(int cantidadFinal, int idSolicitud, Connection cn) throws SQLException {
+    public int modificarCantidadSolicitud(int cantidadFinal, int idSolicitud, Connection cn) throws SQLException {
         this.cnn = cn;
-        String msgSalida;
+        int res = 0;
         int rtdo;
-        pstmt = cnn.prepareStatement(" update solicituddistribuidor set cantidadSolicitada = ? where idSolicitudDistribuidor = ?;");
+        pstmt = cnn.prepareStatement("update solicituddistribuidor set cantidadSolicitada = ? where idSolicitudDistribuidor = ?;");
         pstmt.setInt(1, cantidadFinal);
         pstmt.setInt(2, idSolicitud);
         rtdo = pstmt.executeUpdate();
         if (rtdo > 0) {
-            msgSalida = "ok";
+            return res = 1;
         } else {
-            msgSalida = "no";
+            return res = 0;
         }
-        return msgSalida;
     }
 }

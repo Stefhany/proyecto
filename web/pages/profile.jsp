@@ -115,18 +115,30 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px;">Aqui va la imagen del usuario</i>
-                                    </button>
-                                    <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px; text-align: center;"><% if (userdto != null) {
-                                                out.print(userdto.getNombres() + " " + userdto.getApellidos());
-                                            }
-                                            %></i>
+                                        <%
+                                                                                                  if (userdto.getGenero() == 1) {%>
+                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (userdto != null) {
+                                                                                                      out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                                  }%>" 
+                                                                                                  title="Eres: <%if (userdto != null) {
+                                                                                                      out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                                  }%>"></i>
+                                            <% } else {%>
+                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (userdto != null) {
+                                                                                         out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                     }%>" 
+                                                                                 title="Eres: <%if (userdto != null) {
+                                                                                         out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                     }%>"></i>
+                                            <%}
+                                            %>
                                     </button>
                                     </span>
                                 </div>
                                 <!-- /input-group -->
                             </li>
+                        </ul>
+                        <ul style="margin-left: 1,5%;">
                             <li>
                                 <%
                                     out.print(menu);
@@ -149,96 +161,44 @@
                 <!-- /.row -->
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-primary">
+                        <div style="background-color: #fff; border: 1px; border-color: green; border-style: outset;">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">12 <!--Numero de solicitudes--></div>
-                                        <div>Solicitudes</div>
-                                    </div>
+                                    <img src="../img/portfolio/foto1.png" style="margin-left: 15%;">
                                 </div>
                             </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">Ver detalles</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6" style="width: 25%;">
+                        <div style="background-color: #fff; border: 1px; border-color: green; border-style: outset;">
+                            <div class="panel-heading" >
+                                <div class="row">
+                                    <img src="../img/portfolio/foto2.png" style="margin-left:7%; margin-top: 5%; margin-bottom: 4%;">
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-green">
+                        <div style="background-color: #fff; border: 1px; border-color: green; border-style: outset;">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">12</div>
-                                        <div>New Tasks!</div>
-                                    </div>
+                                    <img src="../img/portfolio/foto3.png" style="margin-left:7%; margin-top: 7%; margin-bottom: 7%;">
                                 </div>
                             </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-yellow">
+                        <div style="background-color: #fff; border: 1px; border-color: green; border-style: outset;">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">124</div>
-                                        <div>New Orders!</div>
-                                    </div>
+                                    <img src="../img/portfolio/foto4.png" style="margin-left:5%; margin-top: -2%;">
                                 </div>
                             </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-red">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-support fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">13</div>
-                                        <div>Support Tickets!</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" style="margin-top: 3%;">
                     <div class="col-lg-12">
                         <div class="panel panel-success">
                             <div class="panel-heading">
@@ -284,7 +244,7 @@
                     </div>
                     <!-- /.col-lg-4 -->
                 </div>
-            </div>
+            </div></div>
 
             <!-- /#page-wrapper -->
 

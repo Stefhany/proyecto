@@ -53,7 +53,8 @@ public class Mail {
             propiedades.setProperty("mail.smtp.quitwait", props.getString("mail.smtp.quitwait"));
 
             //Preparamos la Sesion autenticando al usuario
-            Session session = Session.getDefaultInstance(propiedades, new javax.mail.Authenticator() {
+            //Session session = Session.getDefaultInstance(propiedades, new javax.mail.Authenticator() {
+            Session session = Session.getInstance(propiedades, new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(props.getString("mail.user"), props.getString("mail.password"));
                 }

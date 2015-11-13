@@ -9,6 +9,7 @@ import connection.Conectar;
 import daos.RolesDAO;
 import dtos.RolesDTO;
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -29,5 +30,9 @@ public class FacadeRoles {
     
     public ArrayList<RolesDTO> listarRoles(){
         return rolDao.consultarRoles(cnn);
+    }
+    
+    public Date consultarFechaActual(){
+        return rolDao.consultarFechaActual2(cnn);
     }
 }

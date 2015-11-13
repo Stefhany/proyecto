@@ -19,14 +19,20 @@ function validar() {
     if (fechaSolicitud < fechaActual) {
         document.getElementById("result").innerHTML = "Esta seleccionando una fecha anterior a la actual";
         document.getElementById("txtFechaSolicitud").focus();
+        document.getElementById('btnSolicitarAsociacion').setAttribute('disabled','true');
     } else if (fechaSolicitud >= fechaActual && fechaSolicitud < fechaMinima) {
         document.getElementById("result").innerHTML = "En ese tiempo no se alcanza a tener el pedido";
         document.getElementById("txtFechaSolicitud").focus();
+        document.getElementById('btnSolicitarAsociacion').setAttribute('disabled','true')
+                //defineProperty('disabled','true');
+                //removeAttribute('disabled');
     } else if (fechaSolicitud >= fechaMaxima) {
         document.getElementById("result").innerHTML = "NO hacemos pedidos con tanta anticipación";
         document.getElementById("txtFechaSolicitud").focus();
+        document.getElementById('btnSolicitarAsociacion').setAttribute('disabled','true');
     } else {
-        document.getElementById("result").innerHTML = "ok";
+        document.getElementById("result").innerHTML = "";
+        document.getElementById('btnSolicitarAsociacion').removeAttribute('disabled');
     }
 
 }

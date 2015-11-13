@@ -7,6 +7,7 @@ package daos;
 
 import dtos.RolesDTO;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,4 +45,22 @@ public class RolesDAO {
         }
         return roles;
     }   
+    
+    public Date consultarFechaActual2(Connection cnn) {
+        this.cnn = cnn;
+        Date date = null;
+        try {
+            String querryFecha = " select Date_format(now(),'%Y/%m/%d') as fechaActual; ";
+            pstmt = cnn.prepareStatement(querryFecha);
+            rs = pstmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    date = rs.getDate("fechaActual");
+                }
+            }
+        } catch (SQLException sqle) {
+            String salida = "Mira lo que ocurrio! " + sqle.getMessage() + " y " + sqle.getSQLState();
+        }
+        return date;
+    }
 }

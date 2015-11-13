@@ -47,7 +47,7 @@ public class ProductosAsociadosUsuariosDTO {
     
         @Override
     public String toString() {
-        return "ProductosAsociadosUsuariosDTO " + " idProductosAsociadosUsuarios = " + idProductosAsociadosUsuarios + ", usuariosId = "   + ", productosId = " + getProducto();
+        return "ProductosAsociadosUsuariosDTO " + " idProductosAsociadosUsuarios = " + idProductosAsociadosUsuarios + ", usuariosId = " + usuario.getIdUsuarios()  + ", productosId = " + getProducto().getNombre();
     }
 
     /**

@@ -26,6 +26,9 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -44,7 +47,7 @@
 
         <!-- Favicon de SIGAA -->
         <link rel="icon" href="../img/portfolio/favicon.ico" type="image/x-ico"/>
-        
+
         <!-- Listar productos según categoría -->
         <script src="../js/products.js" type="text/javascript"></script>
         <!-- Mostrar si la fecha es acta para realizar el pedido -->
@@ -119,18 +122,30 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px;">Aqui va la imagen del usuario</i>
-                                    </button>
-                                    <button class="btn btn-default" type="button">
-                                        <i style="width:50px; height:50px; text-align: center;"><% if (uregistrado != null) {
+                                                                                              <%
+                                            if (uregistrado.getGenero() == 1) {%>
+                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
                                                 out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }
-                                            %></i>
+                                            }%>" 
+                                                                                              title="Eres: <%if (uregistrado != null) {
+                                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                      }%>"></i>
+                                            <% } else {%>
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
+                                                                                 title="Eres: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>"></i>
+                                            <%}
+                                            %>
                                     </button>
                                     </span>
                                 </div>
                                 <!-- /input-group -->
                             </li>
+                        </ul>
+                        <ul style="margin-left: 1,5%;">
                             <li>
                                 <%
                                     out.print(menu);
@@ -144,11 +159,27 @@
             </nav>
 
             <div id="page-wrapper">
+                      
                 <div class="row" style="width:50%;">
                     <div class="col-lg-12">
                         <h1 class="page-header">Solicitar Pedido</h1>
                     </div>
+                    
+                    <div style="margin-top: 20%;">
+                    <%
+                        String tipo = "";
+                        String mensaje = "";
+                        if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                            tipo = request.getParameter("tipo");
+                            mensaje = request.getParameter("msg");
+                    %>
+                    <jsp:include page="msg.jsp" flush="true">
+                        <jsp:param name="tipo" value="<%=tipo%>" /> 
+                        <jsp:param name="sal" value="<%=mensaje%>" /> 
+                    </jsp:include>
 
+                    <%}%>
+                    </div>
                     <form id="formRealizarPedido" name="formRegistro" action="../cor" method="post" role="form"> 
                         <input type="hidden" name="txtCorreo" value="<% if (uregistrado != null) {
                                 out.print(uregistrado.getCorreo());
@@ -156,7 +187,7 @@
                                %>">
                         <div class="form-group">
                             <label for="categorias">Tipo de producto:</label>
-                            <select name="categorias" id="categorias" onchange="listarcategorias(this.value);" class="form-control">
+                            <select required="true" name="categorias" id="categorias" onchange="listarcategorias(this.value);" class="form-control">
                                 <option>Categoría del producto</option>
                                 <%  FacadeCategorias facadeCategories = new FacadeCategorias();
 
@@ -165,7 +196,7 @@
 
                                     for (CategoriaDTO cdto : categorias) {
                                 %>   
-                                <option value="<%=cdto.getIdCategoria()%>"> <%=cdto.getNombre()%></option>
+                                <option value="<%=cdto.getIdCategoria()%>" > <%=cdto.getNombre()%></option>
                                 <%
                                     }
                                 %>
@@ -174,7 +205,7 @@
 
                         <div class="form-group">
                             <label for="subcategoria">Nombre del Producto:</label>
-                            <select name="subcategoria" size="1" id="subcategoria" class="form-control">
+                            <select required="true" name="subcategoria" size="1" id="subcategoria" class="form-control">
                                 <option value="<%=pdto.getIdProductos()%>" >Elija un producto</option>
                             </select>
                         </div>
@@ -182,24 +213,24 @@
                         <div class="form-group">
                             <label for="txtCantidad">Cantidad que necesita: </label> 
                             <input type="text" id="txtCantidad" name="txtCantidad" 
-                                   placeholder="Cantidad solicitada" class="form-control">
+                                   placeholder="Cantidad solicitada" class="form-control" required="true">
                         </div>
-                            
+
                         <div class="form-group">
                             <input type="hidden" id="txtCantidadSolicitadaFinal" name="txtCantidadSolicitadaFinal">
                         </div>
 
                         <div class="form-group">
-                            <label for="txtCantidad">Unidad: </label> 
-                            <input placeholder="Kilogramos" readonly="true" class="form-control">
+                            <label for="txtUnidad">Unidad: </label> 
+                            <input required="true" placeholder="Kilogramos" readonly="true" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="txtFechaSolicitud"> Fecha solicitud: </label>
                             <input type="date" id="txtFechaSolicitud" name="txtFechaSolicitud" 
-                                   onblur="javascript:validar();" class="form-control">
+                                   onblur="javascript:validar();" class="form-control" required="true">
 
-                            <div id="result" class="mensajegError">              
+                            <div id="result" class="mensajeError">              
                             </div>
                         </div>
 
@@ -208,11 +239,22 @@
                                 out.print(uregistrado.getIdUsuarios());
                             }
                                %>"/>
+                        
+                        <input name="txtUser" id="txtUser" type="hidden" value="<%
+                            if (uregistrado != null) {
+                                out.print(uregistrado.getNombres()+" "+uregistrado.getApellidos());
+                            }
+                               %>"/>
+
+                        <div class="form-group">
+                            <label>Observaciones:</label>
+                            <textarea style="resize:none;" required="true" class="form-control" rows="3" name="txtObservacion" placeholder="Escribir aquí..."></textarea>
+                        </div>
 
                         <input type="hidden" name="solicitarAsociacion" id="solicitarAsociacion" value="solicitar" />
 
                         <div>
-                            <button type="submit" value="Solicitar Pedido" id="btn" 
+                            <button type="submit" value="Solicitar Pedido" id="btnSolicitarAsociacion" 
                                     name="btnSolicitarAsociacion" class="btn btn-success btn-lg btn-block">Registrar Pedido</button>
                         </div>
 
