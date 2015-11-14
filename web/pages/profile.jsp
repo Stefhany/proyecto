@@ -50,7 +50,7 @@
             response.setHeader("Cache-Control", "no-store");
             response.setDateHeader("Expires", 0);
         %>
-        <%
+        <%    
             HttpSession miSesion = request.getSession(false);
             if (miSesion.getAttribute("usr") != null) {
                 UsuariosDTO userdto = (UsuariosDTO) miSesion.getAttribute("usr");
@@ -90,7 +90,7 @@
                                     u = facadeRoles.mostrarRol(idUsuario);
                                     for (RolesUsuariosDTO roles : u) {
                                         out.print(roles.getRolId().getNombre());
-                                    }
+                                        
                                 %> 
                                 <i class="fa fa-user fa-fw" ></i> <i class="fa fa-caret-down"></i></p>
                         </a>
@@ -115,22 +115,32 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <%
-                                                                                                  if (userdto.getGenero() == 1) {%>
-                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (userdto != null) {
-                                                                                                      out.print(userdto.getNombres() + " " + userdto.getApellidos());
-                                                                                                  }%>" 
-                                                                                                  title="Eres: <%if (userdto != null) {
-                                                                                                      out.print(userdto.getNombres() + " " + userdto.getApellidos());
-                                                                                                  }%>"></i>
-                                            <% } else {%>
-                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (userdto != null) {
-                                                                                         out.print(userdto.getNombres() + " " + userdto.getApellidos());
-                                                                                     }%>" 
+                                                                                              <%                                            if (userdto.getGenero() == 1) {%>
+                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (userdto != null) {
+                                                out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                            }%>" 
+                                                                                              title="Eres: <%if (userdto != null) {
+                                                                                                          out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                                      }%>"></i>
+                                            <% } else if (userdto.getGenero() == 0) {
+                                            %>
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (userdto != null) {
+                                                out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                            }%>" 
                                                                                  title="Eres: <%if (userdto != null) {
                                                                                          out.print(userdto.getNombres() + " " + userdto.getApellidos());
                                                                                      }%>"></i>
-                                            <%}
+                                            <%} else if (roles.getRolId().getIdRol() == 1) {%>
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/grupo.jpg" alt="Usuario: <%if (userdto != null) {
+                                                                                             out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                         }%>" 
+                                                                                 title="Eres: <%if (userdto != null) {
+                                                                                         out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                     }%>"></i>
+                                            <%} else {
+                                                        out.print("null");
+                                                    }
+                                                }
                                             %>
                                     </button>
                                     </span>
@@ -219,7 +229,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <%
+                                            <%                
                                                 for (OfertasDTO offers : ofertas) {
                                             %>
                                         <td><%=offers.getUser().getNombres()%></td> 
@@ -246,24 +256,24 @@
                 </div>
             </div></div>
 
-            <!-- /#page-wrapper -->
+        <!-- /#page-wrapper -->
 
-            <!-- jQuery -->
-            <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+        <!-- jQuery -->
+        <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
-            <!-- Bootstrap Core JavaScript -->
-            <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-            <!-- Metis Menu Plugin JavaScript -->
-            <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
-            <!-- Morris Charts JavaScript -->
-            <script src="../bower_components/raphael/raphael-min.js"></script>
-            <script src="../bower_components/morrisjs/morris.min.js"></script>
-            <script src="../js/morris-data.js"></script>
+        <!-- Morris Charts JavaScript -->
+        <script src="../bower_components/raphael/raphael-min.js"></script>
+        <script src="../bower_components/morrisjs/morris.min.js"></script>
+        <script src="../js/morris-data.js"></script>
 
-            <!-- Custom Theme JavaScript -->
-            <script src="../dist/js/sb-admin-2.js"></script>
+        <!-- Custom Theme JavaScript -->
+        <script src="../dist/js/sb-admin-2.js"></script>
     </body>
 
 </html>

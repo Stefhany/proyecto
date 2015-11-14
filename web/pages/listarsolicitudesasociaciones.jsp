@@ -184,6 +184,7 @@
                                     <th>Cantidad solicitada</th>
                                     <th>Unidad</th>
                                     <th>Fecha solicitada</th>
+                                    <th>Observación</th>
                                     <th>Generar pedido</th>
                                 </tr>                
                             </thead>
@@ -197,11 +198,12 @@
                             <td><%=ped.getCantidadSolicitada()%></td>  
                             <td>Kilogramos</td>
                             <td><%=ped.getFechaSolicitud()%></td>
+                            <td><%=ped.getObservacion()%></td>
                             <td><a href="generarpedidoaproductores.jsp?id=<%=ped.getIdSolicitud()%>">
                                 <span class="glyphicon glyphicon-calendar" style="font-size:140%; color:green; margin-left:35%;" title="Generar pedido"
                                                                                                           alt="Generar pedido" align="center"></span></a>
                             </td>
-                            <!--<td><a href="../cp?idSolicitud=<%=ped.getIdSolicitud()%>">
+                            <!--<td><a href="../cp?idSolicitud=<ped.getIdSolicitud()%>">
                                 <span class="glyphicon glyphicon-trash" style="font-size:140%; color:green; margin-left:25%;" alt="Eliminar producto" title="Eliminar producto" onclick="return confirmar();" alt="Eliminar solicitud" align="center"></span>
                                 </a>
                             </td>

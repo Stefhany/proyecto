@@ -52,18 +52,18 @@ function validarSolicitud() {
     if (fechaSolicitud < fechaActual) {
         document.getElementById("result").innerHTML = "Esta seleccionando una fecha anterior a la actual";
         document.getElementById("txtFechaSolicitud").focus();
-        document.getElementById('btnSolicitar').removeAttribute('disabled', 'true');
+        document.getElementById('btnSolicitar').setAttribute('disabled', 'true');
     } else if (fechaSolicitud >= fechaActual && fechaSolicitud < fechaMinima) {
         document.getElementById("result").innerHTML = "En ese tiempo no se alcanza a realizar el pedido";
         document.getElementById("txtFechaSolicitud").focus();
-        document.getElementById('btnSolicitar').removeAttribute('disabled');  // se habilita el boton registrar
+        document.getElementById('btnSolicitar').setAttribute('disabled','true');  // se habilita el boton registrar
     } else if (fechaSolicitud >= fechaMaxima) {
         document.getElementById("result").innerHTML = "NO se hacen pedidos con tanta anticipación";
         document.getElementById("txtFechaSolicitud").focus();
-        document.getElementById('btnSolicitar').removeAttribute('disabled');
+        document.getElementById('btnSolicitar').setAttribute('disabled','true');
     } else {
-        
-        document.getElementById('btnSolicitar').removeAttribute('disabled','true');
+        document.getElementById("result").innerHTML = "";
+        document.getElementById('btnSolicitar').removeAttribute('disabled');
     }
 }
 

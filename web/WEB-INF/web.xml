@@ -60,6 +60,10 @@
         <servlet-name>ControllerAportProducer</servlet-name>
         <servlet-class>controller.ControllerAportProducer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControllerDistributorOrders</servlet-name>
+        <servlet-class>controller.ControllerDistributorOrders</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Conectar</servlet-name>
         <url-pattern>/con</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>ControllerAportProducer</servlet-name>
         <url-pattern>/cap</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerDistributorOrders</servlet-name>
+        <url-pattern>/cod</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

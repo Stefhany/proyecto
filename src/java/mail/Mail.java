@@ -70,6 +70,7 @@ public class Mail {
 
             if (paraEmail.indexOf(',') > 0) {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(paraEmail));
+                
             } else {
                 message.setRecipient(Message.RecipientType.TO, new InternetAddress(paraEmail));
             }

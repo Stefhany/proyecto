@@ -56,4 +56,8 @@ public class FacadeSolicitudDistribuidor {
     public int modificarCantidadSolicitud(int cantidadFinal, int idSolicitud) throws SQLException {
         return solicitudDao.modificarCantidadSolicitud(cantidadFinal, idSolicitud, cnn);
     }
+    
+    public String cancelarPedido (int idSolicitud){
+        return solicitudDao.cancelarSolicitud(idSolicitud, cnn);
+    }
 }

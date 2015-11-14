@@ -1,17 +1,19 @@
 <%-- 
-    Document   : misparticipaciones
-    Created on : 10-nov-2015, 6:25:12
+    Document   : listarmispedidosdeofertas
+    Created on : 14-nov-2015, 18:31:08
     Author     : Stefhany Alfonso
 --%>
 
 <%@page import="facade.FacadeConsultas"%>
+<%@page import="dtos.PedidoSobreOfertaDTO"%>
+<%@page import="facade.FacadePedidoSobreOferta"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="facade.FacadeRolesUsuarios"%>
+<%@page import="dtos.SolicitudDistribuidorDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.LinkedList"%>
-<%@page import="dtos.AportesProductoresDTO"%>
-<%@page import="facade.FacadeAportesProductores"%>
+<%@page import="facade.FacadeSolicitudDistribuidor"%>
 <%@page import="dtos.UsuariosDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -22,10 +24,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Solicitudes - SIGAA</title>
+        <title>Mis pedidos - SIGAA</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -56,14 +61,15 @@
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
                 int idUser = uregistrado.getIdUsuarios();
-                List<AportesProductoresDTO> misAportes = new LinkedList();
-                FacadeAportesProductores facadeAport = new FacadeAportesProductores();
-                misAportes = facadeAport.consultarMisParticipaciones(idUser);
+
+                FacadePedidoSobreOferta facadePedidoSobreOferta = new FacadePedidoSobreOferta();
+                List<PedidoSobreOfertaDTO> pedidosSobreUnaOferta = new LinkedList();
+                pedidosSobreUnaOferta = facadePedidoSobreOferta.consultarMisPedidosDeUnProducto(idUser);
         %>
 
         <script>
             function confirmar() {
-                if (confirm('¿Esta seguro de borrar este pedido?')) {
+                if (confirm('¿Esta seguro de cancelar este pedido?')) {
                     return true;
                 } else {
                     return false;
@@ -119,41 +125,41 @@
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                        <ul class="nav" id="side-menu">
-                            <li class="sidebar-search">
-                                <div class="input-group custom-search-form">
-                                    <button class="btn btn-default" type="button">
-                                        <%
-                                                                                                  if (uregistrado.getGenero() == 1) {%>
-                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>" 
-                                                                                                  title="Eres: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>"></i>
-                                            <% } else {%>
-                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>" 
-                                                                                 title="Eres: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>"></i>
-                                            <%}
-                                            %>
-                                    </button>
-                                    </span>
-                                </div>
-                                <!-- /input-group -->
-                            </li>
-                        </ul>
-                        <ul style="margin-left: 1,5%;">
-                            <li>
-                                <%
-                                    out.print(menu);
-                                %>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <button class="btn btn-default" type="button">
+                                    <%
+                                                                                              if (uregistrado.getGenero() == 1) {%>
+                                    <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                                  out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                              }%>" 
+                                                                                              title="Eres: <%if (uregistrado != null) {
+                                                                                                  out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                              }%>"></i>
+                                        <% } else {%>
+                                    <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                     out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                 }%>" 
+                                                                             title="Eres: <%if (uregistrado != null) {
+                                                                                     out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                 }%>"></i>
+                                        <%}
+                                        %>
+                                </button>
+                                </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                    </ul>
+                    <ul style="margin-left: 1,5%;">
+                        <li>
+                            <%
+                                out.print(menu);
+                            %>
+                        </li>
+                    </ul>
+                </div>
                 <!-- /.sidebar-collapse -->
             </div>
             <!-- /.navbar-static-side -->
@@ -162,83 +168,65 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Participaciones en los pedidos por la asociación</h1>
+                    <h1 class="page-header">Mis pedidos de productos agrícolas</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
             <div class="row" >
                 <div class="col-lg-12">
+                    <div>
+                        <%
+                            String tipo = "";
+                            String mensaje = "";
+                            if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                                tipo = request.getParameter("tipo");
+                                mensaje = request.getParameter("msg");
+                        %>
+                        <jsp:include page="msg.jsp" flush="true">
+                            <jsp:param name="tipo" value="<%=tipo%>" /> 
+                            <jsp:param name="sal" value="<%=mensaje%>" /> 
+                        </jsp:include>
+
+                        <%}%>
+                    </div>
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                            <i class="fa fa-calendar-o fa-fw"></i>Mis participaciones
+                            <i class="fa fa-calendar-o fa-fw"></i>Mis pedidos de productos agrícolas
                         </div>
+
+
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead style="text-align: center;">
                                         <tr>                    
-                                            <th>Distribuidor</th>
-                                            <th>Nombre producto</th>
-                                            <th>Cantidad solicitada</th>
+                                            <th>Proveedor</th>
+                                            <th>Tipo de Producto</th>
+                                            <th>Nombre Producto</th>
+                                            <th>Cantidad Solicitada</th>
                                             <th>Unidad</th>
-                                            <th>Fecha de Entrega</th>
-                                            <th>Cancelar</th>
+                                            <th>Precio</th>
+                                            <th>Fecha Solicitada</th>
+                                            <th>Estado de Pedido</th>
                                         </tr>                
                                     </thead>
                                     <tbody id="bodyTabla">
                                         <%
-                                            for (AportesProductoresDTO aport : misAportes) {
+                                            for (PedidoSobreOfertaDTO pedido : pedidosSobreUnaOferta) {
                                         %>
                                         <tr>
-                                            <td><%=aport.getProAsoId().getProducto().getCategoriaId().getNombre()%></td>
-                                            <td><%=aport.getProAsoId().getProducto().getNombre()%></td>
-                                            <td><%=aport.getCantidad()%></td>  
-                                            <td><%=aport.getProAsoId().getProducto().getUnidad()%></td>
-                                            <td><%=aport.getFechaEntrega()%></td>
-                                            <!--<td><button data-toggle="modal" data-target="#miventana" value="<//aport.getIdAporteProductor()%>"
-                                                        <span class="glyphicon glyphicon-remove-circle" 
-                                                      style="font-size:140%; color:green; margin-left:35%;" 
-                                                      alt="Cancelar pedido de: <//aport.getProAsoId().getProducto().getNombre()%> " 
-                                                      title="Cancelar pedido de: <=//aport.getProAsoId().getProducto().getNombre()%>"></span>
-                                                </button>
-                                            </td>-->
-                                            <td><a href="newjspgreg.jsp" rel="prueba"> Ir</a>
-                                            </td>
+                                            <td><%=pedido.getOffer().getUser().getNombres()%></td>
+                                            <td><%=pedido.getOffer().getProducts().getCategoriaId().getNombre()%></td>
+                                            <td><%=pedido.getOffer().getProducts().getNombre()%></td> 
+                                            <td><%=pedido.getCantidadSolicitada()%></td>
+                                            <td>Kilogramos</td>
+                                            <td>$<%=pedido.getOffer().getPrecio()%></td>
+                                            <td><%=pedido.getFechaSolicitud()%></td>
+                                            <td><%=pedido.getEstadoOferta().getNombreEstadoPedidoSobreOferta()%></td>
                                         </tr>
-
-                                    <div class="modal fade" id="miventana" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <form action="../cap">
-                                        <input type="hidden" value="<%=aport.getSolId().getCantidadSolicitada()%>" name="txtCantidadSolicitada">
-                                        <input type="hidden" value="<%=aport.getSolId().getFechaEntregaInterna()%>" name="txtFechaEntregaInterna">
-                                        <input type="hidden" value="<%=aport.getCantidad()%>" name="txtCantidadAportada">
-                                        <input type="hidden" value="<%=aport.getSolId().getIdSolicitud()%>" name="txtIdSolicitud">
-                                        <input type="hidden" value="<%=aport.getIdAporteProductor()%>" name="idAporte">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times</button>
-                                                    <center><h4>Registrar Novedad</h4></center>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <!--<form action="asociarproducto.jsp">-->
-                                                    <div class="form-group">
-                                                        <label>Novedad:</label>
-                                                        <textarea style="resize:none;" class="form-control" rows="3" name="txtNovedad" placeholder="Escribir aquí..."></textarea>
-                                                    </div>
-                                                    <div><span style="color:red; margin-top:45%;"> Maximo 100 letras.</span></div>
-                                                    <div style="margin-left: 40%; margin-top: 3%;"><input type="hidden" name="cancelar" id="solicitar" value="cancelar" />
-                                                        <a href="../cap?idAport=<%=aport.getIdAporteProductor()%>&solicitud=<%=aport.getSolId().getIdSolicitud()%>">
-                                                            <button type="submit" name="btnCancelar" class="btn btn-success" style="text-align: center;">Cancelar Aporte</button></a></div>
-                                                        
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </form>
-                                    </div>
-                                    <%}%>
+                                        <%}%>
                                     </tbody>
                                 </table>
 

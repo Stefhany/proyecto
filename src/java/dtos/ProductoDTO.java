@@ -18,6 +18,7 @@ public class ProductoDTO {
     private CategoriaDTO categoriaId = null;  
     private int categoriaId2 = 0;
     private UsuariosDTO user = null;
+    private int precioProducto = 0;
 
     public ProductoDTO() {
     }
@@ -138,6 +139,20 @@ public class ProductoDTO {
      */
     public void setUser(UsuariosDTO user) {
         this.user = user;
+    }
+
+    /**
+     * @return the precioProducto
+     */
+    public int getPrecioProducto() {
+        return precioProducto;
+    }
+
+    /**
+     * @param precioProducto the precioProducto to set
+     */
+    public void setPrecioProducto(int precioProducto) {
+        this.precioProducto = precioProducto;
     }
 
 }

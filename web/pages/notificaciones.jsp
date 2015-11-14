@@ -209,7 +209,8 @@
                                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                                 <thead>
                                                     <tr>
-                                                        <th><input type="checkbox" name="checktodos"/></th>
+                                                        <!--<th><input type="checkbox" name="checktodos"/></th>-->
+                                                        <th><span class="glyphicon glyphicon-check"></span></th>
                                                         <th>Nombre</th>
                                                         <th>Apellido</th>
                                                         <th>Telefono</th>

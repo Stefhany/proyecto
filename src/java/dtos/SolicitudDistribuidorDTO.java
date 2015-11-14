@@ -33,6 +33,12 @@ public class SolicitudDistribuidorDTO {
         this.product = pro;
     }
     
+     public SolicitudDistribuidorDTO(UsuariosDTO u, ProductoDTO pro, EstadoSolicitudDistribuidorDTO estadoNew){
+        this.user = u;
+        this.product = pro;
+        this.estadoSolicitud = estadoNew;
+    }
+    
     public SolicitudDistribuidorDTO(UsuariosDTO u, EstadoSolicitudDistribuidorDTO estado){
         this.user = u;
         this.estadoSolicitud = estado;

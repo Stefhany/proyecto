@@ -1,16 +1,16 @@
 <%-- 
-    Document   : listarmissolicitudesaunaasociacion
-    Created on : 10-nov-2015, 3:22:47
+    Document   : consultarproductos
+    Created on : 14-nov-2015, 19:35:28
     Author     : Stefhany Alfonso
 --%>
 
-<%@page import="java.util.List"%>
-<%@page import="facade.FacadeSolicitudDistribuidor"%>
 <%@page import="facade.FacadeConsultas"%>
-<%@page import="dtos.SolicitudDistribuidorDTO"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
-<%@page import="java.util.LinkedList"%>
 <%@page import="facade.FacadeRolesUsuarios"%>
+<%@page import="java.util.LinkedList"%>
+<%@page import="dtos.ProductosAsociadosUsuariosDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="facade.FacadeProductosAsociadosUsuarios"%>
 <%@page import="dtos.UsuariosDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,7 +21,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Solicitudes - SIGAA</title>
+        <title>Mis pedidos - SIGAA</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -58,10 +58,10 @@
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
                 int idUser = uregistrado.getIdUsuarios();
-
-                FacadeSolicitudDistribuidor facadeSolicitud = new FacadeSolicitudDistribuidor();
-                List<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
-                solicitudes = facadeSolicitud.listarMisPedidosALaAsociacion(idUser);
+                
+                FacadeProductosAsociadosUsuarios facadeAsociado = new FacadeProductosAsociadosUsuarios();
+                List<ProductosAsociadosUsuariosDTO> asociados = new LinkedList();
+                asociados = facadeAsociado.consultarAsociaciones();
         %>
 
         <script>
@@ -165,7 +165,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Mis pedidos a la asociación</h1>
+                    <h1 class="page-header">Catálogo de productos de la asociación</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -189,7 +189,7 @@
                     </div>
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                            <i class="fa fa-calendar-o fa-fw"></i>Mis pedidos a la asociación
+                            <i class="fa fa-calendar-o fa-fw"></i>Catálogo de productos de la asociación
                         </div>
 
 
@@ -198,37 +198,22 @@
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead style="text-align: center;">
-                                        <tr>                    
+                                        <tr>
+                                            <th>Nombre Productor</th>
+                                            <th>Tipo de Producto</th>
                                             <th>Nombre Producto</th>
-                                            <th>Cantidad solicitada</th>
-                                            <th>Unidad</th>
-                                            <th>Fecha de entrega</th>
-                                            <th>Estado de Pedido</th>
-                                            <th>Cancelar Pedido</th>
+                                            <th>Precio</th>
                                         </tr>                
                                     </thead>
                                     <tbody id="bodyTabla">
                                         <%
-                                            for (SolicitudDistribuidorDTO solicitud : solicitudes) {
+                                            for (ProductosAsociadosUsuariosDTO asociado : asociados) {
                                         %>
                                         <tr>
-                                            <td><%=solicitud.getProduct().getNombre()%></td>
-                                            <td><%=solicitud.getCantidadSolicitada()%></td> 
-                                            <td>Kilogramos</td>
-                                            <td><%=solicitud.getFechaSolicitud()%></td>
-                                            <td><%=solicitud.getEstadoSolicitud().getNombreEstadosSolicitudDistribuidor()%></td>
-                                            <td>
-                                                <%if (solicitud.getEstadoSolicitud().getIdEstadosSolicitudDistribuidor() == 1) {%>
-                                                <a href="../cod?idSolicitud=<%=solicitud.getIdSolicitud()%>"><span class="glyphicon glyphicon-remove" style="font-size:140%; color:#9f191f; margin-left:35%;" 
-                                                                                                                   title="Cancelar el pedido de: <%=solicitud.getProduct().getNombre()%>"
-                                                                                                                   alt="Cancelar el pedido de: <%=solicitud.getProduct().getNombre()%>"></span></a>
-                                                    <%} else {%>
-                                                <span class="glyphicon glyphicon-ban-circle" style="font-size:140%; color: #9f191f; margin-left:35%;" 
-                                                      title="No puede cancelar este pedido"
-                                                      alt="No puede cancelar este pedido"></span>
-                                                <% }
-                                                %>
-                                            </td>
+                                            <td><%=asociado.getUsuario().getNombres()%></td>
+                                            <td><%=asociado.getProducto().getCategoriaId().getNombre()%></td>
+                                            <td><%=asociado.getProducto().getNombre()%></td>   
+                                            <td>$<%=asociado.getProducto().getPrecioProducto()%></td> 
                                         </tr>
                                         <%}%>
                                     </tbody>

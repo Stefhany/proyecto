@@ -38,4 +38,8 @@ public class FacadePedidoSobreOferta {
     public List<PedidoSobreOfertaDTO> listarMisPedidosSobreUnaOferta(int idUser){
         return pedidoDao.listarMisPedidosSobreUnaOferta(idUser, cnn);
     } 
+    
+    public List<PedidoSobreOfertaDTO> consultarMisPedidosDeUnProducto(int idUser){
+        return pedidoDao.consultarMisPedidosDeUnProducto(idUser, cnn);
+    }
 }

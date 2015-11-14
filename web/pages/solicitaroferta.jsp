@@ -25,6 +25,9 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -284,7 +287,7 @@
                         <div class="form-group">
                             <label for="txtFechaSolicitud">Fecha de entrega del producto:</label>
                             <input type="date" id="txtFechaSolicitud" name="txtFechaSolicitud" 
-                                   onblur="javascript:validarSolicitud();" class="form-control">
+                                   onblur="javascript:validarSolicitud();" class="form-control" required="true">
                             <div id="result" class="mensajeError"><span></span></div>
                         </div>
 

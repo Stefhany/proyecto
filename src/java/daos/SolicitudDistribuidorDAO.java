@@ -5,6 +5,7 @@
  */
 package daos;
 
+import dtos.EstadoSolicitudDistribuidorDTO;
 import dtos.ProductoDTO;
 import dtos.SolicitudDistribuidorDTO;
 import dtos.UsuariosDTO;
@@ -53,7 +54,7 @@ public class SolicitudDistribuidorDAO {
         LinkedList<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
         try {
             String querrySolicitudesDistribuidor = "select idSolicitudDistribuidor, idUsuarios, concat(nombres,' ',apellidos) as Distribuidor, "
-                    + " idProductos, nombreProducto, cantidadSolicitada, fechaSolicitud "
+                    + " idProductos, nombreProducto, cantidadSolicitada, fechaSolicitud, ifnull(observacion,'-') as observacion "
                     + " from solicituddistribuidor s "
                     + " inner join productos p on p.idProductos = s.productosId "
                     + " inner join usuarios u on u.idUsuarios = s.distribuidorId "
@@ -68,6 +69,7 @@ public class SolicitudDistribuidorDAO {
                     solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
                     solicitud.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
                     solicitud.setFechaSolicitud(rs.getString("fechaSolicitud"));
+                    solicitud.setObservacion(rs.getString("observacion"));
                     solicitudes.add(solicitud);
                 }
             }
@@ -82,7 +84,7 @@ public class SolicitudDistribuidorDAO {
         try {
             String querrySolicitudesDistribuidor = " SELECT idSolicitudDistribuidor, idUsuarios,"
                     + " concat(nombres, ' ', apellidos) AS Distribuidor, idProductos, nombreProducto,"
-                    + " cantidadSolicitada, fechaSolicitud FROM solicituddistribuidor s"
+                    + " cantidadSolicitada, fechaSolicitud, s.observacion FROM solicituddistribuidor s"
                     + " INNER JOIN productos p ON (s.productosId = p.idProductos)"
                     + " INNER JOIN usuarios u ON (s.distribuidorId = u.idUsuarios)"
                     + " WHERE  idSolicitudDistribuidor = ?;";
@@ -97,6 +99,7 @@ public class SolicitudDistribuidorDAO {
                     solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
                     solicitud.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
                     solicitud.setFechaSolicitud(rs.getString("fechaSolicitud"));
+                    solicitud.setObservacion(rs.getString("s.observacion"));
                 }
             }
 
@@ -144,11 +147,12 @@ public class SolicitudDistribuidorDAO {
     public List<SolicitudDistribuidorDTO> listarMisPedidosDeUnaAsociacion(int idUsuario, Connection cnn) {
         List<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
         try {
-            String querrySolicitudesDistribuidor = "select idUsuarios, nombreProducto, cantidadSolicitada,idSolicitudDistribuidor, fechaSolicitud, idProductos "
-                    + " from usuarios "
-                    + " inner join solicituddistribuidor on solicituddistribuidor.distribuidorId = usuarios.idUsuarios "
-                    + " inner join productos on solicituddistribuidor.productosId = productos.idProductos "
-                    + " where idusuarios = ?;";
+            String querrySolicitudesDistribuidor = "select idUsuarios, nombreProducto, cantidadSolicitada,idSolicitudDistribuidor, fechaSolicitud, idProductos,"
+                    + " esd.idEstadoSolicitudDistribuidor, esd.nombreEstadoSolicitudDistribuidor from usuarios u inner join solicituddistribuidor sd on sd.distribuidorId = u.idUsuarios "
+                    + " inner join productos p on sd.productosId = p.idProductos "
+                    + " inner join estadossolicitudesdistribuidores esd on sd.estadoSolicitudDistribuidorId = esd.idEstadoSolicitudDistribuidor "
+                    + " where idusuarios = ? and esd.idEstadoSolicitudDistribuidor <> 2 "
+                    + " order by fechaSolicitud asc, esd.idEstadoSolicitudDistribuidor asc;";
             pstmt = cnn.prepareStatement(querrySolicitudesDistribuidor);
             pstmt.setInt(1, idUsuario);
             rs = pstmt.executeQuery();
@@ -157,7 +161,10 @@ public class SolicitudDistribuidorDAO {
                     UsuariosDTO user = new UsuariosDTO();
                     user.setIdUsuarios(rs.getInt("idUsuarios"));
                     ProductoDTO pro = new ProductoDTO(rs.getInt("idProductos"), rs.getString("nombreProducto"));
-                    SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO(user, pro);
+                    EstadoSolicitudDistribuidorDTO estadoSolicitud = new EstadoSolicitudDistribuidorDTO();
+                    estadoSolicitud.setIdEstadosSolicitudDistribuidor(rs.getInt("esd.idEstadoSolicitudDistribuidor"));
+                    estadoSolicitud.setNombreEstadosSolicitudDistribuidor(rs.getString("esd.nombreEstadoSolicitudDistribuidor"));
+                    SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO(user, pro, estadoSolicitud);
                     solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
                     solicitud.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
                     solicitud.setFechaSolicitud(rs.getString("fechaSolicitud"));
@@ -169,7 +176,7 @@ public class SolicitudDistribuidorDAO {
         }
         return solicitudes;
     }
-    
+
     public int modificarCantidadSolicitud(int cantidadFinal, int idSolicitud, Connection cn) throws SQLException {
         this.cnn = cn;
         int res = 0;
@@ -183,5 +190,24 @@ public class SolicitudDistribuidorDAO {
         } else {
             return res = 0;
         }
+    }
+    
+    public String cancelarSolicitud(int idSolicitud, Connection cnn) {
+        try {
+            String querryUpdateSolicitud = "UPDATE solicituddistribuidor SET estadoSolicitudDistribuidorId = 2 "
+                    + " WHERE idSolicitudDistribuidor = ?;";
+            pstmt = cnn.prepareStatement(querryUpdateSolicitud);
+            pstmt.setInt(1, idSolicitud);
+            resultado = pstmt.executeUpdate();
+
+            if (resultado != 0) {
+                msgSalida = "ok";
+            } else {
+                msgSalida = "no";
+            }
+        } catch (SQLException sqle) {
+            msgSalida = "Ha ocurrido lo siguiente... " + sqle.getMessage();
+        }
+        return msgSalida;
     }
 }

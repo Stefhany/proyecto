@@ -9,15 +9,20 @@ import daos.DespachosPedidosDAO;
 import daos.PedidoSobreOfertaDAO;
 import dtos.DespachosPedidosDTO;
 import dtos.SolicitudDistribuidorDTO;
+import dtos.UsuariosDTO;
 import facade.FacadeAportesProductores;
 import facade.FacadeConsultas;
 import facade.FacadeDespachosPedidos;
 import facade.FacadePedidoSobreOferta;
+import facade.FacadeProductosAsociadosUsuarios;
 import facade.FacadeSolicitudDistribuidor;
+import facade.FacadeUsuarios;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -101,7 +106,11 @@ public class ControllerOrders extends HttpServlet {
                                     + "Gracias por pertenecer a SIGAA <br>"
                                     + " Persona encargada: Stefhany Alfonso Rincón <br>"
                                     + "Líneas de atención: 3213018539", correoDistribuidor);
-                            response.sendRedirect("pages/listarofertasactuales.jsp?msgSalida=alert('Ojo! Debe tener en cuenta los terminos y condiciones de los pedidos al momento de solicitarlos')");
+                            String mensaje = "Su pedido ha sido enviado sactisfactoriamente";
+                            String advertencia = "Recuerde que el precio que se va a tener en cuenta para el envio de este pedido "
+                                    + " es de acuerdo a la postulación que hizo el productor. Se le enviara un correo de confirmación "
+                                    + " para más detalles del pedido";
+                            response.sendRedirect("pages/listarofertasactuales.jsp?tipo=1&msg=" + mensaje + "&tipo=2&msg=" + advertencia);
                         }
                     } else {
                         String msj = "No puede ingresar una cantidad mayor a la solicitada";
@@ -122,7 +131,7 @@ public class ControllerOrders extends HttpServlet {
                 solicitud.setObservacion(request.getParameter("txtObservacion").trim());
                 String correo = request.getParameter("txtCorreo");
                 String nombre = request.getParameter("txtUser");
-                
+
                 salida = facadeRequestDistributor.insertarSolicitudDistribuidor(solicitud);
 
                 if (salida.equals("ok")) {
@@ -132,11 +141,16 @@ public class ControllerOrders extends HttpServlet {
                             + " <h1>Confirmación</h1><br>"
                             + " Señor, ra: " + nombre + ""
                             + " Su pedido a sido solicitado satisfactoriamente. ", correo);
-                }else{
+                } else {
                     String msg = "Hemos tenido problemas al registrar su pedido";
                     response.sendRedirect("pages/realizarpedidoasociacion.jsp?tipo=0&msg=" + msg);
                 }
             } else if (request.getParameter("btnGenerarPedido") != null && request.getParameter("generarPedido") != null) {
+
+                String nombreProducto = request.getParameter("txtNombreProducto").trim();
+                String nombreDistribuidor = request.getParameter("Distribuidor").trim();
+                int cantidadSolicitada = Integer.parseInt(request.getParameter("txtCantidadSolicitada").trim());
+                String fechaEntregaPorElProductor = request.getParameter("txtFechaEntrega").trim();
 
                 String fechaEntrega = request.getParameter("txtFechaEntrega").trim();
                 int idSolicitud = Integer.parseInt(request.getParameter("txtIdSolicitud"));
@@ -150,7 +164,27 @@ public class ControllerOrders extends HttpServlet {
                     if (fechaAnticipacion == 1) {
                         salida = facadeRequestDistributor.modificarSolicitudDistribuidor(solicitud);
                         if (salida.equals("ok")) {
-                            
+                            FacadeUsuarios facadeUsuarios = new FacadeUsuarios();
+                            FacadeProductosAsociadosUsuarios facadeProductAsociado = new FacadeProductosAsociadosUsuarios();
+
+                            List<UsuariosDTO> users = new ArrayList();
+                            StringBuilder correos = new StringBuilder();
+                            users = facadeProductAsociado.enviarCorreoAProductores(3);
+
+                            for (UsuariosDTO user : users) {
+                                correos.append(user.getCorreo());
+                                correos.append(", ");
+                            }
+
+                            Mail.sendMail("Solicitud de pedido", "Señor(a): "
+                                    + " La asociación requiere para la fecha: " + fechaEntregaPorElProductor + ", " + cantidadSolicitada + " "
+                                    + " de " + nombreProducto + ", para el distribuidor " + nombreDistribuidor + " <br><br>"
+                                    + " Información: Tener presente que al participar en este pedido no lo puede cancelar tres dias antes "
+                                    + " del " + fechaEntregaPorElProductor + ". <br><br>"
+                                    + " Gracias por pertenecer a SIGAA <br>"
+                                    + " Persona encargada: Stefhany Alfonso Rincón <br>"
+                                    + " Líneas de atención: 3213018539", correos.toString());
+
                             response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?msgSalida=<strong>El pedido ha sido enviado a los productores.</Strong>");
                             facadeDespachoPedidos.cambiarEstadoAProductores(idSolicitud);
 
@@ -203,92 +237,88 @@ public class ControllerOrders extends HttpServlet {
                         String msj = "No puede ingresar una cantidad mayor a la solicitada";
                         response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida = <strong>" + msj + " </Strong>");
                     }
-                }else{
-                    String mensaje = "No tiene el producto: "+nombreProducto+" registrado. Por ende no puede participar en este pedido";
+                } else {
+                    String mensaje = "No tiene el producto: " + nombreProducto + " registrado. Por ende no puede participar en este pedido";
                     response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida = <strong>" + mensaje + " </Strong>");
                 }
-                } else if (request.getParameter("btnDespacharPedido") != null && request.getParameter("despacharPedido") != null) {
+            } else if (request.getParameter("btnDespacharPedido") != null && request.getParameter("despacharPedido") != null) {
 
-                    DespachosPedidosDTO dto = new DespachosPedidosDTO();
-                    String fechaEnvio = request.getParameter("txtFechaEnvio").trim();
-                    dto.setDireccionDespacho(request.getParameter("txtDireccion").trim());
-                    dto.setFechaDespacho(request.getParameter("txtFechaEnvio").trim());
-                    dto.setObservaciones(request.getParameter("txtObservacion").trim());
-                    dto.setSolicitudId(Integer.parseInt(request.getParameter("txtSolicitud").trim()));
-                    dto.setUsuariosId(Integer.parseInt(request.getParameter("txtUser").trim()));
-                    String correoDistribuidor = request.getParameter("txtCorreoDistribuidor").trim();
+                DespachosPedidosDTO dto = new DespachosPedidosDTO();
+                String fechaEnvio = request.getParameter("txtFechaEnvio").trim();
+                dto.setDireccionDespacho(request.getParameter("txtDireccion").trim());
+                dto.setFechaDespacho(request.getParameter("txtFechaEnvio").trim());
+                dto.setObservaciones(request.getParameter("txtObservacion").trim());
+                dto.setSolicitudId(Integer.parseInt(request.getParameter("txtSolicitud").trim()));
+                dto.setUsuariosId(Integer.parseInt(request.getParameter("txtUser").trim()));
+                String correoDistribuidor = request.getParameter("txtCorreoDistribuidor").trim();
 
-                    int idSolicitud = Integer.parseInt(request.getParameter("txtSolicitud").trim());
+                int idSolicitud = Integer.parseInt(request.getParameter("txtSolicitud").trim());
 
-                    int fechaEntregaBien = facadeDespachoPedidos.validarFecha(fechaEnvio);
+                int fechaEntregaBien = facadeDespachoPedidos.validarFecha(fechaEnvio);
 
-                    if (fechaEntregaBien == 1) {
-                        int fechaAnticipacion = facadeDespachoPedidos.validarFechaDespacho(fechaEnvio, idSolicitud);
-                        if (fechaAnticipacion == 1) {
-                            FacadeDespachosPedidos facadeDispatchOrder = new FacadeDespachosPedidos();
-                            salida = facadeDispatchOrder.insertarDespacho(dto);
+                if (fechaEntregaBien == 1) {
+                    int fechaAnticipacion = facadeDespachoPedidos.validarFechaDespacho(fechaEnvio, idSolicitud);
+                    if (fechaAnticipacion == 1) {
+                        FacadeDespachosPedidos facadeDispatchOrder = new FacadeDespachosPedidos();
+                        salida = facadeDispatchOrder.insertarDespacho(dto);
 
-                            if (salida.equals("ok")) {
-                                facadeDespachoPedidos.cambiarEstadoSolicitud(idSolicitud);
-                                Mail.sendMail("Su pedido le ha sido enviado", "Su pedido ha sido enviado satisfactoriamente.", correoDistribuidor);
-                                response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>El despacho ha sido realizado.</Strong>");
-                            } else {
-                                response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>No se pudo realizar el cambio del estado.</Strong>");
-                            }
+                        if (salida.equals("ok")) {
+                            facadeDespachoPedidos.cambiarEstadoSolicitud(idSolicitud);
+                            Mail.sendMail("Su pedido le ha sido enviado", "Su pedido ha sido enviado satisfactoriamente.", correoDistribuidor);
+                            response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>El despacho ha sido realizado.</Strong>");
                         } else {
-                            response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>La fecha de despacho debe ser anterior a la de solicitud.</Strong>");
+                            response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>No se pudo realizar el cambio del estado.</Strong>");
                         }
                     } else {
-                        response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>Esta seleccionando una fecha anterior de la actual.</Strong>");
+                        response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>La fecha de despacho debe ser anterior a la de solicitud.</Strong>");
                     }
-
+                } else {
+                    response.sendRedirect("pages/listardespachos.jsp?msgSalida=<strong>Esta seleccionando una fecha anterior de la actual.</Strong>");
                 }
-            }finally {
+
+            }
+        } finally {
             out.close();
         }
-        }
-
-        // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-        /**
-         * Handles the HTTP <code>GET</code> method.
-         *
-         * @param request servlet request
-         * @param response servlet response
-         * @throws ServletException if a servlet-specific error occurs
-         * @throws IOException if an I/O error occurs
-         */
-        @Override
-        protected void doGet
-        (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            processRequest(request, response);
-        }
-
-        /**
-         * Handles the HTTP <code>POST</code> method.
-         *
-         * @param request servlet request
-         * @param response servlet response
-         * @throws ServletException if a servlet-specific error occurs
-         * @throws IOException if an I/O error occurs
-         */
-        @Override
-        protected void doPost
-        (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            processRequest(request, response);
-        }
-
-        /**
-         * Returns a short description of the servlet.
-         *
-         * @return a String containing servlet description
-         */
-        @Override
-        public String getServletInfo
-        
-            () {
-        return "Short description";
-        }// </editor-fold>
-
     }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}

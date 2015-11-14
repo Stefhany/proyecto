@@ -3,14 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mail;
+package controller;
 
-import facade.FacadeUsuarios;
+import facade.FacadeSolicitudDistribuidor;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Mona
+ * @author Stefhany Alfonso
  */
-public class CorreoMasivo extends HttpServlet {
+public class ControllerDistributorOrders extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,29 +29,25 @@ public class CorreoMasivo extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        String asunto = request.getParameter("cAsunto");
-        String mensaje = request.getParameter("cCuerpo");
-        int size = Integer.parseInt(request.getParameter("contador"));
-        
-        FacadeUsuarios facadeUsuarios = new FacadeUsuarios();
-        StringBuilder correos = new StringBuilder("");
-        
-        for (int i = 0; i < size + 1; i++) {
-            if (request.getParameter("idPersona[" + i + "]") != null) {
-                correos.append(facadeUsuarios.buscarCorreoPorId(Integer.parseInt(request.getParameter("idPersona[" + i + "]"))));
-                if (i != size - 1 && size > 0) {
-                    correos.append(", ");
+        PrintWriter out = response.getWriter();
+        FacadeSolicitudDistribuidor facadeSolicitud = new FacadeSolicitudDistribuidor();
+        try {
+            if (request.getParameter("idSolicitud") != null) {
+                //out.print("ok");
+                int idSolicit = Integer.parseInt(request.getParameter("idSolicitud").trim());
+                String salida = facadeSolicitud.cancelarPedido(idSolicit);
+                if (salida.equals("ok")) {
+                    String msg = "Su pedido a sido cancelado. Esperamos que pronto vuelva a solicitar otro pedido";
+                    response.sendRedirect("pages/listarmissolicitudesaunaasociacion.jsp?tipo=1&msg=" + msg);
+                }else {
+                    String msg = "No se pudo cancelar el pedido";
+                    response.sendRedirect("pages/listarmissolicitudesaunaasociacion.jsp?tipo=0&msg=" + msg);
                 }
             }
-        }
-
-        if (Mail.sendMail(asunto, mensaje, correos.toString())) {
-            response.sendRedirect("pages/notificaciones.jsp?info=<i class='glyphicon glyphicon-ok'></i> <strong>Envio Correctamente</strong> Se logró el envío, se le envió a los siguientes correos: " + correos.toString());
-        } else {
-            response.sendRedirect("pages/notificaciones.jsp?info=<i class='glyphicon glyphicon-remove'></i> <strong>Envio Fallido</strong> No se logró el envío");
+        }finally{
+        
         }
     }
 
@@ -70,11 +63,7 @@ public class CorreoMasivo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(CorreoMasivo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -88,11 +77,7 @@ public class CorreoMasivo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(CorreoMasivo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -25,6 +25,9 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">   
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -114,18 +117,18 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <%
-                                                                                                  if (uregistrado.getGenero() == 1) {%>
-                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>" 
-                                                                                                  title="Eres: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>"></i>
+                                                                                              <%
+                                            if (uregistrado.getGenero() == 1) {%>
+                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
+                                                                                              title="Eres: <%if (uregistrado != null) {
+                                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                      }%>"></i>
                                             <% } else {%>
-                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>" 
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
                                                                                  title="Eres: <%if (uregistrado != null) {
                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
                                                                                      }%>"></i>
@@ -151,9 +154,24 @@
             </nav>
 
             <div id="page-wrapper">
+                <div>
+                    <%
+                        String tipo = "";
+                        String mensaje = "";
+                        if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                            tipo = request.getParameter("tipo");
+                            mensaje = request.getParameter("msg");
+                    %>
+                    <jsp:include page="msg.jsp" flush="true">
+                        <jsp:param name="tipo" value="<%=tipo%>" /> 
+                        <jsp:param name="sal" value="<%=mensaje%>" /> 
+                    </jsp:include>
+
+                    <%}%>
+                </div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Ofertas</h1>
+                        <h1 class="page-header">Productos en promoción</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -162,7 +180,7 @@
                     <div class="col-lg-12">
                         <div class="panel panel-success">
                             <div class="panel-heading">
-                                <i class="fa fa-calendar-o fa-fw"></i><a href="../paginas/reporteofertas.jsp"><img src="../img/iconos/excel.png" width="24" height="24" title="Descargar en Excel" alt="Generar excel"></a> Solicitar Oferta
+                                <i class="fa fa-calendar-o fa-fw"></i><a href="../paginas/reporteofertas.jsp"><img src="../img/iconos/excel.png" width="24" height="24" title="Descargar en Excel" alt="Generar excel"></a>Productos en promoción
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
@@ -176,7 +194,7 @@
                                                 <th>Cantidad</th>
                                                 <th>Unidad</th>
                                                 <th>Precio</th>
-                                                <th>Fecha Fin</th>
+                                                <th>Fecha Expiración</th>
                                                 <th>Solicitar</th>
                                             </tr>
                                         </thead>
@@ -190,7 +208,7 @@
                                                 <td><%=ofer.getProducts().getNombre()%></td>
                                                 <td><%=ofer.getCantidad()%></td>
                                                 <td><%=ofer.getProducts().getUnidad()%></td>
-                                                <td><%=ofer.getPrecio()%></td>
+                                                <td>$ <%=ofer.getPrecio()%></td>
                                                 <td><%=ofer.getFechaFin()%></td>
 
                                         <!-- <td><a href="listarofertas.jsp?idOffer=<%=ofer.getIdOfertas()%>"><img src="../imagenes/order.png" width="32" height="32" alt="Solicitar " 

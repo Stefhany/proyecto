@@ -276,36 +276,67 @@ public class ProductosAsociadosUsuariosDAO {
         return products;
     }
 
-    public List<ProductosAsociadosUsuariosDTO> enviarCorreoAProductores(int idProduct, Connection con) {
+    public List<UsuariosDTO> enviarCorreoAProductores(int idProduct, Connection con) {
         this.cnn = con;
-        List<ProductosAsociadosUsuariosDTO> asociados = new ArrayList();
+        List<UsuariosDTO> usuarios = new ArrayList();
         try {
-            pstmt = cnn.prepareStatement("SELECT DISTINCT idUsuarios, nombres, correo, idproductos, nombreproducto, "
-                    + " idProductosAsociadosUsuarios, productosId, usuariosId "
-                    + " FROM productos p "
-                    + " INNER JOIN productosasociadosusuarios psu ON psu.productosId = p.idProductos "
-                    + " INNER JOIN usuarios u ON psu.usuariosId = u.idUsuarios "
-                    + " WHERE psu.productosId=?;");
+            pstmt = cnn.prepareStatement("SELECT DISTINCT idUsuarios, correo FROM usuarios u INNER JOIN productosasociadosusuarios psu ON psu.usuariosId = u.idUsuarios WHERE psu.productosId=?;");
             pstmt.setInt(1, idProduct);
             rs = pstmt.executeQuery();
 
             if (rs != null) {
                 while (rs.next()) {
-                    UsuariosDTO nUser = new UsuariosDTO(rs.getInt("idUsuarios"), rs.getString("nombres"));
-                    nUser.setCorreo(rs.getString("correo"));
-                    ProductoDTO nProduct = new ProductoDTO(rs.getInt("idproductos"), rs.getString("nombreproducto"));
-                    ProductosAsociadosUsuariosDTO psodto = new ProductosAsociadosUsuariosDTO(nUser, nProduct);
-                    psodto.setIdProductosAsociadosUsuarios(rs.getInt("idProductosAsociadosUsuarios"));
-                    psodto.setUsuarioId(rs.getInt("usuariosId"));
-                    psodto.setProductoId(rs.getInt("productosId"));
-                    asociados.add(psodto);
+                    UsuariosDTO user = new UsuariosDTO();
+                    user.setIdUsuarios(rs.getInt("idUsuarios"));
+                    user.setCorreo(rs.getString("correo"));
+                    usuarios.add(user);
                 }
-            } else {
-                System.out.println("No se encuetran registros de usuarios con este producto asociado. ");
             }
+            
         } catch (SQLException sqle) {
             System.out.println("Se ha producido esta excepción.. " + sqle.getMessage());
         }
-        return asociados;
+        return usuarios;
+    }
+
+    public List<ProductosAsociadosUsuariosDTO> consultarAsociaciones(Connection con) {
+        this.cnn = con;
+        List<ProductosAsociadosUsuariosDTO> productosAsociados = new LinkedList();
+        try {
+            String consultarAsociaciones = "select productosId, nombreProducto, "
+                    + " usuariosId, concat_ws(' ', u.nombres, u.apellidos) as Asociacion, nombreCategoria, precioProducto "
+                    + " from productosasociadosusuarios pau  "
+                    + " inner join usuarios u on pau.usuariosId = u.idUsuarios "
+                    + " inner join productos p on pau.productosId = p.idProductos "
+                    + " inner join categorias c on p.categoriasId = c.idCategorias"
+                    + " where estadoUser = 3 or estadoUser=5;";
+            pstmt = con.prepareStatement(consultarAsociaciones);
+            rs = pstmt.executeQuery();
+            
+            if (rs != null) {
+                while(rs.next()){
+                 
+                    
+                    UsuariosDTO user = new UsuariosDTO();
+                    user.setNombres(rs.getString("Asociacion"));
+                    
+                    CategoriaDTO categoria = new CategoriaDTO();
+                    categoria.setNombre(rs.getString("nombreCategoria"));
+                    
+                    ProductoDTO producto = new ProductoDTO(categoria);
+                    producto.setNombre(rs.getString("nombreProducto"));
+                    producto.setPrecioProducto(rs.getInt("precioProducto"));
+                    
+                    ProductosAsociadosUsuariosDTO proAso = new ProductosAsociadosUsuariosDTO(user, producto);
+                    proAso.setProductoId(rs.getInt("productosId"));
+                    proAso.setUsuarioId(rs.getInt("usuariosId"));
+                    
+                    productosAsociados.add(proAso);
+                }
+            }
+        }catch(SQLException sqle){
+            System.out.println("No se encontraron asociaciones, con sus productos respectivos.");
+        }
+        return productosAsociados;
     }
 }

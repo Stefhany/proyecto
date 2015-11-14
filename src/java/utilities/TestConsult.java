@@ -12,6 +12,7 @@ import dtos.PedidoSobreOfertaDTO;
 import dtos.ProductoDTO;
 import dtos.ProductosAsociadosUsuariosDTO;
 import dtos.SolicitudDistribuidorDTO;
+import dtos.UsuariosDTO;
 import facade.FacadeAportesProductores;
 import facade.FacadeConsultas;
 import facade.FacadePedidoSobreOferta;
@@ -69,23 +70,20 @@ public class TestConsult {
 ////        aport.setCantidad(650);
 ////        aport.setIdAso(10);
 ////        aport.setSolicitudId(1);
-        FacadeAportesProductores f = new FacadeAportesProductores();
+        //FacadeAportesProductores f = new FacadeAportesProductores();
 //        System.out.println(f.participarASolicitudAsociacion("2015-11-14",200,10,2));
-        System.out.println(f.buscarMisIdAsociados(19, 10));
+        //System.out.println(f.buscarMisIdAsociados(19, 10));
         
-//        List<ProductoDTO> p  =new LinkedList<>();
-//        FacadeProductosAsociadosUsuarios a = new FacadeProductosAsociadosUsuarios();
-//        p = (List<ProductoDTO>) a.asociarProductos(13);
-//        for (ProductoDTO r :p) {
-//            System.out.println(r.getNombre()+" ");
-//        }
+        //FacadeProductosAsociadosUsuarios f = new FacadeProductosAsociadosUsuarios();
+        //System.out.println(f.enviarCorreoAProductores(3));
 //        System.out.println("=============");
 //    
 //        FacadeConsultas fconsult = new FacadeConsultas();
 //        Date fechamenor = new Date("2015-11-10");
 //        Date fechamayor = new Date("2015-11-13");
 //        System.out.println(fconsult.diferenciasDeFechas(fechamenor, fechamayor));
-//        FacadeSolicitudDistribuidor f = new FacadeSolicitudDistribuidor();
+        FacadeSolicitudDistribuidor f = new FacadeSolicitudDistribuidor();
+        System.out.println(f.cancelarPedido(9));
 //        AportesProductoresDTO a = new AportesProductoresDTO();
 //        
 //        System.out.println(f.modificarCantidadSolicitud(10000, 1));
@@ -97,15 +95,15 @@ public class TestConsult {
 //            System.out.println(r.getUsuarioId()+" ");
 //        }
         
-        FacadeSolicitudDistribuidor fsd = new FacadeSolicitudDistribuidor();
-        SolicitudDistribuidorDTO s = new SolicitudDistribuidorDTO();
-        s.setCantidadSolicitada(500);
-        s.setFechaSolicitud("2015-11-30");
-        s.setProductoId(19);
-        s.setDistribuidorId(8);
-        s.setCantidadSolicitudFinal(500);
-        s.setObservacion("prueba");
-        System.out.println(fsd.insertarSolicitudDistribuidor(s));
+//        FacadeSolicitudDistribuidor fsd = new FacadeSolicitudDistribuidor();
+//        SolicitudDistribuidorDTO s = new SolicitudDistribuidorDTO();
+//        s.setCantidadSolicitada(500);
+//        s.setFechaSolicitud("2015-11-30");
+//        s.setProductoId(19);
+//        s.setDistribuidorId(8);
+//        s.setCantidadSolicitudFinal(500);
+//        s.setObservacion("prueba");
+//        System.out.println(fsd.insertarSolicitudDistribuidor(s));
         
     }
         

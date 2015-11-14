@@ -163,6 +163,10 @@
                         <input name="txtIdSolicitud" id="txtIdSolicitud" value="<%if (solDto != null) {
                                 out.print(solDto.getIdSolicitud());
                             }%>" type="hidden">
+                        
+                        <input name="txtIdProducto" id="txtIdProducto" value="<%if (solDto != null) {
+                                out.print(solDto.getProduct().getIdProductos());
+                            }%>" type="hidden">
 
                         <div class="form-group">
                             <label for="txtDistribuidor">Nombre del Distribuidor:</label>

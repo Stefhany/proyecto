@@ -9,6 +9,7 @@ import connection.Conectar;
 import daos.ProductosAsociadosUsuariosDAO;
 import dtos.ProductoDTO;
 import dtos.ProductosAsociadosUsuariosDTO;
+import dtos.UsuariosDTO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -67,7 +68,11 @@ public class FacadeProductosAsociadosUsuarios {
         return proAsoDao.asociarProductos(cnn, idUsuario);
     }
     
-    public List<ProductosAsociadosUsuariosDTO> enviarCorreoAProductores(int idProduct){
+    public List<UsuariosDTO> enviarCorreoAProductores(int idProduct){
         return proAsoDao.enviarCorreoAProductores(idProduct, cnn);
+    }
+    
+    public List<ProductosAsociadosUsuariosDTO> consultarAsociaciones(){
+        return proAsoDao.consultarAsociaciones(cnn);
     }
 }
