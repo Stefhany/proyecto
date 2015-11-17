@@ -36,8 +36,8 @@ public class FacadeRolesUsuarios {
         return rolUserDao.rol(idUser, cnn);
     }
     
-    public String cambiarEstadoUser (int idUser){
-        return rolUserDao.cambiarEstadoUsuario(idUser, cnn);
+    public String cambiarEstadoUser (int estado, int idUser){
+        return rolUserDao.cambiarEstadoUsuario(estado, idUser, cnn);
     }
           
 }

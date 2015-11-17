@@ -168,19 +168,57 @@
                                %>"/>
 
                         <input name="txtUser" id="txtUser" type="hidden" required="true"
-                               value="<%if (solDto != null) {
-                                       out.println(solDto.getUser().getIdUsuarios());
+                               value="<%if (uregistrado != null) {
+                                       out.println(uregistrado.getIdUsuarios());
                                    }
                                %>"/>
+                        
+                        <div class="form-group">
+                            <label for="txtCategoria">Categoría del producto:</label>
+                            <input name="txtCategoria" id="txtCategoria" type="text" required="true"
+                                   value="<%if (solDto != null) {
+                                           out.println(solDto.getProduct().getCategoriaId().getNombre());
+                                       }
+                                   %>" readonly="true" class="form-control"/>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="txtProducto">Nombre del producto:</label>
+                            <input name="txtProducto" id="txtProducto" type="text" required="true"
+                                   value="<%if (solDto != null) {
+                                           out.println(solDto.getProduct().getNombre());
+                                       }
+                                   %>" readonly="true" class="form-control"/>
+                        </div>
+                        
 
                         <div class="form-group">
-                            <label for="txtUser">Nombre del usuario:</label>
-                            <input name="txtUser" id="txtUser" type="text" required="true"
+                            <label for="txtNombreDistribuidor">Nombre del distribuidor:</label>
+                            <input name="txtNombreDistribuidor" id="txtNombreDistribuidor" type="text" required="true"
                                    value="<%if (solDto != null) {
                                            out.println(solDto.getUser().getNombres());
                                        }
                                    %>" readonly="true" class="form-control"/>
                         </div>
+                        
+                        <div class="form-group">
+                            <label for="txtCantidadPedida">Cantidad Pedida:</label>
+                            <input name="txtCantidadPedida" id="txtCantidadPedida" type="text" required="true"
+                                   value="<%if (solDto != null) {
+                                           out.println(solDto.getCantidadSolicitudFinal());
+                                       }
+                                   %>" readonly="true" class="form-control"/>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="txtCantidadAlcanzada">Cantidad Alcanzada:</label>
+                            <input name="txtCantidadAlcanzada" id="txtCantidadAlcanzada" type="text" required="true"
+                                   value="<%if (solDto != null) {
+                                           out.println(solDto.getCantidadSolicitada());
+                                       }
+                                   %>" readonly="true" class="form-control"/>
+                        </div>
+                        
                         <input name="txtCorreoDistribuidor" type="hidden" value="<%if (solDto != null) {
                                 out.println(solDto.getUser().getCorreo());
                             }
@@ -202,15 +240,16 @@
                                        }
                                    %>" readonly="true" class="form-control"/>
                         </div>
-
+                        
                         <div class="form-group">
-                            <label for="txtFechaEnvio">Fecha de entrega:</label>
-                            <input type="date" name="txtFechaEnvio" id="txtFechaEnvio" class="form-control"/>
+                            <label for="txtFechaEnvio">Fecha de envío:</label>
+                            <input type="date" name="txtFechaEnvio" id="txtFechaEnvio" 
+                                   value="" class="form-control" required="true"/>
                         </div>
 
                         <div class="form-group">
                             <label>Observaciones:</label>
-                            <textarea style="resize:none;" class="form-control" rows="3" name="txtObservacion" placeholder="Escribir aquí..."></textarea>
+                            <textarea style="resize:none;" required="true" class="form-control" rows="3" name="txtObservacion" placeholder="Escribir aquí..."></textarea>
                         </div>
                         <div>
                             <span style="color:red; margin-top:45%;"> Maximo 100 letras.</span>

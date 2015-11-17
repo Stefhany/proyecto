@@ -192,7 +192,7 @@ public class SolicitudDistribuidorDAO {
             return res = 0;
         }
     }
-    
+
     public String cancelarSolicitud(int idSolicitud, Connection cnn) {
         try {
             String querryUpdateSolicitud = "UPDATE solicituddistribuidor SET estadoSolicitudDistribuidorId = 2 "
@@ -210,5 +210,39 @@ public class SolicitudDistribuidorDAO {
             msgSalida = "Ha ocurrido lo siguiente... " + sqle.getMessage();
         }
         return msgSalida;
+    }
+
+    public List<SolicitudDistribuidorDTO> consultarPedidos(Connection cnn) {
+        List<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
+        try {
+            String querrySolicitudesDistribuidor = " select idSolicitudDistribuidor, "
+                    + " concat_ws(' ',u.nombres,u.apellidos) as Distribuidor, "
+                    + " nombreProducto, cantidadSolicitada, nombreEstadoSolicitudDistribuidor "
+                    + " from solicituddistribuidor s "
+                    + " inner join usuarios u on s.distribuidorId = u.idUsuarios "
+                    + " inner join productos p on s.productosId = p.idProductos "
+                    + " inner join estadossolicitudesdistribuidores esd  "
+                    + " on s.estadoSolicitudDistribuidorId = esd.idEstadoSolicitudDistribuidor "
+                    + " where idEstadoSolicitudDistribuidor <> 2;";
+            pstmt = cnn.prepareStatement(querrySolicitudesDistribuidor);
+            rs = pstmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    UsuariosDTO user = new UsuariosDTO();
+                    user.setNombres(rs.getString("Distribuidor"));
+                    ProductoDTO pro = new ProductoDTO();
+                    pro.setNombre(rs.getString("nombreProducto"));
+                    EstadoSolicitudDistribuidorDTO estadoSolicitud = new EstadoSolicitudDistribuidorDTO();
+                    estadoSolicitud.setNombreEstadosSolicitudDistribuidor(rs.getString("nombreEstadoSolicitudDistribuidor"));
+                    SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO(user, pro, estadoSolicitud);
+                    solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
+                    solicitud.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
+                    solicitudes.add(solicitud);
+                }
+            }
+        } catch (SQLException sqle) {
+            msgSalida = "Mira lo que ocurrio! " + sqle.getMessage() + " y " + sqle.getSQLState();
+        }
+        return solicitudes;
     }
 }

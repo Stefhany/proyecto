@@ -37,7 +37,7 @@ public class DespachosPedidosDAO {
         String msgSalida = "";
         int resultado = 0;
         try {
-            pstmt = cnn.prepareStatement("INSERT INTO despachospedidos VALUES (null, ?,?,?,?,?,8);");
+            pstmt = cnn.prepareStatement("INSERT INTO despachospedidos VALUES (null, ?,?,?,?,?,1);");
             pstmt.setString(1, nuevoDespacho.getDireccionDespacho());
             pstmt.setString(2, nuevoDespacho.getFechaDespacho());
             pstmt.setString(3, nuevoDespacho.getObservaciones());
@@ -81,16 +81,16 @@ public class DespachosPedidosDAO {
                 while (rs.next()) {
                     CategoriaDTO categoria = new CategoriaDTO();
                     categoria.setNombre(rs.getString("nombreCategoria"));
-                    
+
                     ProductoDTO producto = new ProductoDTO(categoria);
                     producto.setNombre(rs.getString("nombreProducto"));
                     producto.setUnidad(rs.getString("unidad"));
-                    
+
                     UsuariosDTO usuario = new UsuariosDTO();
                     usuario.setNombres(rs.getString("Distribuidor"));
                     usuario.setTelefono(rs.getString("u.telefono"));
                     usuario.setDireccion(rs.getString("u.direccion"));
-                    
+
                     SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO(usuario, producto);
                     solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
                     solicitud.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
@@ -118,24 +118,44 @@ public class DespachosPedidosDAO {
     public SolicitudDistribuidorDTO consultarSolicitud(int id, Connection cnn) {
         SolicitudDistribuidorDTO solicitud = null;
         try {
-            String querrySolicitudesDistribuidor = " select idSolicitudDistribuidor, idUsuarios, "
-                    + " CONCAT(u.nombres,' ',u.apellidos) as Solicitante, "
-                    + " direccion,idProductos, nombreProducto, correo,"
-                    + " fechaSolicitud from usuarios u inner join "
-                    + " solicituddistribuidor s on u.idUsuarios = s.distribuidorId "
+            String querrySolicitudesDistribuidor = " select idSolicitudDistribuidor, "
+                    + " nombreCategoria, nombreProducto, cantidadSolicitada, unidad, "
+                    + " precioSolicitud, observacion, fechaSolicitud, fechaEntregaInterna, "
+                    + " concat_ws(' ',u.nombres, u.apellidos) as Distribuidor, cantidadSolicitudFinal, "
+                    + " u.telefono, u.direccion, nombreEstadoSolicitudDistribuidor, u.correo "
+                    + " from solicituddistribuidor s "
+                    + " inner join usuarios u on s.distribuidorId = u.idUsuarios "
                     + " inner join productos p on s.productosId = p.idProductos "
-                    + " WHERE  idSolicitudDistribuidor = ?;";
+                    + " inner join categorias c on p.categoriasId = c.idCategorias "
+                    + " inner join estadossolicitudesdistribuidores esd "
+                    + " on s.estadoSolicitudDistribuidorId = esd.idEstadoSolicitudDistribuidor "
+                    + " where idSolicitudDistribuidor = ?;";
             pstmt = cnn.prepareStatement(querrySolicitudesDistribuidor);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs != null) {
-                while (rs.next()) {
-                    UsuariosDTO user = new UsuariosDTO(rs.getInt("idUsuarios"), rs.getString("Solicitante"), rs.getString("direccion"));
-                    user.setCorreo(rs.getString("correo"));
-                    ProductoDTO pro = new ProductoDTO(rs.getInt("idProductos"), rs.getString("nombreProducto"));
-                    solicitud = new SolicitudDistribuidorDTO(user, pro);
+                while (rs.next()){
+                    CategoriaDTO categoria = new CategoriaDTO();
+                    categoria.setNombre(rs.getString("nombreCategoria"));
+
+                    ProductoDTO producto = new ProductoDTO(categoria);
+                    producto.setNombre(rs.getString("nombreProducto"));
+                    producto.setUnidad(rs.getString("unidad"));
+
+                    UsuariosDTO usuario = new UsuariosDTO();
+                    usuario.setNombres(rs.getString("Distribuidor"));
+                    usuario.setTelefono(rs.getString("u.telefono"));
+                    usuario.setDireccion(rs.getString("u.direccion"));
+                    usuario.setCorreo(rs.getString("u.correo"));
+
+                    solicitud = new SolicitudDistribuidorDTO(usuario, producto);
                     solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
+                    solicitud.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
+                    solicitud.setPrecioSolicitud(rs.getInt("precioSolicitud"));
+                    solicitud.setObservacion(rs.getString("observacion"));
                     solicitud.setFechaSolicitud(rs.getString("fechaSolicitud"));
+                    solicitud.setFechaEntregaInterna(rs.getString("fechaEntregaInterna"));
+                    solicitud.setCantidadSolicitudFinal(rs.getInt("cantidadSolicitudFinal"));
                 }
             } else {
                 System.out.println("No hay registros...");
@@ -292,5 +312,26 @@ public class DespachosPedidosDAO {
         }
         return msgSalida;
     }
+    
+    
+    public String cambiarEstadoDespacho(int idSolicitud, Connection con) {
+        this.cnn = con;
+        int rtdo = 0;
+        String mensaje = "";
+        try {
+            String sqlInsert = "update despachospedidos set estadoDespachoId = 2 where solicitudDistribuidorId = ?;";
+            pstmt = cnn.prepareStatement(sqlInsert);
 
+            pstmt.setInt(1, idSolicitud);
+            rtdo = pstmt.executeUpdate();
+            if (rtdo != 0) {
+                mensaje = "ok";
+            } else {
+                mensaje = "no";
+            }
+        } catch (SQLException sqle) {
+            mensaje = "Error, detalle " + sqle.getMessage();
+        }
+        return mensaje;
+    }
 }

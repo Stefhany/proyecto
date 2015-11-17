@@ -26,6 +26,9 @@
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
+
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
 
@@ -57,11 +60,11 @@
                 String menu = (String) miSesion.getAttribute("mp");
 
                 FacadeUsuarios facadeUsers = new FacadeUsuarios();
-                ArrayList<UsuariosDTO> lista = new ArrayList<UsuariosDTO>();
+                ArrayList<UsuariosDTO> lista = new ArrayList();
                 lista = (ArrayList<UsuariosDTO>) facadeUsers.consultarRegistros();
 
         %>
-        
+
         <script>
             function confirmar() {
                 if (confirm('¿Esta seguro de deshabilitar este usuario?\
@@ -127,18 +130,18 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <%
-                                                                                                  if (uregistrado.getGenero() == 1) {%>
-                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>" 
-                                                                                                  title="Eres: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>"></i>
+                                                                                              <%
+                                            if (uregistrado.getGenero() == 1) {%>
+                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
+                                                                                              title="Eres: <%if (uregistrado != null) {
+                                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                      }%>"></i>
                                             <% } else {%>
-                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>" 
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
                                                                                  title="Eres: <%if (uregistrado != null) {
                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
                                                                                      }%>"></i>
@@ -173,6 +176,21 @@
                 <!-- /.row -->
                 <div class="row" >
                     <div class="col-lg-12">
+                        <div style="margin-top: 0%;">
+                            <%
+                                String tipo = "";
+                                String mensaje = "";
+                                if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                                    tipo = request.getParameter("tipo");
+                                    mensaje = request.getParameter("msg");
+                            %>
+                            <jsp:include page="msg.jsp" flush="true">
+                                <jsp:param name="tipo" value="<%=tipo%>" /> 
+                                <jsp:param name="sal" value="<%=mensaje%>" /> 
+                            </jsp:include>
+
+                            <%}%>
+                        </div>
                         <div class="panel panel-success">
                             <div class="panel-heading">
                                 <i class="fa fa-calendar-o fa-fw"></i> Usuarios de SIGAA
@@ -194,7 +212,7 @@
                                         </thead>
                                         <tbody id="bodyTabla">
                                             <%
-                                                for (UsuariosDTO user : lista){
+                                                for (UsuariosDTO user : lista) {
                                             %>
                                             <tr>
                                                 <!--<td><%=user.getIdUsuarios()%></td>-->
@@ -227,10 +245,7 @@
         </div>
 
         <%
-            }
-
-            
-                else {
+            } else {
                 response.sendRedirect("../index.jsp");
             }
         %>
@@ -239,8 +254,7 @@
                 Última actualización: 
                 <%
                     FacadeConsultas facadeConsults = new FacadeConsultas();
-                    out.println (facadeConsults.consultarFecha
-                ());%>         |  <a href="http://www.minagricultura.gov.co/" style="color:green;">MinAgricultura</a></p>
+                    out.println(facadeConsults.consultarFecha());%>         |  <a href="http://www.minagricultura.gov.co/" style="color:green;">MinAgricultura</a></p>
         </div>
 
         <!-- /#page-wrapper -->

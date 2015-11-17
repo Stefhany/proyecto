@@ -25,7 +25,7 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-        
+
         <!-- Estilos para mensajes -->
         <link href="../css/estilos.css" rel="stylesheet">
 
@@ -58,7 +58,7 @@
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
                 int idUser = uregistrado.getIdUsuarios();
-                
+
                 FacadeProductosAsociadosUsuarios facadeAsociado = new FacadeProductosAsociadosUsuarios();
                 List<ProductosAsociadosUsuariosDTO> asociados = new LinkedList();
                 asociados = facadeAsociado.consultarAsociaciones();
@@ -126,18 +126,18 @@
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                 <button class="btn btn-default" type="button">
-                                    <%
-                                                                                              if (uregistrado.getGenero() == 1) {%>
-                                    <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                                  out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                              }%>" 
-                                                                                              title="Eres: <%if (uregistrado != null) {
-                                                                                                  out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                              }%>"></i>
+                                                                                          <%
+                                        if (uregistrado.getGenero() == 1) {%>
+                                                                                          <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                            out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                        }%>" 
+                                                                                          title="Eres: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>"></i>
                                         <% } else {%>
-                                    <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                     out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                 }%>" 
+                                                                             <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                            out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                        }%>" 
                                                                              title="Eres: <%if (uregistrado != null) {
                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
                                                                                  }%>"></i>
@@ -227,6 +227,53 @@
                         </table>
                     </div>
 
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <i class="fa fa-calendar-o fa-fw"></i>Consultar
+                            <a><span class="glyphicon glyphicon-download-alt" style="font-size: 140%; color: #16700C;"></span></a>
+                            
+                        </div>
+
+
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <div class="row">
+                                    <form name="filtro" action="../cf" role="form">
+                                        <table name="tableFiltro">
+                                            <th>
+                                                <label for="txtProductor">Nombre Productor:</label>
+                                            <div class="col-sm-11" >
+                                                <input name="txtProductor"  id="txtProductor" type="text" class="form-control">
+                                            </div>
+                                            </th>
+
+                                            <th>
+                                                <label for="txtProducto" >Nombre Producto:</label>
+                                            <div class="col-sm-11">
+                                                <input name="txtProducto" id="txtProducto" type="text" class="form-control">
+                                            </div>
+                                            </th>
+
+                                            <th>
+                                                <label for="txtFecha" class="col-sm-2 control-label">Fecha ofertas:</label>
+                                            <div class="col-sm-11">
+                                                <input name="txtFecha" id="txtFecha" type="date" class="form-control">
+                                            </div>
+                                            </th>
+
+                                            <th><button type="submit" value="Consultar" name="consultar" class="btn btn-success">Consultar</button></th>
+                                        </table>
+                                    </form>
+                                </div>
+
+
+                            </div>
+                            <div style="cursor: pointer; text-align:center;" id="pageNavPosition"></div>
+
+                        </div>        
+                        </table>
+                    </div>
                     <!-- /.list-group -->
                 </div>
                 <!-- /.panel-body -->

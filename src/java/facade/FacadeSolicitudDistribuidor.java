@@ -60,4 +60,8 @@ public class FacadeSolicitudDistribuidor {
     public String cancelarPedido (int idSolicitud){
         return solicitudDao.cancelarSolicitud(idSolicitud, cnn);
     }
+    
+    public List<SolicitudDistribuidorDTO> consultarPedidos(){
+        return solicitudDao.consultarPedidos(cnn);
+    }
 }

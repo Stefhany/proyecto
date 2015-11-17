@@ -112,8 +112,7 @@ public class UsuariosDAO {
             pstmt = cnn.prepareStatement("SELECT idUsuarios, nombres, apellidos, cedula, telefono, direccion,"
                     + " correo, clave, notificaciones, ciudad, fechaNacimiento, estadoUser, genero "
                     + " FROM usuarios"
-                    + " WHERE notificaciones = 1"
-                    + " and (estadoUser != 0);");
+                    + " WHERE estadoUser = 1;");
             rs = pstmt.executeQuery();
             if (rs != null) {
                 while (rs.next()) {

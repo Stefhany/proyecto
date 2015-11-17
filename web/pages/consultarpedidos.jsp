@@ -1,17 +1,18 @@
 <%-- 
-    Document   : listardespachos
-    Created on : 20-oct-2015, 13:18:23
-    Author     : Mona
+    Document   : consultarpedidos
+    Created on : 17-nov-2015, 19:08:51
+    Author     : Stefhany Alfonso
 --%>
 
+<%@page import="facade.FacadeConsultas"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="facade.FacadeRolesUsuarios"%>
-<%@page import="facade.FacadeConsultas"%>
+<%@page import="java.util.List"%>
+<%@page import="facade.FacadeSolicitudDistribuidor"%>
 <%@page import="dtos.SolicitudDistribuidorDTO"%>
-<%@page import="dtos.UsuariosDTO"%>
 <%@page import="java.util.LinkedList"%>
-<%@page import="facade.FacadeDespachosPedidos"%>
+<%@page import="dtos.UsuariosDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,11 +23,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Pedidos por Despachar - SIGAA</title>
+        <title>Pedidos - SIGAA</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-        
+
         <!-- Estilos para mensajes -->
         <link href="../css/estilos.css" rel="stylesheet">
 
@@ -60,9 +61,10 @@
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
 
-                FacadeDespachosPedidos facadeDespachos = new FacadeDespachosPedidos();
-                LinkedList<SolicitudDistribuidorDTO> despachos = new LinkedList();
-                despachos = facadeDespachos.mostrarDespachosPendientes();
+                FacadeSolicitudDistribuidor facadeSolicitud = new FacadeSolicitudDistribuidor();
+                
+                List<SolicitudDistribuidorDTO> pedidos = new LinkedList();
+                pedidos = facadeSolicitud.consultarPedidos();
 
         %>
     </head>
@@ -89,7 +91,7 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#16700C;">
                             <p>
-                                <%                                    int idUsuario = uregistrado.getIdUsuarios();
+                                <%  int idUsuario = uregistrado.getIdUsuarios();
                                     FacadeRolesUsuarios facadeRoles = new FacadeRolesUsuarios();
                                     LinkedList<RolesUsuariosDTO> u = new LinkedList();
                                     u = facadeRoles.mostrarRol(idUsuario);
@@ -120,18 +122,18 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                                                                              <%
-                                            if (uregistrado.getGenero() == 1) {%>
-                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }%>" 
-                                                                                              title="Eres: <%if (uregistrado != null) {
-                                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                      }%>"></i>
+                                        <%
+                                                                                                  if (uregistrado.getGenero() == 1) {%>
+                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>" 
+                                                                                                  title="Eres: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>"></i>
                                             <% } else {%>
-                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }%>" 
+                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>" 
                                                                                  title="Eres: <%if (uregistrado != null) {
                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
                                                                                      }%>"></i>
@@ -166,21 +168,21 @@
                 <!-- /.row -->
                 <div class="row" >
                     <div class="col-lg-12">
-                            <div style="margin-top: 0%;">
-                                <%
-                                    String tipo = "";
-                                    String mensaje = "";
-                                    if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
-                                        tipo = request.getParameter("tipo");
-                                        mensaje = request.getParameter("msg");
-                                %>
-                                <jsp:include page="msg.jsp" flush="true">
-                                    <jsp:param name="tipo" value="<%=tipo%>" /> 
-                                    <jsp:param name="sal" value="<%=mensaje%>" /> 
-                                </jsp:include>
+                        <div style="margin-top: 0%;">
+                            <%
+                                String tipo = "";
+                                String mensaje = "";
+                                if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                                    tipo = request.getParameter("tipo");
+                                    mensaje = request.getParameter("msg");
+                            %>
+                            <jsp:include page="msg.jsp" flush="true">
+                                <jsp:param name="tipo" value="<%=tipo%>" /> 
+                                <jsp:param name="sal" value="<%=mensaje%>" /> 
+                            </jsp:include>
 
-                                <%}%>
-                            </div>
+                            <%}%>
+                        </div>
                         <div class="panel panel-success">
                             <div class="panel-heading">
                                 <i class="fa fa-calendar-o fa-fw"></i> Despachar Pedidos
@@ -192,37 +194,23 @@
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
                                             <tr>  
-                                                <th>Categoría de producto</th>
+                                                <th>Distribuidor</th>
                                                 <th>Nombre producto</th>
-                                                <th>Cantidad</th>
+                                                <th>Cantidad Solicitada</th>
                                                 <th>Unidad</th>
-                                                <th>Precio</th>
-                                                <th>Observación</th>
-                                                <th>Fecha de Entrega</th>
-                                                <th>Nombre Distribuidor</th>
-                                                <th>Teléfono distribuidor</th>
-                                                <th>Dirección distribuidor</th>
-                                                <th>Despachar</th>
+                                                <th>Estado</th>
                                             </tr>                
                                         </thead>
                                         <tbody id="bodyTabla">
                                             <%
-                                                for (SolicitudDistribuidorDTO despa : despachos) {
+                                                for (SolicitudDistribuidorDTO despa : pedidos) {
                                             %>
                                             <tr>
-                                                <td><%=despa.getProduct().getCategoriaId().getNombre()%></td>
+                                                <td><%=despa.getUser().getNombres()%></td>
                                                 <td><%=despa.getProduct().getNombre()%></td>
                                                 <td><%=despa.getCantidadSolicitada()%></td>
-                                                <td><%=despa.getProduct().getUnidad()%></td>
-                                                <td>$ <%=despa.getPrecioSolicitud()%></td>
-                                                <td><%=despa.getObservacion()%></td>
-                                                <td><%=despa.getFechaSolicitud()%></td>
-                                                <td><%=despa.getUser().getNombres()%></td>
-                                                <td><%=despa.getUser().getTelefono()%></td>
-                                                <td><%=despa.getUser().getDireccion()%></td>
-                                                <td><a href="despacharpedido.jsp?idDespacho=<%=despa.getIdSolicitud()%>">    
-                                                        <span class="fa fa-truck" style="font-size:140%; color:green; margin-left:35%;" title="Despachar pedido" alt="Despachar pedido"></span></a>
-                                                </td>
+                                                <td>Kilogramos</td>
+                                                <td><%=despa.getEstadoSolicitud().getNombreEstadosSolicitudDistribuidor()%></td>
                                             </tr>
                                             <%}%>
                                         </tbody>

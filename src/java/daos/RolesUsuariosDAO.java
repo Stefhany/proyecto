@@ -78,14 +78,15 @@ public class RolesUsuariosDAO {
         return rolesUsuario;
     }
     
-    public String cambiarEstadoUsuario (int idUsuario, Connection cc){
+    public String cambiarEstadoUsuario (int estado, int idUsuario, Connection cc){
         this.cnn = cc;
         int res = 0;
         String msgSalida = "";
         try {
-        String querryCambiarEstadoUser = "update usuarios set estadoUser = 2 where idusuarios = ?;";
+        String querryCambiarEstadoUser = "update usuarios set estadoUser = ? where idusuarios = ?;";
         pstmt = cnn.prepareStatement(querryCambiarEstadoUser);
-        pstmt.setInt(1, idUsuario);
+        pstmt.setInt(1, estado);
+        pstmt.setInt(2, idUsuario);
         res = pstmt.executeUpdate();
             if (res != 0) {
                 msgSalida = "ok";

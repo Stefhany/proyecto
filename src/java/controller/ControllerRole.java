@@ -34,6 +34,7 @@ public class ControllerRole extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
+        FacadeRolesUsuarios facadeRolUser = new FacadeRolesUsuarios();
         try {
             if (request.getParameter("btnCambiarRol") != null && request.getParameter("cambiarRol") != null) {
                 RolesUsuariosDTO u = new RolesUsuariosDTO();
@@ -42,23 +43,46 @@ public class ControllerRole extends HttpServlet {
                 int idUsuario = Integer.parseInt(request.getParameter("txtIdUser").trim());
                 String nombreUsuario = request.getParameter("txtNombres").trim();
                 String apellidoUsuario = request.getParameter("txtApellidos").trim();
-                
-                FacadeRolesUsuarios facadeRolUser = new FacadeRolesUsuarios();
-                String salida = facadeRolUser.registrarRol(u);
-                
-                if (salida.equals("ok")) {
-                    String salidaDos = facadeRolUser.cambiarEstadoUser(idUsuario);
-                    if (salidaDos.equals("ok")) {
-                        response.sendRedirect("pages/tablagestionarrol.jsp?msgSalida= <strong>Los cambios han sido satisfactorios.</Strong>");
-                    }else {
-                        response.sendRedirect("pages/tablagestionarrol.jsp?msgSalida= <strong>El estado del usuario no se pudo cambiar.</Strong>");
+
+                int rol = Integer.parseInt(request.getParameter("txtRol").trim());
+
+                if (rol == 2) {
+                    String salida = facadeRolUser.registrarRol(u);
+                    if (salida.equals("ok")) {
+                        String salidaDos = facadeRolUser.cambiarEstadoUser(5, idUsuario);
+                        if (salidaDos.equals("ok")) {
+                            String msg = "El usuario ya puede ingresar a SIGAA normalmente";
+                            response.sendRedirect("pages/tablagestionarrol.jsp?tipo=1&msg=" + msg);
+                        } else {
+                            String msg = "No se cambio el estado del usuario.";
+                            response.sendRedirect("pages/tablagestionarrol.jsp?tipo=0&msg=" + msg);
+                        }
+                    } else {
+                        String msg = "No se le pudo dar permisos al usuario.";
+                        response.sendRedirect("pages/tablagestionarrol.jsp?tipo=0&msg=" + msg);
                     }
-                }else {
-                    response.sendRedirect("pages/tablagestionarrol.jsp?msgSalida= <strong>No se le han dado permisos al usuario: " + nombreUsuario +" "+apellidoUsuario +".</Strong>");
-                }              
-                                
+                } else if (rol == 3) {
+                    String salida = facadeRolUser.registrarRol(u);
+                    if (salida.equals("ok")) {
+                        String salidaDos = facadeRolUser.cambiarEstadoUser(2, idUsuario);
+                        if (salidaDos.equals("ok")) {
+                            String msg = "El usuario ya puede ingresar a SIGAA normalmente";
+                            response.sendRedirect("pages/tablagestionarrol.jsp?tipo=1&msg=" + msg);
+                        } else {
+                            String msg = "No se cambio el estado del usuario.";
+                            response.sendRedirect("pages/tablagestionarrol.jsp?tipo=0&msg=" + msg);
+                        }
+                    } else {
+                        String msg = "No se le pudo dar permisos al usuario.";
+                        response.sendRedirect("pages/tablagestionarrol.jsp?tipo=0&msg=" + msg);
+                    }
+                } else {
+                    String msg = "No se que paso.";
+                    response.sendRedirect("pages/tablagestionarrol.jsp?tipo=0&msg=" + msg);
+                }
+
             }
-        }finally {
+        } finally {
             out.close();
         }
     }

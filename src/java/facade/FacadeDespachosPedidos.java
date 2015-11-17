@@ -46,7 +46,7 @@ public class FacadeDespachosPedidos {
         return despachoDao.consultarFecha(fechaInicial, fechaFinal, cnn);
     }
     
-    public static String cambiarEstadoSolicitud(int idSolicitud){
+    public String cambiarEstadoSolicitud(int idSolicitud){
         return despachoDao.cambiarEstadoSolicitud(idSolicitud, cnn);
     }
     
@@ -64,5 +64,9 @@ public class FacadeDespachosPedidos {
     
     public int validarFechaAporte(String fechaIngresar, int idSolicitud){
         return despachoDao.validarFechaAporte(fechaIngresar, idSolicitud, cnn);
+    }
+    
+    public String cambiarEstadoDespacho(int idSolicitud){
+        return despachoDao.cambiarEstadoDespacho(idSolicitud, cnn);
     }
 }
