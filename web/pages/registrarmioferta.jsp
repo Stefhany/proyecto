@@ -181,12 +181,17 @@
 
 
                         <div class="form-group">
-                            <label for ="txtCantidad">Cantidad:</label>
+                            <label for ="txtCantidad">Cantidad a ofertar:</label>
                             <input name="txtCantidad" id="txtCantidad" type="text" placeholder="Cantidad de la oferta" class="form-control"/><br>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top:-5%;">
+                            <label for ="txtUnidad">Unidad:</label>
+                            <input name="txtUnidad" id="txtUnidad" type="text" value="Kilogramos" class="form-control" readonly="true"/><br>
                         </div>
 
                         <div class="form-group" style="margin-top:-5%;">
-                            <label for ="txtPrecio">Precio:</label>
+                            <label for ="txtPrecio">Precio del producto:</label>
                             <input name="txtPrecio" id="txtPrecio" type="text" placeholder="Precio de la oferta" class="form-control"/><br>
                         </div>
 

@@ -1,18 +1,17 @@
 <%-- 
-    Document   : misparticipaciones
-    Created on : 10-nov-2015, 6:25:12
+    Document   : consultarmispedidossobremisofertas
+    Created on : 17-nov-2015, 2:07:00
     Author     : Stefhany Alfonso
 --%>
 
-<%@page import="facade.FacadeConsultas"%>
-<%@page import="dtos.RolesUsuariosDTO"%>
-<%@page import="dtos.RolesUsuariosDTO"%>
-<%@page import="facade.FacadeRolesUsuarios"%>
+<%@page import="facade.FacadePedidoSobreOferta"%>
+<%@page import="dtos.PedidoSobreOfertaDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="java.util.LinkedList"%>
-<%@page import="dtos.AportesProductoresDTO"%>
-<%@page import="facade.FacadeAportesProductores"%>
 <%@page import="dtos.UsuariosDTO"%>
+<%@page import="dtos.RolesUsuariosDTO"%>
+<%@page import="java.util.LinkedList"%>
+<%@page import="facade.FacadeRolesUsuarios"%>
+<%@page import="facade.FacadeConsultas"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,10 +21,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Solicitudes - SIGAA</title>
+        <title>Pedidos sobre ofertas - SIGAA</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -56,14 +58,17 @@
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
                 int idUser = uregistrado.getIdUsuarios();
-                List<AportesProductoresDTO> misAportes = new LinkedList();
-                FacadeAportesProductores facadeAport = new FacadeAportesProductores();
-                misAportes = facadeAport.consultarMisParticipaciones(idUser);
+
+                List<PedidoSobreOfertaDTO> misPedidos = new LinkedList();
+                FacadePedidoSobreOferta facadePedido = new FacadePedidoSobreOferta();
+                misPedidos = facadePedido.consultarPedidosSobreMisOfertas(idUser);
         %>
 
         <script>
             function confirmar() {
-                if (confirm('¿Esta seguro de borrar este pedido?')) {
+                if (confirm('¿Esta seguro de enviar este pedido? \n\
+Recuerde tener presente los términos y condiciones del pedido ya que al despacharlo, \n\
+no puede retratarse. ')) {
                     return true;
                 } else {
                     return false;
@@ -119,41 +124,41 @@
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                        <ul class="nav" id="side-menu">
-                            <li class="sidebar-search">
-                                <div class="input-group custom-search-form">
-                                    <button class="btn btn-default" type="button">
-                                        <%
-                                                                                                  if (uregistrado.getGenero() == 1) {%>
-                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>" 
-                                                                                                  title="Eres: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>"></i>
-                                            <% } else {%>
-                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>" 
-                                                                                 title="Eres: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>"></i>
-                                            <%}
-                                            %>
-                                    </button>
-                                    </span>
-                                </div>
-                                <!-- /input-group -->
-                            </li>
-                        </ul>
-                        <ul style="margin-left: 1,5%;">
-                            <li>
-                                <%
-                                    out.print(menu);
-                                %>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <button class="btn btn-default" type="button">
+                                    <%
+                                                                                              if (uregistrado.getGenero() == 1) {%>
+                                    <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                                  out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                              }%>" 
+                                                                                              title="Eres: <%if (uregistrado != null) {
+                                                                                                  out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                              }%>"></i>
+                                        <% } else {%>
+                                    <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                     out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                 }%>" 
+                                                                             title="Eres: <%if (uregistrado != null) {
+                                                                                     out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                 }%>"></i>
+                                        <%}
+                                        %>
+                                </button>
+                                </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                    </ul>
+                    <ul style="margin-left: 1,5%;">
+                        <li>
+                            <%
+                                out.print(menu);
+                            %>
+                        </li>
+                    </ul>
+                </div>
                 <!-- /.sidebar-collapse -->
             </div>
             <!-- /.navbar-static-side -->
@@ -162,16 +167,44 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Participaciones en los pedidos por la asociación</h1>
+                    <h1 class="page-header">Pedidos de distrbuidores a mis promociones publicadas</h1>
                 </div>
                 <!-- /.col-lg-12 -->
+            </div>
+
+            <div style="margin-top: 0%;">
+                <%
+                    String tipo = "";
+                    String mensaje = "";
+                    if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                        tipo = request.getParameter("tipo");
+                        mensaje = request.getParameter("msg");
+                %>
+                <jsp:include page="msg.jsp" flush="true">
+                    <jsp:param name="tipo" value="<%=tipo%>" /> 
+                    <jsp:param name="sal" value="<%=mensaje%>" /> 
+                </jsp:include>
+
+                <%}%>
             </div>
             <!-- /.row -->
             <div class="row" >
                 <div class="col-lg-12">
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                            <i class="fa fa-calendar-o fa-fw"></i>Mis participaciones
+                            <i class="fa fa-calendar-o fa-fw"></i>Pedidos de distrbuidores a mis promociones publicadas
+                            <div style="margin-left: 97%; margin-top: -2%;">
+                            <form action="../ho">
+                            <input type="hidden" value="<%if (uregistrado != null) {
+                                    out.print(uregistrado.getIdUsuarios());
+                                }
+                                   %>" name="txtIdUsuario">
+                            <input type="hidden" name="generar" id="solicitar" value="generar" />
+                            <button name="btnHistorial">
+                                <span class="glyphicon glyphicon-download-alt" 
+                                      title="Generar pdf de mis productos"
+                                      alt="Generar pdf de mis productos"></span></button>
+                            </form></div>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -183,28 +216,30 @@
                                             <th>Nombre producto</th>
                                             <th>Cantidad solicitada</th>
                                             <th>Unidad</th>
+                                            <th>Precio</th>
                                             <th>Fecha de Entrega</th>
-                                            <th>Cancelar</th>
+                                            <th>Despachar</th>
                                         </tr>                
                                     </thead>
                                     <tbody id="bodyTabla">
                                         <%
-                                            for (AportesProductoresDTO aport : misAportes) {
+                                            for (PedidoSobreOfertaDTO pedido : misPedidos) {
                                         %>
                                         <tr>
-                                            <td><%=aport.getProAsoId().getProducto().getCategoriaId().getNombre()%></td>
-                                            <td><%=aport.getProAsoId().getProducto().getNombre()%></td>
-                                            <td><%=aport.getCantidad()%></td> 
-                                            <td>Kilogramos</td>
-                                            <td><%=aport.getFechaEntrega()%></td>
-                                            <td><a href="cancelarparticipacion.jsp?idAporte=<%=aport.getIdAporteProductor()%>"> <span class="glyphicon glyphicon-remove-circle" 
-                                                                                                 style="font-size:140%; color:green; margin-left:35%;" 
-                                                                                                 alt="Cancelar pedido de: <%=aport.getProAsoId().getProducto().getNombre()%> " 
-                                                                                                 title="Cancelar pedido de: <%=aport.getProAsoId().getProducto().getNombre()%>"></span></a>
+                                            <td><%=pedido.getUser().getNombres()%></td>
+                                            <td><%=pedido.getOffer().getProducts().getNombre()%></td>
+                                            <td><%=pedido.getCantidadSolicitada()%></td> 
+                                            <td><%=pedido.getOffer().getProducts().getUnidad()%></td>
+                                            <td>$ <%=pedido.getOffer().getPrecio()%></td>
+                                            <td><%=pedido.getFechaSolicitud()%></td>
+                                            <td><a href="../co?idPedido=<%=pedido.getIdPedidosOfertas()%>"> <span class="fa fa-truck" 
+                                                                                                                 style="font-size:140%; color:green; margin-left:35%;" onclick="return confirmar();"
+                                                                                                                 alt="Despachar pedido de: <%=pedido.getUser().getNombres()%>" 
+                                                                                                                 title="Cancelar pedido de: <%=pedido.getUser().getNombres()%>"></span></a>
                                             </td>
                                         </tr>
 
-                                    <%}%>
+                                        <%}%>
                                     </tbody>
                                 </table>
 
@@ -275,3 +310,4 @@
 </body>
 
 </html>
+

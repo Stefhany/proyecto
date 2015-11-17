@@ -106,7 +106,9 @@ public class TestConsult {
 //        s.setCantidadSolicitudFinal(500);
 //        s.setObservacion("prueba");
 //        System.out.println(fsd.insertarSolicitudDistribuidor(s));
-        
+        FacadeUsuarios u = new FacadeUsuarios();
+        System.out.println(u.enviarCorreoAlDespacharUnaOferta(3));
+                 
     }
         
 }

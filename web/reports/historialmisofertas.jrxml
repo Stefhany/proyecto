@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="historialmisofertas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="16cd59e7-efa8-4dab-aa5d-d9aa44803161">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="dataset1" uuid="36933ae2-cee4-41c0-9b5d-247d835cf015"/>
+	<subDataset name="Table Dataset 1" uuid="a4c9fea7-0918-4a3d-8eff-3e3564857618"/>
+	<parameter name="idUsuario" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select idPedidosOfertas, nombreCategoria, nombreProducto, cantidadOfertaFinal,
+concat_ws(' ',solicitante.nombres, solicitante.apellidos) as Distribuidor,
+cantidadSolicitada, fechaSolicitada, nombreestadopedidooferta, idOfertas
+from pedidosofertas po
+inner join usuarios solicitante on po.usuarioSolicitadoId = solicitante.idUsuarios
+inner join ofertas o on po.ofertasId = o.idOfertas
+inner join productosasociadosusuarios pau on o.productosAsociadosUsuariosId = pau.idProductosAsociadosUsuarios
+inner join usuarios asociado on pau.usuariosId = asociado.idUsuarios
+inner join productos p on pau.productosId = p.idProductos
+inner join categorias c on p.categoriasId = c.idCategorias
+inner join estadospedidoosofertas epo on po.estadoPedidoOfertaId = epo.idEstadoPedidoOferta
+where asociado.idUsuarios = $P{idUsuario}
+order by idOfertas asc;]]>
+	</queryString>
+	<field name="idPedidosOfertas" class="java.lang.Integer"/>
+	<field name="nombreCategoria" class="java.lang.String"/>
+	<field name="nombreProducto" class="java.lang.String"/>
+	<field name="cantidadOfertaFinal" class="java.lang.Integer"/>
+	<field name="Distribuidor" class="java.lang.String"/>
+	<field name="cantidadSolicitada" class="java.lang.Integer"/>
+	<field name="fechaSolicitada" class="java.sql.Date"/>
+	<field name="nombreestadopedidooferta" class="java.lang.String"/>
+	<field name="idOfertas" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="128" splitType="Stretch">
+			<image>
+				<reportElement uuid="5b3aedec-1402-4b74-bae7-73ceceafc26e" x="712" y="11" width="75" height="57"/>
+				<imageExpression><![CDATA["C:\\Users\\Stefhany Alfonso\\Documents\\FarmersMarket-cambios\\web\\img\\logoFinal.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="2c5c7cd6-c232-4e93-a9d3-33e520982088" x="229" y="11" width="343" height="100"/>
+				<textElement textAlignment="Center">
+					<font fontName="Bodoni MT Black" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PUBLICACIONES SOBRE MIS PRODUCTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="be10f624-637d-4020-a2e1-f8a42d7f6fa8" x="605" y="78" width="187" height="46"/>
+				<textElement textAlignment="Right">
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA["No permitamos que nuestras tristezas amarguen nuestro paladar"
+S.A.  ]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="192d0f1d-2c97-4eb9-bd40-1178f4bf7d0d" x="8" y="28" width="210" height="76"/>
+				<imageExpression><![CDATA["C:\\Users\\Stefhany Alfonso\\Downloads\\foto1.jpeg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="784e4201-7689-4baa-93a8-a28a48be042b" x="4" y="4" width="790" height="20" forecolor="#F0F0F0" backcolor="#C5EFAF"/>
+			</rectangle>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f51c3381-c01d-468f-834d-64bd47618742" x="4" y="6" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoría]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="eb372532-e99d-4c70-87d2-3d9a38707e04" x="111" y="6" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4ca1bdc2-da6e-4738-8ce6-16266aa8c12c" x="219" y="6" width="122" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad Publicada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1f2b3e19-f0dc-4536-b0a1-c06fbc2ab9bc" x="349" y="5" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Distribuidor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ffa6e059-789a-4545-a54a-82a2119c0df8" x="458" y="5" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad Pedida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6d0f3a07-548f-4401-bb1e-2c2c1e10505e" x="567" y="5" width="118" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Entrega]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f0427015-c288-463f-bc5c-4c796e416979" x="694" y="5" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado Pedido]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement uuid="79f300db-5163-43c2-a1fa-16f76e9f7f3e" x="3" y="7" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{nombreCategoria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c3471ba5-b5af-4132-a6d7-e922a4bff1a0" x="109" y="8" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{nombreProducto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b504e3b1-72e0-4150-872e-7fd86b929473" x="229" y="8" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{cantidadOfertaFinal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e1b8b9e3-642e-4322-a80b-924858711465" x="349" y="7" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Distribuidor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1ff5ece1-7844-4e08-b82a-4d979f482aa1" x="458" y="7" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{cantidadSolicitada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy/MM/dd">
+				<reportElement uuid="797b06e9-e12c-4bc5-8ffe-c4a45b39fe2a" x="577" y="7" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fechaSolicitada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a8401204-2fb6-4dc9-8f18-bdf91a957d1f" x="694" y="7" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{nombreestadopedidooferta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement uuid="e5c41fd4-c55d-4773-a5a2-5b96ffd79c50" x="668" y="6" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="65deee54-6ee2-4bef-9c2f-a54a9c33bf3c" x="748" y="5" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="ac196652-0105-4c45-9af3-7e3fe5402bdd" x="11" y="7" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

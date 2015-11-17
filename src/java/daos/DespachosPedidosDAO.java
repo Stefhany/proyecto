@@ -5,6 +5,7 @@
  */
 package daos;
 
+import dtos.CategoriaDTO;
 import dtos.DespachosPedidosDTO;
 import dtos.ProductoDTO;
 import dtos.SolicitudDistribuidorDTO;
@@ -59,23 +60,42 @@ public class DespachosPedidosDAO {
     public LinkedList<SolicitudDistribuidorDTO> mostrarDespachosPendientes(Connection cnn) throws MyException {
         LinkedList<SolicitudDistribuidorDTO> solicitudes = new LinkedList();
         try {
-            String querryAllDespachos = " select idSolicitudDistribuidor, idUsuarios,"
-                    + " CONCAT(u.nombres,' ',u.apellidos) as Solicitante, "
-                    + " direccion as direccion, telefono as telefono, idProductos, nombreProducto,"
-                    + " cantidadSolicitada, fechaSolicitud, fechaEntregaInterna from usuarios u inner join "
-                    + " solicituddistribuidor s on u.idUsuarios = s.distribuidorId "
+            String querryAllDespachos = " select idSolicitudDistribuidor, nombreCategoria, "
+                    + " nombreProducto, cantidadSolicitada, unidad, precioSolicitud, "
+                    + " observacion, fechaSolicitud, fechaEntregaInterna, "
+                    + " concat_ws(' ',u.nombres, u.apellidos) as Distribuidor, "
+                    + " u.telefono, u.direccion "
+                    + " from solicituddistribuidor s "
+                    + " inner join usuarios u on s.distribuidorId = u.idUsuarios "
                     + " inner join productos p on s.productosId = p.idProductos "
-                    + " where s.estadosPedidosId = 5;";
+                    + " inner join categorias c on p.categoriasId = c.idCategorias "
+                    + " inner join estadossolicitudesdistribuidores esd "
+                    + " on s.estadoSolicitudDistribuidorId = esd.idEstadoSolicitudDistribuidor "
+                    + " where idEstadoSolicitudDistribuidor = 3 "
+                    + " or (fechaEntregaInterna <= current_date() "
+                    + " AND current_date() <= fechaSolicitud) "
+                    + " order by fechaSolicitud asc;";
             pstmt = cnn.prepareStatement(querryAllDespachos);
             rs = pstmt.executeQuery();
             if (rs != null) {
                 while (rs.next()) {
-                    UsuariosDTO user = new UsuariosDTO(rs.getInt("idUsuarios"), rs.getString("Solicitante"),
-                            rs.getString("telefono"), rs.getString("direccion"));
-                    ProductoDTO pro = new ProductoDTO(rs.getInt("idProductos"), rs.getString("nombreProducto"));
-                    SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO(user, pro);
+                    CategoriaDTO categoria = new CategoriaDTO();
+                    categoria.setNombre(rs.getString("nombreCategoria"));
+                    
+                    ProductoDTO producto = new ProductoDTO(categoria);
+                    producto.setNombre(rs.getString("nombreProducto"));
+                    producto.setUnidad(rs.getString("unidad"));
+                    
+                    UsuariosDTO usuario = new UsuariosDTO();
+                    usuario.setNombres(rs.getString("Distribuidor"));
+                    usuario.setTelefono(rs.getString("u.telefono"));
+                    usuario.setDireccion(rs.getString("u.direccion"));
+                    
+                    SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO(usuario, producto);
                     solicitud.setIdSolicitud(rs.getInt("idSolicitudDistribuidor"));
                     solicitud.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
+                    solicitud.setPrecioSolicitud(rs.getInt("precioSolicitud"));
+                    solicitud.setObservacion(rs.getString("observacion"));
                     solicitud.setFechaSolicitud(rs.getString("fechaSolicitud"));
                     solicitud.setFechaEntregaInterna(rs.getString("fechaEntregaInterna"));
                     solicitudes.add(solicitud);
@@ -139,14 +159,12 @@ public class DespachosPedidosDAO {
 //                    + " from pedidosofertas "
 //                    + " where idPedidosOfertas = ?;";
             //pstmt.setString(1, fechaSolicitud);
-            
             //pstmt.setString(parameterIndex, fec);
-            
             fec = rs.getString("fecha");
-            
+
             if (fechaActual.equals(fec)) {
                 res = true;
-            }else {
+            } else {
                 res = false;
             }
 
@@ -155,13 +173,13 @@ public class DespachosPedidosDAO {
         }
         return res;
     }
-    
+
     public String cambiarEstadoSolicitud(int idSolicitud, Connection con) {
         this.cnn = con;
         int rtdo = 0;
         String mensaje = "";
         try {
-            String sqlInsert = "update solicituddistribuidor set estadosPedidosId = 8 where idSolicitudDistribuidor = ?;";
+            String sqlInsert = "update solicituddistribuidor set estadoSolicitudDistribuidorId = 4 where idSolicitudDistribuidor = ?;";
             pstmt = cnn.prepareStatement(sqlInsert);
 
             pstmt.setInt(1, idSolicitud);
@@ -176,7 +194,7 @@ public class DespachosPedidosDAO {
         }
         return mensaje;
     }
-    
+
     public String cambiarEstadoAProductores(int idSolicitud, Connection con) {
         this.cnn = con;
         int rtdo = 0;
@@ -197,7 +215,7 @@ public class DespachosPedidosDAO {
         }
         return mensaje;
     }
-    
+
     public int validarFecha(String fechaIngresar, Connection con) {
         this.cnn = con;
         int salida = 0;
@@ -222,9 +240,9 @@ public class DespachosPedidosDAO {
         }
         return msgSalida;
     }
-    
+
     public int validarFechaDespacho(String fechaIngresar, int idSolicitud, Connection con) {
-        this.cnn =  con;
+        this.cnn = con;
         int salida = 0;
         int msgSalida = 0;
         try {
@@ -248,7 +266,7 @@ public class DespachosPedidosDAO {
         }
         return msgSalida;
     }
-    
+
     public int validarFechaAporte(String fechaIngresar, int idSolicitud, Connection con) {
         this.cnn = con;
         int salida = 0;
@@ -274,6 +292,5 @@ public class DespachosPedidosDAO {
         }
         return msgSalida;
     }
-    
-    
+
 }

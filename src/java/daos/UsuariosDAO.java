@@ -832,4 +832,26 @@ public class UsuariosDAO {
         return res;
     }
     
+    public String enviarCorreoAlDespacharUnaOferta(int idPedidoOferta, Connection cn) {
+        this.cnn = cn;
+        String res = "";
+        try {
+            String queryConsultConfirmation = "select correo from pedidosofertas po "
+                    + " inner join usuarios u  on po.usuarioSolicitadoId = u.idUsuarios "
+                    + " where idPedidosOfertas = ?; ";
+            pstmt = cnn.prepareStatement(queryConsultConfirmation);
+            pstmt.setInt(1, idPedidoOferta);
+            rs = pstmt.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    res = rs.getString("correo");
+                }
+            }
+        } catch (SQLException sqle) {
+            res = "Ocurrio la siguiente exepción: " + sqle.getMessage();
+        }
+        return res;
+    }
+    
 }

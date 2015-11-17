@@ -155,4 +155,8 @@ public class FacadeUsuarios {
 
         Connection conn = ds.getConnection();
     }
+    
+    public String enviarCorreoAlDespacharUnaOferta(int idPedidoOferta){
+        return userDao.enviarCorreoAlDespacharUnaOferta(idPedidoOferta, cnn);
+    }
 }

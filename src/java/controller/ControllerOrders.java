@@ -80,7 +80,7 @@ public class ControllerOrders extends HttpServlet {
                 FacadeConsultas facadeConsults = new FacadeConsultas();
                 int fechasHabiles = facadeConsults.diferenciasDeFechas(fechaSolicitada, fechaRegistrada);
                 if (fechasHabiles > 0) {
-                    if (contar >= cantidadSolicitada) {
+                    if (contar > cantidadSolicitada || contar == cantidadSolicitada) {
                         FacadePedidoSobreOferta facadeOrderOffer = new FacadePedidoSobreOferta();
                         String salidaDos = facadeOrderOffer.registrarPedidoSobreOferta(Integer.parseInt(request.getParameter("txtCantidadSolicitada").trim()),
                                 Integer.parseInt(request.getParameter("txtIdOferta").trim()), request.getParameter("txtFechaSolicitud").trim(),

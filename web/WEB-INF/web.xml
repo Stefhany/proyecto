@@ -64,6 +64,14 @@
         <servlet-name>ControllerDistributorOrders</servlet-name>
         <servlet-class>controller.ControllerDistributorOrders</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HistorialOfertas</servlet-name>
+        <servlet-class>reports.HistorialOfertas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteCertificacion</servlet-name>
+        <servlet-class>reports.ReporteCertificacion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Conectar</servlet-name>
         <url-pattern>/con</url-pattern>
@@ -127,6 +135,14 @@
     <servlet-mapping>
         <servlet-name>ControllerDistributorOrders</servlet-name>
         <url-pattern>/cod</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HistorialOfertas</servlet-name>
+        <url-pattern>/ho</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteCertificacion</servlet-name>
+        <url-pattern>/rc</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

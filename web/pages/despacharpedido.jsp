@@ -195,7 +195,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="txtFechaSolicitada">Fecha solicitada:</label>
+                            <label for="txtFechaSolicitada">Fecha de entrega al distribuidor:</label>
                             <input type="date" name="txtFechaSolicitada" id="txtFechaSolicitada" 
                                    value="<%if (solDto != null) {
                                            out.print(solDto.getFechaSolicitud());

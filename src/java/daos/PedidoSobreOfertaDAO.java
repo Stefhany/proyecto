@@ -139,30 +139,30 @@ public class PedidoSobreOfertaDAO {
                 while (rs.next()) {
                     UsuariosDTO user = new UsuariosDTO();
                     user.setIdUsuarios(rs.getInt("u.idusuarios"));
-                    
+
                     CategoriaDTO categoria = new CategoriaDTO();
                     categoria.setNombre(rs.getString("nombreCategoria"));
-                    
+
                     ProductoDTO producto = new ProductoDTO(categoria);
                     producto.setNombre(rs.getString("nombreProducto"));
-                    
+
                     UsuariosDTO userAso = new UsuariosDTO();
                     userAso.setIdUsuarios(rs.getInt("pau.usuariosId"));
                     userAso.setNombres(rs.getString("Productor"));
-                    
+
                     OfertasDTO offer = new OfertasDTO(producto, userAso);
                     offer.setIdOfertas(rs.getInt("idofertas"));
                     offer.setPrecio(rs.getInt("precio"));
-                    
+
                     EstadoPedidoOfertaDTO estadoPedidoSobreOferta = new EstadoPedidoOfertaDTO();
                     estadoPedidoSobreOferta.setNombreEstadoPedidoSobreOferta(rs.getString("nombreestadopedidooferta"));
-                    
+
                     PedidoSobreOfertaDTO pedidoSobreOferta = new PedidoSobreOfertaDTO(offer, estadoPedidoSobreOferta, user);
                     pedidoSobreOferta.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
                     pedidoSobreOferta.setFechaSolicitud(rs.getString("fechaSolicitada"));
-                    
+
                     pedidosSobreUnaOferta.add(pedidoSobreOferta);
-                           
+
                 }
             }
         } catch (SQLException sqle) {
@@ -171,4 +171,80 @@ public class PedidoSobreOfertaDAO {
         return pedidosSobreUnaOferta;
     }
 
+    public List<PedidoSobreOfertaDTO> consultarPedidosSobreMisOfertas(int idUser, Connection cn) {
+        this.cnn = cn;
+        List<PedidoSobreOfertaDTO> pedidosSobreUnaOferta = new LinkedList();
+        try {
+            String misPedidosSobreMisOfertas = "select idPedidosOfertas, pou.nombres, nombreProducto, unidad, "
+                    + " cantidadSolicitada, precio, fechaSolicitada, idofertas, "
+                    + " nombreestadopedidooferta, pau.usuariosId "
+                    + " from pedidosofertas po "
+                    + " inner join usuarios pou on po.usuarioSolicitadoId = pou.idUsuarios "
+                    + " inner join ofertas o on po.ofertasId = o.idOfertas "
+                    + " inner join productosasociadosusuarios pau on "
+                    + " o.productosAsociadosUsuariosId = pau.idProductosAsociadosUsuarios "
+                    + " inner join productos p on pau.productosId = p.idProductos "
+                    + " inner join usuarios uaso on pau.usuariosId = uaso.idUsuarios "
+                    + " inner join estadospedidoosofertas epo "
+                    + " on po.estadoPedidoOfertaId = epo.idEstadoPedidoOferta "
+                    + " where uaso.idUsuarios = ? "
+                    + " and estadoPedidoOfertaId = 1"
+                    + " order by fechaSolicitada asc;";
+            pstmt = cnn.prepareStatement(misPedidosSobreMisOfertas);
+            pstmt.setInt(1, idUser);
+            rs = pstmt.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    UsuariosDTO user = new UsuariosDTO();
+                    user.setNombres(rs.getString("pou.nombres"));
+
+                    ProductoDTO producto = new ProductoDTO();
+                    producto.setNombre(rs.getString("nombreProducto"));
+                    producto.setUnidad(rs.getString("unidad"));
+
+                    UsuariosDTO userAso = new UsuariosDTO();
+                    userAso.setIdUsuarios(rs.getInt("pau.usuariosId"));
+
+                    OfertasDTO offer = new OfertasDTO(producto, userAso);
+                    offer.setIdOfertas(rs.getInt("idofertas"));
+                    offer.setPrecio(rs.getInt("precio"));
+
+                    EstadoPedidoOfertaDTO estadoPedidoSobreOferta = new EstadoPedidoOfertaDTO();
+                    estadoPedidoSobreOferta.setNombreEstadoPedidoSobreOferta(rs.getString("nombreestadopedidooferta"));
+
+                    PedidoSobreOfertaDTO pedidoSobreOferta = new PedidoSobreOfertaDTO(offer, estadoPedidoSobreOferta, user);
+                    pedidoSobreOferta.setIdPedidosOfertas(rs.getInt("idPedidosOfertas"));
+                    pedidoSobreOferta.setCantidadSolicitada(rs.getInt("cantidadSolicitada"));
+                    pedidoSobreOferta.setFechaSolicitud(rs.getString("fechaSolicitada"));
+
+                    pedidosSobreUnaOferta.add(pedidoSobreOferta);
+
+                }
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Ha ocurrido la siguiente excepción: " + sqle.getMessage());
+        }
+        return pedidosSobreUnaOferta;
+    }
+
+    public int despacharOferta(int idPedidoOferta, Connection con) {
+        this.cnn = con;
+        int res = 0;
+        try {
+            pstmt = cnn.prepareStatement("update pedidosofertas set estadoPedidoOfertaId = 3 where idPedidosOfertas = ?;");
+            pstmt.setInt(1, idPedidoOferta);
+            res = pstmt.executeUpdate();
+
+            if (res != 0) {
+                res = 1;
+            }else {
+                res = 0;
+            }
+
+        } catch (SQLException sql) {
+            System.out.println("Mire: " + sql.getMessage());
+        }
+        return res;
+    }
 }

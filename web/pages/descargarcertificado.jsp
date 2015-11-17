@@ -1,28 +1,24 @@
 <%-- 
-    Document   : listardespachos
-    Created on : 20-oct-2015, 13:18:23
-    Author     : Mona
+    Document   : descargarcertificado
+    Created on : 17-nov-2015, 8:22:35
+    Author     : Stefhany Alfonso
 --%>
 
-<%@page import="dtos.RolesUsuariosDTO"%>
-<%@page import="dtos.RolesUsuariosDTO"%>
-<%@page import="facade.FacadeRolesUsuarios"%>
 <%@page import="facade.FacadeConsultas"%>
-<%@page import="dtos.SolicitudDistribuidorDTO"%>
-<%@page import="dtos.UsuariosDTO"%>
+<%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="java.util.LinkedList"%>
-<%@page import="facade.FacadeDespachosPedidos"%>
+<%@page import="facade.FacadeRolesUsuarios"%>
+<%@page import="dtos.UsuariosDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Pedidos por Despachar - SIGAA</title>
+        <title>Certificado - SIGAA</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,13 +48,9 @@
         %>
 
         <%
-            FacadeDespachosPedidos facadeDespachos = new FacadeDespachosPedidos();
-            LinkedList<SolicitudDistribuidorDTO> despachos = new LinkedList();
-            despachos = facadeDespachos.mostrarDespachosPendientes();
-
             HttpSession miSesion = request.getSession(false);
             if (miSesion.getAttribute("usr") != null) {
-                UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
+                UsuariosDTO userdto = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
         %>
     </head>
@@ -86,7 +78,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#16700C;">
                             <p>
                                 <%
-                                    int idUsuario = uregistrado.getIdUsuarios();
+                                    int idUsuario = userdto.getIdUsuarios();
                                     FacadeRolesUsuarios facadeRoles = new FacadeRolesUsuarios();
                                     LinkedList<RolesUsuariosDTO> u = new LinkedList();
                                     u = facadeRoles.mostrarRol(idUsuario);
@@ -117,20 +109,20 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <%
-                                                                                                  if (uregistrado.getGenero() == 1) {%>
-                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>" 
-                                                                                                  title="Eres: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>"></i>
+                                                                                              <%
+                                            if (userdto.getGenero() == 1) {%>
+                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (userdto != null) {
+                                                out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                            }%>" 
+                                                                                              title="Eres: <%if (userdto != null) {
+                                                                                                          out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                                      }%>"></i>
                                             <% } else {%>
-                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>" 
-                                                                                 title="Eres: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (userdto != null) {
+                                                out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                            }%>" 
+                                                                                 title="Eres: <%if (userdto != null) {
+                                                                                         out.print(userdto.getNombres() + " " + userdto.getApellidos());
                                                                                      }%>"></i>
                                             <%}
                                             %>
@@ -156,79 +148,50 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Pedidos por despachar</h1>
+                        <h1 class="page-header">Certificado por pertenecer a una asociación</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row">                    
+                    <div>
+                        <img src="../img/portfolio/pdf.jpg" style="width: 40%; height: 20%; margin-top: 5%; margin-left: 3%;">
+                    </div>
+                    <div class="panel panel-primary" style="width: 50%; margin-left: 45%; margin-top: -23%;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Descargar Certificado</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form" action="../rc" >
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label for="txtCedula">Cédula:</label>
+                                        <input class="form-control" placeholder="Cédula" name="txtCedula" type="text" value="<%if (userdto != null) {
+                                                out.print(userdto.getCedula());
+                                            }
+                                               %>" readonly="true">
+                                    </div> 
+
+                                    <input type="hidden" name="generarCertificado" id="generarCertificado" value="generarCertificado" />
+                                    <button name="btnGenerarCertificado" class="btn btn-info btn-lg btn-block">
+                                        <span class="glyphicon glyphicon-cloud-download" 
+                                              title="Generar pdf de mis productos"
+                                              alt="Generar pdf de mis productos"></span></button>
+                                </fieldset>
+                            </form>
+                        </div>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
                 <div class="row" >
-                    <div class="col-lg-12">
-                        <div class="panel panel-success">
-                            <div class="panel-heading">
-                                <i class="fa fa-calendar-o fa-fw"></i> Despachar Pedidos
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <div class="dataTable_wrapper">
-                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
-                                            <tr>  
-                                                <th>Categoría de producto</th>
-                                                <th>Nombre producto</th>
-                                                <th>Cantidad</th>
-                                                <th>Unidad</th>
-                                                <th>Precio</th>
-                                                <th>Observación</th>
-                                                <th>Fecha de Entrega</th>
-                                                <th>Nombre Distribuidor</th>
-                                                <th>Teléfono distribuidor</th>
-                                                <th>Dirección distribuidor</th>
-                                                <th>Despachar</th>
-                                            </tr>                
-                                        </thead>
-                                        <tbody id="bodyTabla">
-                                            <%
-                                                for (SolicitudDistribuidorDTO despa : despachos) {
-                                            %>
-                                            <tr>
-                                                <td><%=despa.getProduct().getCategoriaId().getNombre()%></td>
-                                                <td><%=despa.getProduct().getNombre()%></td>
-                                                <td><%=despa.getCantidadSolicitada()%></td>
-                                                <td><%=despa.getProduct().getUnidad()%></td>
-                                                <td>$ <%=despa.getPrecioSolicitud()%></td>
-                                                <td><%=despa.getObservacion()%></td>
-                                                <td><%=despa.getFechaSolicitud()%></td>
-                                                <td><%=despa.getUser().getNombres()%></td>
-                                                <td><%=despa.getUser().getTelefono()%></td>
-                                                <td><%=despa.getUser().getDireccion()%></td>
-                                                <td><a href="despacharpedido.jsp?idDespacho=<%=despa.getIdSolicitud()%>">    
-                                                    <span class="fa fa-truck" style="font-size:140%; color:green; margin-left:35%;" title="Despachar pedido" alt="Despachar pedido"></span></a>
-                                                </td>
-                                            </tr>
-                                            <%}%>
-                                        </tbody>
-                                    </table>                           
-                                </div>
-                                <div style="cursor: pointer; text-align:center;" id="pageNavPosition"></div>
-                            </div>        
 
-                        </div>
-
-                        <!-- /.list-group -->
-                    </div>
                     <!-- /.panel-body -->
                 </div>
                 <!-- /.panel -->
             </div>
             <!-- /.col-lg-4 -->
+            <%}%>
         </div>
-
-        <%
-
-            } else {
-                response.sendRedirect("../index.jsp");
-            }
-        %>
         <div class="panel-footer">
             <p style="color: green"><a style="color: green" id="sena" href="http://www.sena.edu.co/">Sena</a>          |   Stefhany Alfonso Rincón                |
                 Última actualización: 
