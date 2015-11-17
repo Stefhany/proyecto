@@ -30,7 +30,7 @@ public class SolicitudDistribuidorDAO {
 
     public String insertarSolicitudDistribuidor(SolicitudDistribuidorDTO solicitud, Connection cnn) {
         try {
-            pstmt = cnn.prepareStatement("INSERT INTO solicituddistribuidor VALUES (null,?,current_date(),?,null,1,?,?,?,?);");
+            pstmt = cnn.prepareStatement("INSERT INTO solicituddistribuidor VALUES (null,?,current_date(),?,null,1,?,?,?,?,?);");
             pstmt.setInt(1, solicitud.getCantidadSolicitada());
             pstmt.setString(2, solicitud.getFechaSolicitud());
             //pstmt.setString(3, solicitud.getFechaEntregaInterna());
@@ -38,6 +38,7 @@ public class SolicitudDistribuidorDAO {
             pstmt.setInt(4, solicitud.getDistribuidorId());
             pstmt.setInt(5, solicitud.getCantidadSolicitudFinal());
             pstmt.setString(6, solicitud.getObservacion());
+            pstmt.setFloat(7, solicitud.getPrecioSolicitud());
             resultado = pstmt.executeUpdate();
             if (resultado != 0) {
                 msgSalida = "ok";

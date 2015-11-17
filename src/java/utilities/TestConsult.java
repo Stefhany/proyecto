@@ -16,6 +16,7 @@ import dtos.UsuariosDTO;
 import facade.FacadeAportesProductores;
 import facade.FacadeConsultas;
 import facade.FacadePedidoSobreOferta;
+import facade.FacadeProductos;
 import facade.FacadeProductosAsociadosUsuarios;
 import facade.FacadeSolicitudDistribuidor;
 import facade.FacadeUsuarios;
@@ -70,7 +71,8 @@ public class TestConsult {
 ////        aport.setCantidad(650);
 ////        aport.setIdAso(10);
 ////        aport.setSolicitudId(1);
-        //FacadeAportesProductores f = new FacadeAportesProductores();
+        FacadeAportesProductores f = new FacadeAportesProductores();
+        System.out.println(f.consultarMiAporte(33));
 //        System.out.println(f.participarASolicitudAsociacion("2015-11-14",200,10,2));
         //System.out.println(f.buscarMisIdAsociados(19, 10));
         
@@ -82,8 +84,8 @@ public class TestConsult {
 //        Date fechamenor = new Date("2015-11-10");
 //        Date fechamayor = new Date("2015-11-13");
 //        System.out.println(fconsult.diferenciasDeFechas(fechamenor, fechamayor));
-        FacadeSolicitudDistribuidor f = new FacadeSolicitudDistribuidor();
-        System.out.println(f.cancelarPedido(9));
+//        FacadeProductos p = new FacadeProductos();
+//        System.out.println(p.buscarProducto(19));
 //        AportesProductoresDTO a = new AportesProductoresDTO();
 //        
 //        System.out.println(f.modificarCantidadSolicitud(10000, 1));

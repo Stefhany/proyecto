@@ -45,7 +45,7 @@ public class ControllerAportProducer extends HttpServlet {
         FacadeRoles facadeRoles = new FacadeRoles();
         AportesProductoresDTO aport = null;
         try{
-            if (request.getParameter("btnCancelar") != null && request.getParameter("idAport") != null && request.getParameter("solicitud") != null) {
+            if (request.getParameter("btnCancelarAporte") != null && request.getParameter("cancelarAporte") != null) {
                 out.println("ok");
                 FacadeConsultas facadeConsult = new FacadeConsultas();
                 
@@ -59,26 +59,26 @@ public class ControllerAportProducer extends HttpServlet {
                     aport = new AportesProductoresDTO();
                     aport.setNovedad(request.getParameter("txtNovedad").trim());
                     
-                    facadeAport.modificarEstadoACancelado(Integer.parseInt(request.getParameter("idAport").trim()), aport);
+                    facadeAport.modificarEstadoACancelado(Integer.parseInt(request.getParameter("txtIdAporte").trim()), aport);
                     
-                    int cantidadAportada = facadeAport.consultarCantidadAportada(Integer.parseInt(request.getParameter("idAport").trim()));
-                    int cantidadSolicitada = facadeAport.consultarCantidadSolicitada(Integer.parseInt(request.getParameter("solicitud").trim()));
+                    int cantidadAportada = Integer.parseInt(request.getParameter("txtCantidadAportada").trim());
+                    int cantidadSolicitada = Integer.parseInt(request.getParameter("txtCantidadSolicitada").trim());
                     
                     int cantidadFinal = cantidadSolicitada + cantidadAportada;
                     
-                    int cambioCantidad = facadeSolicitud.modificarCantidadSolicitud(cantidadFinal, Integer.parseInt(request.getParameter("solicitud").trim()));
+                    int cambioCantidad = facadeSolicitud.modificarCantidadSolicitud(cantidadFinal, Integer.parseInt(request.getParameter("txtIdSolicitud").trim()));
                     
                     if (cambioCantidad > 0) {
-                        String salida = "Ha sido cancelada la participación que realizo para el pedido de la asociación";
-                        response.sendRedirect("pages/misparticipaciones.jsp?msgSalida = <strong>"+salida+"</Strong>");
+                        String mensaje = "Ha sido cancelada la participación que realizo para el pedido de la asociación";
+                        response.sendRedirect("pages/misparticipaciones.jsp?1&msg=" + mensaje);
                     }else{
-                        String salida = "Tuvimos problemas al hacer la cancelación del pedido";
-                        response.sendRedirect("pages/misparticipaciones.jsp?msgSalida = <strong>"+salida+"</Strong>");
+                        String salida = "No se pudo cancelar el pedido.";
+                        response.sendRedirect("pages/misparticipaciones.jsp?tipo=0&msg=" + salida);
                     }
                 }else{
                     String msj = "No puede cancelar el pedido porque ya ha adquirido un compromiso con "
                             + " la asociación y restan menos de tres (3) para generar el despacho del pedido.";
-                    response.sendRedirect("pages/misparticipaciones.jsp?msgSalida = <strong>"+msj+"</Strong>");
+                    response.sendRedirect("pages/misparticipaciones.jsp?tipo=0&msg="+msj);
                 }
             }else{
                 out.print("Esta ingresando de forma inadecuada.");

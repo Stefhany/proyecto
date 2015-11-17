@@ -134,5 +134,49 @@ public class ProductoDAO {
         return onlyProduct;
     }
 
+    public List<ProductoDTO> consultarPrecios(int idProducto, Connection cn){
+        this.cnn = cn;
+        List<ProductoDTO> precios = new LinkedList();
+        try{
+            String buscarPrecio = "select idProductos as id, precioProducto from productos where idProductos = ?;";
+            pstmt = cnn.prepareStatement(buscarPrecio);
+            pstmt.setInt(1, idProducto);
+            rs = pstmt.executeQuery();
+            
+            if (rs != null) {
+                while(rs.next()){
+                    ProductoDTO producto = new ProductoDTO();
+                    producto.setIdProductos(rs.getInt("id"));
+                    producto.setPrecioProducto(rs.getInt("precioProducto"));
+                    precios.add(producto);
+                }
+            }
+        }catch(SQLException sqle){
+            System.out.println("Ha ocurrido lo siguiente: "+sqle.getMessage());
+        }
+        
+        return precios;
+    }
+    
+    public String buscarProducto(int idProducto, Connection cn){
+        this.cnn = cn;
+        String res = "";
+        try{
+            String buscarPrecio = "select nombreProducto from productos where idProductos = ?;";
+            pstmt = cnn.prepareStatement(buscarPrecio);
+            pstmt.setInt(1, idProducto);
+            rs = pstmt.executeQuery();
+            
+            if (rs != null) {
+                while(rs.next()){
+                    res = rs.getString("nombreProducto");
+                }
+            }
+        }catch(SQLException sqle){
+            res = "Ha ocurrido lo siguiente: "+sqle.getMessage();
+        }
+        
+        return res;
+    }
     
 }

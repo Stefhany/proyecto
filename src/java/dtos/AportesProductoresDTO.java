@@ -21,7 +21,9 @@ public class AportesProductoresDTO {
     private String novedad = "";
     private EstadoAporteProductorDTO estadoAport = null;
     
-    public AportesProductoresDTO() {}
+    public AportesProductoresDTO(){}
+    
+    public AportesProductoresDTO(SolicitudDistribuidorDTO solicitud) {this.solId = solicitud;}
 
     public AportesProductoresDTO(ProductosAsociadosUsuariosDTO proAso, SolicitudDistribuidorDTO sol) {
         this.proAsoId = proAso;

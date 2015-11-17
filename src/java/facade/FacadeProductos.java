@@ -46,4 +46,12 @@ public class FacadeProductos {
     public ProductoDTO consultarByIdProduct(int id) throws MyException{
         return productDao.consultarByIdProduct(id, cnn);
     }
+    
+    public List<ProductoDTO> consultarPrecio(int idProduct){
+        return productDao.consultarPrecios(idProduct, cnn);
+    }
+    
+    public String buscarProducto(int idProducto){
+        return productDao.buscarProducto(idProducto, cnn);
+    }
 }

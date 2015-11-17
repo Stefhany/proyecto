@@ -4,6 +4,7 @@
     Author     : Mona
 --%>
 
+<%@page import="facade.FacadeProductos"%>
 <%@page import="facade.FacadeRolesUsuarios"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
@@ -47,11 +48,17 @@
 
         <!-- Favicon de SIGAA -->
         <link rel="icon" href="../img/portfolio/favicon.ico" type="image/x-ico"/>
+        
+        <!-- Listar el precio del producto -->
+        <script src="../js/precio.js" type="text/javascript"></script>
 
         <!-- Listar productos según categoría -->
         <script src="../js/products.js" type="text/javascript"></script>
+        
+        
         <!-- Mostrar si la fecha es acta para realizar el pedido -->
         <script src="../js/funciones.js" type="text/javascript"></script>
+        
 
         <%
             response.setHeader("Cache-Control", "no-cache");
@@ -165,7 +172,14 @@
                         <h1 class="page-header">Solicitar Pedido</h1>
                     </div>
                     
-                    <div style="margin-top: 20%;">
+                    <div class="alert alert-warning" style="margin-top: 20%;">
+                        <img src="../img/mensajes/warning.png">
+                        <span>¡Información!</span>
+                        <p>Recuerde que al hacer un pedido, debe tener previa confirmación de la 
+                        asociación, dado que despúes de que lo acepte NO puede ser removido.</p>
+                    </div>
+                    
+                    <div style="margin-top: 0%;">
                     <%
                         String tipo = "";
                         String mensaje = "";
@@ -202,11 +216,19 @@
                                 %>
                             </select>
                         </div>
-
+                            
                         <div class="form-group">
                             <label for="subcategoria">Nombre del Producto:</label>
-                            <select required="true" name="subcategoria" size="1" id="subcategoria" class="form-control">
+                            <select required="true" name="subcategoria" size="1" id="subcategoria" class="form-control" onchange="listarprecios(this.value);">
                                 <option value="<%=pdto.getIdProductos()%>" >Elija un producto</option>
+                            </select>
+                        </div>
+                            
+                        
+                        <div class="form-group">
+                            <label for="subcategoria2">Precio del Producto:</label>
+                            <select required="true" readonly="true" name="subcategoria2" size="1" id="subcategoria2" class="form-control" >
+                                <option value="<%=pdto.getPrecioProducto()%>"></option>
                             </select>
                         </div>
 

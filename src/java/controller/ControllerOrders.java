@@ -14,6 +14,7 @@ import facade.FacadeAportesProductores;
 import facade.FacadeConsultas;
 import facade.FacadeDespachosPedidos;
 import facade.FacadePedidoSobreOferta;
+import facade.FacadeProductos;
 import facade.FacadeProductosAsociadosUsuarios;
 import facade.FacadeSolicitudDistribuidor;
 import facade.FacadeUsuarios;
@@ -129,6 +130,13 @@ public class ControllerOrders extends HttpServlet {
                 solicitud.setProductoId(Integer.parseInt(request.getParameter("subcategoria").trim()));
                 solicitud.setDistribuidorId(Integer.parseInt(request.getParameter("txtId").trim()));
                 solicitud.setObservacion(request.getParameter("txtObservacion").trim());
+                solicitud.setPrecioSolicitud(Integer.parseInt(request.getParameter("subcategoria2").trim()));
+                
+                FacadeProductos facadeProducto = new FacadeProductos();
+                String nombreProducto = facadeProducto.buscarProducto(Integer.parseInt(request.getParameter("subcategoria").trim()));
+                int cantidadSolicitda = Integer.parseInt(request.getParameter("txtCantidad").trim());
+                String fechaSolicitud = request.getParameter("txtFechaSolicitud").trim();
+                
                 String correo = request.getParameter("txtCorreo");
                 String nombre = request.getParameter("txtUser");
 
@@ -137,10 +145,20 @@ public class ControllerOrders extends HttpServlet {
                 if (salida.equals("ok")) {
                     String mensaje = "El pedido a la asociación a sido enviado sactisfactoriamente. Se le enviara un correo de confirmacion.";
                     response.sendRedirect("pages/realizarpedidoasociacion.jsp?tipo=1&msg=" + mensaje);
-                    Mail.sendMail("Confirmación de pedido", ""
-                            + " <h1>Confirmación</h1><br>"
-                            + " Señor, ra: " + nombre + ""
-                            + " Su pedido a sido solicitado satisfactoriamente. ", correo);
+                    Mail.sendMail("Confirmación de pedido a la asociación", ""
+                            + " <h3>Confirmación</h3>"
+                            + " Señor, ra: " + nombre + "<br><br>"
+                            + " Su pedido a sido solicitado satisfactoriamente, con las siguientes caracteristicas: <br>"
+                            + " Ha solicitado: "+cantidadSolicitda+" kilogramos de "+nombreProducto+" para la "
+                            + " fecha: "+fechaSolicitud+", siendo esta la fecha maxíma para cumplir con su pedido "
+                            + " por la asociación.<br><br>"
+                            + " Información: Recuerde que al realizar un pedido no lo puede cancelar si la "
+                            + " asociación ya lo aprobo, dado que se definio en lo terminos y condiciones que "
+                            + " cuando la asociación acepta un pedido, no lo puede cancelar dado que ya "
+                            + " tiene a unos productos comprometidos para aportar en su pedido. <br><br><br>"
+                            + " Gracias por pertenecer a SIGAA <br>"
+                            + " Persona encargada: Stefhany Alfonso Rincón <br>"
+                            + " Líneas de atención: 3213018539", correo);
                 } else {
                     String msg = "Hemos tenido problemas al registrar su pedido";
                     response.sendRedirect("pages/realizarpedidoasociacion.jsp?tipo=0&msg=" + msg);

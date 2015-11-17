@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import utilities.MyException;
 
 /**
  *
@@ -69,6 +70,10 @@ public class FacadeAportesProductores {
     
     public int buscarMisIdAsociados(int idProduct, int idUser){
         return aporteDao.buscarMisIdAsociados(idProduct, idUser, cnn);
+    }
+    
+    public AportesProductoresDTO consultarMiAporte(int id) throws MyException{
+        return  aporteDao.consultarMiAporte(id, cnn);
     }
     
 }

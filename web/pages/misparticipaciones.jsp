@@ -194,17 +194,13 @@
                                         <tr>
                                             <td><%=aport.getProAsoId().getProducto().getCategoriaId().getNombre()%></td>
                                             <td><%=aport.getProAsoId().getProducto().getNombre()%></td>
-                                            <td><%=aport.getCantidad()%></td>  
-                                            <td><%=aport.getProAsoId().getProducto().getUnidad()%></td>
+                                            <td><%=aport.getCantidad()%></td> 
+                                            <td>Kilogramos</td>
                                             <td><%=aport.getFechaEntrega()%></td>
-                                            <!--<td><button data-toggle="modal" data-target="#miventana" value="<//aport.getIdAporteProductor()%>"
-                                                        <span class="glyphicon glyphicon-remove-circle" 
-                                                      style="font-size:140%; color:green; margin-left:35%;" 
-                                                      alt="Cancelar pedido de: <//aport.getProAsoId().getProducto().getNombre()%> " 
-                                                      title="Cancelar pedido de: <=//aport.getProAsoId().getProducto().getNombre()%>"></span>
-                                                </button>
-                                            </td>-->
-                                            <td><a href="newjspgreg.jsp" rel="prueba"> Ir</a>
+                                            <td><a href="cancelarparticipacion.jsp?idAporte=<%=aport.getIdAporteProductor()%>"> <span class="glyphicon glyphicon-remove-circle" 
+                                                                                                 style="font-size:140%; color:green; margin-left:35%;" 
+                                                                                                 alt="Cancelar pedido de: <%=aport.getProAsoId().getProducto().getNombre()%> " 
+                                                                                                 title="Cancelar pedido de: <%=aport.getProAsoId().getProducto().getNombre()%>"></span></a>
                                             </td>
                                         </tr>
 

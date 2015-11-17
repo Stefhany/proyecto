@@ -189,7 +189,7 @@
                                                 <td><%=o.getIdAso().getProducto().getCategoriaId().getNombre()%></td>
                                                 <td><%=o.getIdAso().getProducto().getNombre()%></td> 
                                                 <td><%=o.getCantidad()%></td>
-                                                <td><%=o.getPrecio()%></td>
+                                                <td>$ <%=o.getPrecio()%></td>
                                                 <td><%=o.getFechaFin()%></td>
 
                                                 <td><a href="modificarmioferta.jsp?idOffer=<%=o.getIdAso().getIdProductosAsociadosUsuarios()%>"><span class="glyphicon glyphicon-refresh" style="font-size:140%; color:green; margin-left:35%;" alt="Modificar oferta <%=o.getIdAso().getIdProductosAsociadosUsuarios()%>" title="Modificar oferta: <%=o.getIdAso().getIdProductosAsociadosUsuarios()%>"></span></a>

@@ -24,6 +24,7 @@ public class SolicitudDistribuidorDTO {
     private int cantidadSolicitudFinal = 0;
     private EstadoSolicitudDistribuidorDTO estadoSolicitud = null;
     private String observacion = "";
+    private float precioSolicitud = 0f;
         
     public SolicitudDistribuidorDTO(){}
     
@@ -233,6 +234,20 @@ public class SolicitudDistribuidorDTO {
      */
     public void setObservacion(String observacion) {
         this.observacion = observacion;
+    }
+
+    /**
+     * @return the precioSolicitud
+     */
+    public float getPrecioSolicitud() {
+        return precioSolicitud;
+    }
+
+    /**
+     * @param precioSolicitud the precioSolicitud to set
+     */
+    public void setPrecioSolicitud(float precioSolicitud) {
+        this.precioSolicitud = precioSolicitud;
     }
     
     
