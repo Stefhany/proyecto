@@ -1,16 +1,20 @@
 <%-- 
-    Document   : consultarpedidos
-    Created on : 17-nov-2015, 19:08:51
-    Author     : Stefhany Alfonso
+    Document   : listarproductos
+    Created on : 10/12/2014, 10:16:19 PM
+    Author     : krito
 --%>
+
 
 <%@page import="facade.FacadeConsultas"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="facade.FacadeRolesUsuarios"%>
-<%@page import="java.util.List"%>
-<%@page import="facade.FacadeSolicitudDistribuidor"%>
-<%@page import="dtos.SolicitudDistribuidorDTO"%>
+<%@page import="dtos.CategoriaDTO"%>
+<%@page import="dtos.ProductoDTO"%>
+<%@page import="dtos.ProductoDTO"%>
+<%@page import="facade.FacadeProductos"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="facade.FacadeCategorias"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="dtos.UsuariosDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,7 +27,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Pedidos - SIGAA</title>
+        <title>Productos - SIGAA</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -60,13 +64,25 @@
             if (miSesion.getAttribute("usr") != null) {
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
+                FacadeProductos facadeProducts = new FacadeProductos();
+                LinkedList<ProductoDTO> productos = new LinkedList();
+                productos = (LinkedList<ProductoDTO>) facadeProducts.listarAllProducts();
 
-                FacadeSolicitudDistribuidor facadeSolicitud = new FacadeSolicitudDistribuidor();
-
-                List<SolicitudDistribuidorDTO> pedidos = new LinkedList();
-                pedidos = facadeSolicitud.consultarPedidos();
+                FacadeCategorias facadeCategories = new FacadeCategorias();
+                ArrayList<CategoriaDTO> categorias = new ArrayList();
+                categorias = (ArrayList<CategoriaDTO>) facadeCategories.listarCategorias();
 
         %>
+
+        <script>
+            function confirmar() {
+                if (confirm('¿Esta seguro de deshabilitar este producto?')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        </script>
     </head>
 
     <body>
@@ -91,7 +107,7 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#16700C;">
                             <p>
-                                <%  int idUsuario = uregistrado.getIdUsuarios();
+                                <%                                    int idUsuario = uregistrado.getIdUsuarios();
                                     FacadeRolesUsuarios facadeRoles = new FacadeRolesUsuarios();
                                     LinkedList<RolesUsuariosDTO> u = new LinkedList();
                                     u = facadeRoles.mostrarRol(idUsuario);
@@ -122,18 +138,18 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                                                                              <%
-                                            if (uregistrado.getGenero() == 1) {%>
-                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }%>" 
-                                                                                              title="Eres: <%if (uregistrado != null) {
-                                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                      }%>"></i>
+                                        <%
+                                                                                                  if (uregistrado.getGenero() == 1) {%>
+                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>" 
+                                                                                                  title="Eres: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>"></i>
                                             <% } else {%>
-                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }%>" 
+                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>" 
                                                                                  title="Eres: <%if (uregistrado != null) {
                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
                                                                                      }%>"></i>
@@ -161,7 +177,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Pedidos por despachar</h1>
+                        <h1 class="page-header">Productos vinculados en la asociación</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -185,11 +201,65 @@
                         </div>
                         <div class="panel panel-success">
                             <div class="panel-heading">
-                                <i class="fa fa-calendar-o fa-fw"></i> Despachar Pedidos
-                                <form action="../rp">
-                                    <button name="btnProductos" style="margin-left: 85%; "><span class="glyphicon glyphicon-cloud-download"
-                                                                                                alt="Descargar tendencia de productos"
-                                                                                                title="Descargar tendencia de productos"></span></button></form>
+                                <i class="fa fa-calendar-o fa-fw"></i> Productos asociados
+                                <button style="margin-left: 80%;" data-toggle="modal" data-target="#miventana" value="1">
+                                    <span class="glyphicon glyphicon-plus" style="font-size:155%;"></span>
+                                </button>
+                            </div>
+
+
+                            <div class="modal fade" id="miventana" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times</button>
+                                            <center><h4>Registrar Producto</h4></center>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <form action="../cp" name="regProducto" method="post" role="form">
+                                                
+                                                <fieldset>
+                                                <div class="form-group">
+                                                    <label for ="txtCategoria">Categoría:</label> 
+                                                    <select name="txtCategoria" class="form-control" required="true">
+                                                        <% for (CategoriaDTO categoria : categorias) {%>
+                                                        <option value="<% if (categoria != null) {
+                                                                out.print(categoria.getIdCategoria());
+                                                            }%>"><%if (categoria != null) {
+                                                                    out.print(categoria.getNombre());
+                                                                }%></option>
+                                                            <%
+                                                                }
+                                                            %>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for ="txtNombre">Nombre:</label>
+                                                    <input name="txtNombre" id="txtNombre" type="text" required="true" class="form-control"/>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for ="txtUnidad">Unidad:</label>
+                                                    <input name="txtUnidad" id="txtUnidad" type="text" value="Kilogramos" readonly="true" class="form-control"/>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for ="txtPrecio">Precio:</label>
+                                                    <input name="txtPrecio" id="txtPrecio" type="text" required="true" class="form-control"/>
+                                                </div>
+
+
+                                                <input type="hidden" name="registrar" id="registrar" value=""/>
+
+                                                <button type="submit" value="Registrar" name="btnRegistrar" class="btn btn-success btn-lg btn-block" id="btnRegistrar" value="Registrar"/>Registrar</button>
+                                                </fieldset>
+                                            </form>
+                                        </div>	
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- /.panel-heading -->
@@ -197,26 +267,36 @@
                                 <div class="dataTable_wrapper">
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
-                                            <tr>  
-                                                <th>Distribuidor</th>
-                                                <th>Nombre producto</th>
-                                                <th>Cantidad Solicitada</th>
-                                                <th>Unidad</th>
-                                                <th>Estado</th>
-                                            </tr>                
-                                        </thead>
-                                        <tbody id="bodyTabla">
-                                            <%
-                                                for (SolicitudDistribuidorDTO despa : pedidos) {
-                                            %>
                                             <tr>
-                                                <td><%=despa.getUser().getNombres()%></td>
-                                                <td><%=despa.getProduct().getNombre()%></td>
-                                                <td><%=despa.getCantidadSolicitada()%></td>
-                                                <td>Kilogramos</td>
-                                                <td><%=despa.getEstadoSolicitud().getNombreEstadosSolicitudDistribuidor()%></td>
+                                                <th>Codigo</th>
+                                                <th>Categoria</th>
+                                                <th>Nombre producto</th>
+                                                <th>Unidad</th>
+                                                <th>Precio</th>
+                                                <th>Deshabilitar</th>
                                             </tr>
-                                            <%}%>
+                                        </thead>
+                                        <%
+                                            for (ProductoDTO p : productos) {
+                                        %>
+                                        <tbody id="bodyTabla">
+                                            <tr>
+                                                <td><%=p.getIdProductos()%></td>
+                                                <td><%=p.getCategoriaId().getNombre()%></td>
+                                                <td><%=p.getNombre()%></td>
+                                                <td><%=p.getUnidad()%></td>
+                                                <td><%=p.getPrecioProducto()%></td>
+                                                <td>
+                                                    <a href="../cp?idProducto=<%=p.getIdProductos()%>" onclick="return confirmar();">
+                                                        <span class="glyphicon glyphicon-remove" style="font-size:145%; color: #c23321; margin-left: 15%;"
+                                                              alt="Deshabilitar el producto: <%=p.getNombre()%>" 
+                                                              title="Deshabilitar el producto: <%=p.getNombre()%>">                                                                  
+                                                        </span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <%
+                                                }%>
                                         </tbody>
                                     </table>                           
                                 </div>

@@ -63,7 +63,7 @@ public class ControllerOffers extends HttpServlet {
                     String salidaTres = facadeProAso.cambiarEstadoProAso(Integer.parseInt(request.getParameter("txtIdProAso").trim()));
 
                     if (salidaTres.equals("ok")) {
-                        response.sendRedirect("pages/misproductos.jsp?msgSalida= <strong>Su oferta ha sido registrada.</Strong>");
+
                         Mail.sendMail("Confirmación de oferta", "Su oferta ha sido registrada satisfactoriamente.<br>"
                                 + " Acuerdate que tiene las siguientes caracteristicas: <br>"
                                 + " Nombre del producto: " + nombreProducto + " <br>"
@@ -72,22 +72,45 @@ public class ControllerOffers extends HttpServlet {
                                 + " Recuerda que al postular una oferta, tienes 15 días despues de que la publico, <br> "
                                 + " si tienes algún inconveniente o deseas actualizar la cantidad, puedes <br>"
                                 + " hacerlo, ingresando nuevamente al sistema. ", correo);
+
+                        String mensaje = "Su oferta ha sido registrada satisfactoriamente. Recuerde que el tiempo de expiración "
+                                + " es de quince (15) días. A su correo se le enviara un correo de confirmación.";
+                        response.sendRedirect("pages/misproductos.jsp?tipo=1&msg=" + mensaje);
+
                     } else {
-                        response.sendRedirect("pages/misproductos.jsp?msgSalida= <strong>El estado no fue modificado.</Strong>");
+                        String msg = "El estado no fue modificado";
+                        response.sendRedirect("pages/misproductos.jsp?tipo=0&msg=" + msg);
                     }
+
                 } else {
-                    response.sendRedirect("pages/misproductos.jsp?msgSalida= <strong>La oferta no pudo ser registrada.</Strong>");
+                    String mensaje = "La oferta no pudo ser registrada.";
+                    response.sendRedirect("pages/misproductos.jsp?tipo=0&msg=" + mensaje);
                 }
+
             } else if (request.getParameter("idProAso") != null) {
-                salida = facadeProAsoUser.cambiarEstadoProAsoDdeshabilitar(Integer.parseInt(request.getParameter("idProAso")));
-                response.sendRedirect("pages/misproductos.jsp?msgSalida=<strong>El producto ha sido deshabilitado.</strong>");
+
+                String cambiarEstado = facadeProAsoUser.cambiarEstadoProAsoDdeshabilitar(Integer.parseInt(request.getParameter("idProAso")));
+                if (cambiarEstado.equals("ok")) {
+                    String msg = "El producto ha sido deshabilitado satisfactoriamente.";
+                    response.sendRedirect("pages/misproductos.jsp?tipo=1&msg=" + msg);
+                } else {
+                    String mensajeDeshabilitado = "El producto no se pudo deshabilitar";
+                    response.sendRedirect("pages/misproductos.jsp?tipo=1&msg=" + mensajeDeshabilitado);
+                }
+
             } else if (request.getParameter("btnModificarMiOferta") != null && request.getParameter("modificarMiOferta") != null) {
 
                 ofDto.setIdOfertas(Integer.parseInt(request.getParameter("txtIdOferta").trim()));
                 ofDto.setCantidad(Integer.parseInt(request.getParameter("txtCantidad").trim()));
 
-                salida = facadeOffer.actualizarMiOferta(ofDto);
-                response.sendRedirect("pages/misofertas.jsp?msgSalida= <strong>Su oferta ha sido actualizada.</Strong>");
+                String mensaje = facadeOffer.actualizarMiOferta(ofDto);
+                if (mensaje.equals("ok")) {
+                    String msg = "Su oferta ha sido actualizada.";
+                    response.sendRedirect("pages/misofertas.jsp?tipo=1&msg=" + msg);
+                } else {
+                    String actualizacion = "La oferta no se pudo actualizar.";
+                    response.sendRedirect("pages/misofertas.jsp?tipo=1&msg=" + actualizacion);
+                }
 
             } else if (request.getParameter("idPedido") != null) {
                 FacadePedidoSobreOferta facadePedido = new FacadePedidoSobreOferta();
@@ -98,13 +121,13 @@ public class ControllerOffers extends HttpServlet {
                     String correoDistribuidor = facadeUsuario.enviarCorreoAlDespacharUnaOferta(Integer.parseInt(request.getParameter("idPedido")));
                     String mensaje = "El pedido ha sido despachado a su cliente. Al cual se le enviara un correo "
                             + " para que se entere que su pedido ha sido despachado. ";
-                    response.sendRedirect("pages/consultarmispedidossobremisofertas.jsp?tipo=1&msg=" + mensaje);
                     Mail.sendMail("Pedido sobre oferta ha sido despachado",
                             "<h3>Confirmación de envio de oferta</h3>"
                             + " La promoción que ha solicitado, ha sido despachado. <br><br>"
                             + " Gracias por pertenecer a SIGAA <br>"
                             + " Persona encargada: Stefhany Alfonso Rincón <br>"
                             + " Líneas de atención: 3213018539", correoDistribuidor);
+                    response.sendRedirect("pages/consultarmispedidossobremisofertas.jsp?tipo=1&msg=" + mensaje);
                 } else {
                     String msg = "No se pudo despachar el pedido.";
                     response.sendRedirect("pages/consultarmispedidossobremisofertas.jsp?tipo=0&msg=" + msg);

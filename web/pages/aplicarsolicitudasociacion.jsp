@@ -4,6 +4,7 @@
     Author     : Mona
 --%>
 
+<%@page import="dtos.RolesDTO"%>
 <%@page import="facade.FacadeConsultas"%>
 <%@page import="facade.FacadeRolesUsuarios"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
@@ -25,6 +26,9 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -53,14 +57,17 @@
             if (miSesion.getAttribute("usr") != null) {
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
+                RolesDTO rol = (RolesDTO) miSesion.getAttribute("rol");
 
-                if (request.getParameter("idSolicitud") != null) {
-                    int id = Integer.parseInt(request.getParameter("idSolicitud"));
-                    SolicitudDistribuidorDTO solDto = new SolicitudDistribuidorDTO();
+                if (rol.getIdRol() != 3 && rol.getIdRol() != 1) {
 
-                    FacadeAportesProductores facadeAportes = new FacadeAportesProductores();
+                    if (request.getParameter("idSolicitud") != null) {
+                        int id = Integer.parseInt(request.getParameter("idSolicitud"));
+                        SolicitudDistribuidorDTO solDto = new SolicitudDistribuidorDTO();
 
-                    solDto = facadeAportes.buscarIdAsociacion(id);
+                        FacadeAportesProductores facadeAportes = new FacadeAportesProductores();
+
+                        solDto = facadeAportes.buscarIdAsociacion(id);
         %>
     </head>
 
@@ -118,18 +125,18 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                                                                              <%
-                                            if (uregistrado.getGenero() == 1) {%>
-                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }%>" 
-                                                                                              title="Eres: <%if (uregistrado != null) {
-                                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                      }%>"></i>
+                                        <%
+                                                                                                  if (uregistrado.getGenero() == 1) {%>
+                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>" 
+                                                                                                  title="Eres: <%if (uregistrado != null) {
+                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                  }%>"></i>
                                             <% } else {%>
-                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                            }%>" 
+                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                     }%>" 
                                                                                  title="Eres: <%if (uregistrado != null) {
                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
                                                                                      }%>"></i>
@@ -158,6 +165,22 @@
                 <div class="row" style="width:50%;">
                     <div class="col-lg-12">
                         <h1 class="page-header">Participar en pedido</h1>
+                    </div>
+
+                    <div style="margin-top: 0%;">
+                        <%
+                            String tipo = "";
+                            String mensaje = "";
+                            if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                                tipo = request.getParameter("tipo");
+                                mensaje = request.getParameter("msg");
+                        %>
+                        <jsp:include page="msg.jsp" flush="true">
+                            <jsp:param name="tipo" value="<%=tipo%>" /> 
+                            <jsp:param name="sal" value="<%=mensaje%>" /> 
+                        </jsp:include>
+
+                        <%}%>
                     </div>
 
                     <form action="../cor" method="post" name="aplicarPedidoAsociacion" role="form" id='formAportar'>
@@ -216,6 +239,9 @@
             </div>
             <%
 
+                    } else {
+                        response.sendRedirect("../index.jsp");
+                    }
                 } else {
                     response.sendRedirect("../index.jsp");
                 }

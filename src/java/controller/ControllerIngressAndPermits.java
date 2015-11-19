@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dtos.RolesDTO;
 import dtos.UsuariosDTO;
 import facade.FacadeUsuarios;
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class ControllerIngressAndPermits extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        PrintWriter out = response.getWriter();
         FacadeUsuarios menu = new FacadeUsuarios();
         
         if (request.getParameter("btnIngresar") != null && request.getParameter("btnIngresar").equals("Ingresar")) {
@@ -42,6 +43,7 @@ public class ControllerIngressAndPermits extends HttpServlet {
                 String usr = request.getParameter("txtCorreo");
                 String psw = request.getParameter("txtClave");
                 UsuariosDTO datosUsuario = new UsuariosDTO();
+                RolesDTO rol = new RolesDTO(datosUsuario);
                             
                 String menuAPintar = "";
                 HashMap<UsuariosDTO, String> hs = new HashMap<UsuariosDTO, String>();
@@ -52,30 +54,35 @@ public class ControllerIngressAndPermits extends HttpServlet {
                     menuAPintar = registro.getValue();
                 }
                 // out.print("documento " + datosUsuario.getDocumento());
-                if (datosUsuario.getCedula().equals("") && datosUsuario.getEstado() == 1 || datosUsuario.getEstado() == 2 || datosUsuario.getEstado() == 3 || datosUsuario.getEstado() == 5) {
+                
+                if (datosUsuario.getCedula().equals("") && 
+                        datosUsuario.getEstado() == 2 || 
+                        datosUsuario.getEstado() == 3 || 
+                        datosUsuario.getEstado() == 6 || 
+                        datosUsuario.getEstado() == 5) {
                     HttpSession miSesion = request.getSession(true);
                     miSesion.setAttribute("usr", datosUsuario);
                     miSesion.setAttribute("mp", menuAPintar);
+                    miSesion.setAttribute("rol", rol);
                     response.sendRedirect("pages/profile.jsp");
 
-                } else if (datosUsuario.getCedula().equals("") && datosUsuario.getEstado() == 0) {
+                } else if (datosUsuario.getCedula().equals("") && datosUsuario.getEstado() == 1) {
                     String mensaje = "Usuario no validado (Solicitar permisos)";
-                    response.sendRedirect("pages/login.jsp?msgSalida= "+mensaje);
+                    response.sendRedirect("pages/login.jsp?tipo=2&msg="+mensaje);
                     
-                }else if (datosUsuario.getCedula().equals("") && datosUsuario.getEstado() == 3) {
+                }else if (datosUsuario.getCedula().equals("") && datosUsuario.getEstado() == 4) {
                     String mensaje = "Usuario deshabilitado, contáctese con nosotros para conocer su inquietud.";
-                    response.sendRedirect("pages/login.jsp?msgSalida=<strong> "+mensaje+" </strong>");
+                    response.sendRedirect("pages/login.jsp?tipo=2&msg="+mensaje);
                     
                 } else if (datosUsuario.getCedula().equals("")) {
                     String mensaje = "Datos incorrectos, revise e ingrese nuevamente.";
-                    response.sendRedirect("pages/login.jsp?msgSalida=<strong> "+mensaje+" </strong>");
-                    
+                    response.sendRedirect("pages/login.jsp?tipo=0&msg="+mensaje);
                 }else {
                     String prueba = "No eres parte del sistema, te invitamos a que te registres.";
-                    response.sendRedirect("pages/login.jsp?msgSalida= "+prueba);
+                    response.sendRedirect("pages/login.jsp?tipo=0&msg="+prueba);
                 }
-            } else {        
-                response.sendRedirect("pages/login.jsp?msgSalida=No se realizo la solicitud.");
+            } else {  
+                out.print("Esta ingresando de forma fraudalente");                
             }
     }
 

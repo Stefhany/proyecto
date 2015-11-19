@@ -51,7 +51,6 @@ public class ControllerOrders extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String salida = "";
         FacadeSolicitudDistribuidor facadeRequestDistributor = new FacadeSolicitudDistribuidor();
         FacadePedidoSobreOferta facadePedidoSobreOferta = new FacadePedidoSobreOferta();
         SolicitudDistribuidorDTO solicitud = new SolicitudDistribuidorDTO();
@@ -103,23 +102,26 @@ public class ControllerOrders extends HttpServlet {
                                     + " kilogramos de " + nombreProducto + ", del usuario " + nombreProductor + ".<br>"
                                     + " Si desea concretar las condiciones del pedido se puede comunicar a su teléfono "
                                     + telefonoProductor + " o al correo electronico " + correoProductor + ".<br><br>"
-                                    + "Información: Recuerce tener presentes los términos y condiciones del pedido.<br><br>"
-                                    + "Gracias por pertenecer a SIGAA <br>"
+                                    + " Información: Recuerce tener presentes los términos y condiciones del pedido.<br><br>"
+                                    + " Gracias por pertenecer a SIGAA <br>"
                                     + " Persona encargada: Stefhany Alfonso Rincón <br>"
-                                    + "Líneas de atención: 3213018539", correoDistribuidor);
+                                    + " Líneas de atención: 3213018539", correoDistribuidor);
                             String mensaje = "Su pedido ha sido enviado sactisfactoriamente";
                             String advertencia = "Recuerde que el precio que se va a tener en cuenta para el envio de este pedido "
                                     + " es de acuerdo a la postulación que hizo el productor. Se le enviara un correo de confirmación "
                                     + " para más detalles del pedido";
                             response.sendRedirect("pages/listarofertasactuales.jsp?tipo=1&msg=" + mensaje + "&tipo=2&msg=" + advertencia);
+                        } else {
+                            String msg = "No se pudo registrar el pedido sobre el producto seleccionado.";
+                            response.sendRedirect("pages/listarofertasactuales.jsp?tipo=0&msg=" + msg);
                         }
                     } else {
                         String msj = "No puede ingresar una cantidad mayor a la solicitada";
-                        response.sendRedirect("pages/listarofertasactuales.jsp?msgSalida = <strong>" + msj + "</Strong>");
+                        response.sendRedirect("pages/listarofertasactuales.jsp?tipo=0&msg=" + msj);
                     }
                 } else {
                     String mensaje = "La fecha que selecciono no esta disponible para el termino de esta oferta.";
-                    response.sendRedirect("pages/listarofertasactuales.jsp?msgSalida = <strong>" + mensaje + "</Strong>");
+                    response.sendRedirect("pages/listarofertasactuales.jsp?tipo=0&msg=" + mensaje);
                 }
 
             } else if (request.getParameter("btnSolicitarAsociacion") != null && request.getParameter("solicitarAsociacion") != null) {
@@ -140,11 +142,9 @@ public class ControllerOrders extends HttpServlet {
                 String correo = request.getParameter("txtCorreo");
                 String nombre = request.getParameter("txtUser");
 
-                salida = facadeRequestDistributor.insertarSolicitudDistribuidor(solicitud);
+                String solicitarPedido = facadeRequestDistributor.insertarSolicitudDistribuidor(solicitud);
 
-                if (salida.equals("ok")) {
-                    String mensaje = "El pedido a la asociación a sido enviado sactisfactoriamente. Se le enviara un correo de confirmacion.";
-                    response.sendRedirect("pages/realizarpedidoasociacion.jsp?tipo=1&msg=" + mensaje);
+                if (solicitarPedido.equals("ok")) {
                     Mail.sendMail("Confirmación de pedido a la asociación", ""
                             + " <h3>Confirmación</h3>"
                             + " Señor, ra: " + nombre + "<br><br>"
@@ -159,10 +159,15 @@ public class ControllerOrders extends HttpServlet {
                             + " Gracias por pertenecer a SIGAA <br>"
                             + " Persona encargada: Stefhany Alfonso Rincón <br>"
                             + " Líneas de atención: 3213018539", correo);
+
+                    String mensaje = "El pedido a la asociación a sido enviado sactisfactoriamente. Se le enviara un correo de confirmacion.";
+                    response.sendRedirect("pages/realizarpedidoasociacion.jsp?tipo=1&msg=" + mensaje);
+
                 } else {
                     String msg = "Hemos tenido problemas al registrar su pedido";
                     response.sendRedirect("pages/realizarpedidoasociacion.jsp?tipo=0&msg=" + msg);
                 }
+
             } else if (request.getParameter("btnGenerarPedido") != null && request.getParameter("generarPedido") != null) {
 
                 String nombreProducto = request.getParameter("txtNombreProducto").trim();
@@ -180,40 +185,48 @@ public class ControllerOrders extends HttpServlet {
                 if (fechaEntregaBien == 1) {
                     int fechaAnticipacion = facadeDespachoPedidos.validarFechaDespacho(fechaEntrega, idSolicitud);
                     if (fechaAnticipacion == 1) {
-                        salida = facadeRequestDistributor.modificarSolicitudDistribuidor(solicitud);
-                        if (salida.equals("ok")) {
-                            FacadeUsuarios facadeUsuarios = new FacadeUsuarios();
-                            FacadeProductosAsociadosUsuarios facadeProductAsociado = new FacadeProductosAsociadosUsuarios();
+                        String modificarSolicitud = facadeRequestDistributor.modificarSolicitudDistribuidor(solicitud);
+                        if (modificarSolicitud.equals("ok")) {
+                            String cambiarEstado = facadeDespachoPedidos.cambiarEstadoAProductores(idSolicitud);
 
-                            List<UsuariosDTO> users = new ArrayList();
-                            StringBuilder correos = new StringBuilder();
-                            users = facadeProductAsociado.enviarCorreoAProductores(3);
+                            if (cambiarEstado.equals("ok")) {
+                                FacadeProductosAsociadosUsuarios facadeProductAsociado = new FacadeProductosAsociadosUsuarios();
 
-                            for (UsuariosDTO user : users) {
-                                correos.append(user.getCorreo());
-                                correos.append(", ");
+                                List<UsuariosDTO> users = new ArrayList();
+                                StringBuilder correos = new StringBuilder();
+                                users = facadeProductAsociado.enviarCorreoAProductores(3);
+
+                                for (UsuariosDTO user : users) {
+                                    correos.append(user.getCorreo());
+                                    correos.append(", ");
+                                }
+
+                                Mail.sendMail("Solicitud de pedido", "Señor(a): "
+                                        + " La asociación requiere para la fecha: " + fechaEntregaPorElProductor + ", " + cantidadSolicitada + " "
+                                        + " de " + nombreProducto + ", para el distribuidor " + nombreDistribuidor + " <br><br>"
+                                        + " Información: Tener presente que al participar en este pedido no lo puede cancelar tres dias antes "
+                                        + " del " + fechaEntregaPorElProductor + ". <br><br>"
+                                        + " Gracias por pertenecer a SIGAA <br>"
+                                        + " Persona encargada: Stefhany Alfonso Rincón <br>"
+                                        + " Líneas de atención: 3213018539", correos.toString());
+
+                                String mensaje = "El pedido ha sido enviado a los productores que tienen asociado este producto.";
+                                response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?tipo=1&msg=" + mensaje);
+                            } else {
+                                String mensaje = "No se ha podido modificar el estado de la solicitud.";
+                                response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?tipo=0&msg=" + mensaje);
                             }
-
-                            Mail.sendMail("Solicitud de pedido", "Señor(a): "
-                                    + " La asociación requiere para la fecha: " + fechaEntregaPorElProductor + ", " + cantidadSolicitada + " "
-                                    + " de " + nombreProducto + ", para el distribuidor " + nombreDistribuidor + " <br><br>"
-                                    + " Información: Tener presente que al participar en este pedido no lo puede cancelar tres dias antes "
-                                    + " del " + fechaEntregaPorElProductor + ". <br><br>"
-                                    + " Gracias por pertenecer a SIGAA <br>"
-                                    + " Persona encargada: Stefhany Alfonso Rincón <br>"
-                                    + " Líneas de atención: 3213018539", correos.toString());
-
-                            response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?msgSalida=<strong>El pedido ha sido enviado a los productores.</Strong>");
-                            facadeDespachoPedidos.cambiarEstadoAProductores(idSolicitud);
-
                         } else {
-                            response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?msgSalida=<strong>No se pudo realizar el cambio del estado.</Strong>");
+                            String salida = "No se pudo realizar el pedido";
+                            response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?tipo=0&msg=" + salida);
                         }
                     } else {
-                        response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?msgSalida=<strong>La fecha de envío a los productores debe ser anterior a la de solicitud.</Strong>");
+                        String msg = "La fecha de envío a los productores debe ser anterior a la de solicitud.";
+                        response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?tipo=0&msg=" + msg);
                     }
                 } else {
-                    response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?msgSalida=<strong>Esta seleccionando una fecha anterior de la actual.</Strong>");
+                    String msg = "Esta seleccionando una fecha anterior de la actual.";
+                    response.sendRedirect("pages/listarsolicitudesasociaciones.jsp?tipo=0&msg=" + msg);
                 }
 
             } else if (request.getParameter("btnAplicarSolicitud") != null && request.getParameter("aplicarSolicitud") != null) {
@@ -239,25 +252,28 @@ public class ControllerOrders extends HttpServlet {
                             if (fechaAnticipacion == 1) {
 
                                 FacadeAportesProductores facadeContributeProducer = new FacadeAportesProductores();
-                                salida = facadeContributeProducer.participarASolicitudAsociacion(request.getParameter("txtFechaEntrega").trim(),
+                                String aporteProductor = facadeContributeProducer.participarASolicitudAsociacion(request.getParameter("txtFechaEntrega").trim(),
                                         Integer.parseInt(request.getParameter("txtCantidadAportar").trim()),
                                         idAsociado,
                                         Integer.parseInt(request.getParameter("txtIdSolicitud").trim()));
-
-                                response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida= <strong>Su aporte ha sido registrado. Gracias por participar</Strong> ");
+                                
+                                String mensajeAporte = "El aporte ha sido registrado satisfactoriamente. Gracias por participar.";                               
+                                response.sendRedirect("pages/listarsolicitudesproductores.jsp?tipo=1&msg="+mensajeAporte);
                             } else {
-                                response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida=<strong>La fecha para el envío del producto debe ser anterior a la fecha estipulada por la asociación.</Strong>");
+                                String mensajeErrorAporte = "La fecha para el envío del producto debe ser anterior a la fecha estipulada por la asociación.";
+                                response.sendRedirect("pages/listarsolicitudesproductores.jsp?tipo=0&msg="+mensajeErrorAporte);
                             }
                         } else {
-                            response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida=<strong>Esta seleccionando una fecha anterior de la actual.</Strong>");
+                            String msg = "Esta seleccionando una fecha anterior de la actual";
+                            response.sendRedirect("pages/listarsolicitudesproductores.jsp?tipo=0&msg="+msg);
                         }
                     } else {
                         String msj = "No puede ingresar una cantidad mayor a la solicitada";
-                        response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida = <strong>" + msj + " </Strong>");
+                        response.sendRedirect("pages/listarsolicitudesproductores.jsp?tipo=0&msg="+msj);
                     }
                 } else {
                     String mensaje = "No tiene el producto: " + nombreProducto + " registrado. Por ende no puede participar en este pedido";
-                    response.sendRedirect("pages/listarsolicitudesproductores.jsp?msgSalida = <strong>" + mensaje + " </Strong>");
+                    response.sendRedirect("pages/listarsolicitudesproductores.jsp?tipo=0&msg="+mensaje);
                 }
             } else if (request.getParameter("btnDespacharPedido") != null && request.getParameter("despacharPedido") != null) {
 
@@ -292,7 +308,7 @@ public class ControllerOrders extends HttpServlet {
                             String state = facadeDispatchOrder.cambiarEstadoDespacho(idSolicitud);
                             String stateNew = facadeDispatchOrder.cambiarEstadoSolicitud(idSolicitud);
                             if (insert.equals(insert.equals("ok"))) {
-                                
+
                                 Mail.sendMail("Pedido enviado", "Señor(a): " + nombreDistribuidor + "<br>"
                                         + " Le informamos que el pedido que realizo de " + cantidadPedida
                                         + " kilogramos de " + nombreProducto + ", en la fecha" + fechaSolicitud + ", "
@@ -305,7 +321,7 @@ public class ControllerOrders extends HttpServlet {
                                 String msg = "Le informamos que el pedido no se completo, pero por cuestiones de que el distribuidor"
                                         + " espera su pedido en esta fecha, se procede a enviarle un correo para que conozca la situación. ";
                                 response.sendRedirect("pages/listardespachos.jsp?tipo=2&msg=" + msg);
-                            }else{
+                            } else {
                                 String msg = "El pedido ha sido despachado. No dudes en utilizar nuestros servicios.";
                                 response.sendRedirect("pages/listardespachos.jsp?tipo=1&msg=" + msg);
                             }
@@ -313,7 +329,7 @@ public class ControllerOrders extends HttpServlet {
                             FacadeDespachosPedidos facadeDispatchOrder = new FacadeDespachosPedidos();
                             String insert = facadeDispatchOrder.insertarDespacho(dto);
                             String stateNew = facadeDispatchOrder.cambiarEstadoSolicitud(idSolicitud);
-                            
+
                             if (insert.equals("ok")) {
 
                                 Mail.sendMail("Pedido enviado", "Señor(a): " + nombreDistribuidor + "<br>"
@@ -327,7 +343,7 @@ public class ControllerOrders extends HttpServlet {
                                         + " Líneas de atención: 3213018539", correoDistribuidor);
                                 String msg = "El pedido ha sido despachado. No dudes en utilizar nuestros servicios.";
                                 response.sendRedirect("pages/listardespachos.jsp?tipo=1&msg=" + msg);
-                            }else{
+                            } else {
                                 String msg = "El pedido no ha sido despachado.";
                                 response.sendRedirect("pages/listardespachos.jsp?tipo=0&msg=" + msg);
                             }
@@ -335,11 +351,11 @@ public class ControllerOrders extends HttpServlet {
 
                     } else {
                         String msg = "La fecha de despacho debe ser anterior a la fecha de entrega del distribuidor.";
-                        response.sendRedirect("pages/listardespachos.jsp?tipo=0&msg="+msg);
+                        response.sendRedirect("pages/listardespachos.jsp?tipo=0&msg=" + msg);
                     }
                 } else {
                     String msg = "Esta seleccionando una fecha anterior de la actual. Ingrese nuevamente la fecha.";
-                    response.sendRedirect("pages/listardespachos.jsp?tipo=0&msg="+msg);
+                    response.sendRedirect("pages/listardespachos.jsp?tipo=0&msg=" + msg);
                 }
 
             }

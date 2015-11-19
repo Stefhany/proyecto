@@ -14,16 +14,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>SIGAA - Iniciar sesión</title>
-        <!-- Bootstrap Core CSS -->
+        <title>SIGAA - Reestablecer clave</title>
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
+        
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+        
         <!-- Custom CSS -->
         <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+        
         <!-- Custom Fonts -->
         <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        
         <!-- Favicon de SIGAA -->
         <link rel="icon" href="../img/portfolio/favicon.ico" type="image/x-ico"/>
     </head>
@@ -55,6 +61,22 @@
                             </form>
                         </div>
                     </div>
+                </div>
+
+                <div style="margin-top: 0%;">
+                    <%
+                        String tipo = "";
+                        String mensaje = "";
+                        if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                            tipo = request.getParameter("tipo");
+                            mensaje = request.getParameter("msg");
+                    %>
+                    <jsp:include page="msg.jsp" flush="true">
+                        <jsp:param name="tipo" value="<%=tipo%>" /> 
+                        <jsp:param name="sal" value="<%=mensaje%>" /> 
+                    </jsp:include>
+
+                    <%}%>
                 </div>
             </div>
         </div>

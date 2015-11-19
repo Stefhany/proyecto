@@ -71,8 +71,8 @@ public class TestConsult {
 ////        aport.setCantidad(650);
 ////        aport.setIdAso(10);
 ////        aport.setSolicitudId(1);
-        FacadeAportesProductores f = new FacadeAportesProductores();
-        System.out.println(f.consultarMiAporte(33));
+//        FacadeAportesProductores f = new FacadeAportesProductores();
+//        System.out.println(f.consultarMiAporte(33));
 //        System.out.println(f.participarASolicitudAsociacion("2015-11-14",200,10,2));
         //System.out.println(f.buscarMisIdAsociados(19, 10));
         
@@ -107,7 +107,7 @@ public class TestConsult {
 //        s.setObservacion("prueba");
 //        System.out.println(fsd.insertarSolicitudDistribuidor(s));
         FacadeUsuarios u = new FacadeUsuarios();
-        System.out.println(u.enviarCorreoAlDespacharUnaOferta(3));
+        System.out.println(u.confirmarRecuperacionClaveCorreo(9));
                  
     }
         

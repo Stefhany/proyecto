@@ -35,17 +35,22 @@ public class ControllerUserProduct extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         FacadeProductosAsociadosUsuarios facadeProAsoUser = new FacadeProductosAsociadosUsuarios();
-        String salida = "";
+
         PrintWriter out = response.getWriter();
-        try{
-            if (request.getParameter("idProduct") != null) {                   
-                int user = Integer.parseInt(request.getParameter("idUsu").trim());                
-                int idProd = Integer.parseInt(request.getParameter("idProduct").trim());              
-                salida = facadeProAsoUser.seleccionarProducto(user,idProd);
-                //salida = facadeProAsoUser.eliminarProAso(Integer.parseInt(request.getParameter("idProAso")));
-                response.sendRedirect("pages/asociarproducto.jsp?msgSalida=<strong>El producto ha sido asociado.</strong>");
+        try {
+            if (request.getParameter("idProduct") != null) {
+                int user = Integer.parseInt(request.getParameter("idUsu").trim());
+                int idProd = Integer.parseInt(request.getParameter("idProduct").trim());
+                String salida = facadeProAsoUser.seleccionarProducto(user, idProd);
+                if (salida.equals("ok")) {
+                    String msg = "El producto se le ha asociado a su cuenta.";
+                    response.sendRedirect("pages/asociarproducto.jsp?tipo=1&msg=" + msg);
+                }else {
+                    String msg = "No se pudo asociar el producto a su cuenta.";
+                    response.sendRedirect("pages/asociarproducto.jsp?tipo=1&msg=" + msg);
+                }
             }
-        }finally{
+        } finally {
             out.close();
         }
     }

@@ -4,6 +4,7 @@
     Author     : Mona
 --%>
 
+<%@page import="dtos.RolesDTO"%>
 <%@page import="facade.FacadeConsultas"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
@@ -25,6 +26,9 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -54,6 +58,9 @@
             if (miSesion.getAttribute("usr") != null) {
                 UsuariosDTO uregistrado = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
+                RolesDTO rol = (RolesDTO) miSesion.getAttribute("rol");
+
+                if (rol.getIdRol() == 2 || rol.getIdRol() == 4) {
 
                 FacadeAportesProductores facadeAportes = new FacadeAportesProductores();
 
@@ -160,6 +167,21 @@
                 <!-- /.row -->
                 <div class="row" >
                     <div class="col-lg-12">
+                        <div style="margin-top: 0%;">
+                            <%
+                                String tipo = "";
+                                String mensaje = "";
+                                if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                                    tipo = request.getParameter("tipo");
+                                    mensaje = request.getParameter("msg");
+                            %>
+                            <jsp:include page="msg.jsp" flush="true">
+                                <jsp:param name="tipo" value="<%=tipo%>" /> 
+                                <jsp:param name="sal" value="<%=mensaje%>" /> 
+                            </jsp:include>
+
+                            <%}%>
+                        </div>
                         <div class="panel panel-success">
                             <div class="panel-heading">
                                 <i class="fa fa-group fa-fw"></i>Soliciudes a Productores
@@ -231,6 +253,8 @@
     <%
 
         } else {
+            response.sendRedirect("../index.jsp");
+        }} else {
             response.sendRedirect("../index.jsp");
         }
     %>

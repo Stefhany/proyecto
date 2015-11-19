@@ -70,7 +70,7 @@ public class ControllerAportProducer extends HttpServlet {
                     
                     if (cambioCantidad > 0) {
                         String mensaje = "Ha sido cancelada la participación que realizo para el pedido de la asociación";
-                        response.sendRedirect("pages/misparticipaciones.jsp?1&msg=" + mensaje);
+                        response.sendRedirect("pages/misparticipaciones.jsp?tipo=1&msg=" + mensaje);
                     }else{
                         String salida = "No se pudo cancelar el pedido.";
                         response.sendRedirect("pages/misparticipaciones.jsp?tipo=0&msg=" + salida);

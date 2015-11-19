@@ -35,8 +35,8 @@ public class FacadeProductos {
         return productDao.modificarProducto(productDto, cnn);
     }
     
-    public String eliminarProducto(int id){
-        return productDao.eliminarProducto(id, cnn);
+    public String deshabilitarProducto(int id){
+        return productDao.deshabilitarProducto(id, cnn);
     }
     
     public List<ProductoDTO> listarAllProducts() throws MyException{

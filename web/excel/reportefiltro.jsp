@@ -45,7 +45,7 @@
                     <td><%filtrar.get(i).getIdAso().getProducto().getNombre();%></td>
                     <td><%filtrar.get(i).getFechaFin();%></td>
                 </tr>
-                }
+                }%>
                 } else {
                 out.println("<tr>");
                     out.println("<td>No se encontraron registros.</td>");

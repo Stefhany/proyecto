@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Certificado_productos" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c96476cd-6562-4154-92ae-74a80fadb04d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cc" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT distinct p.`nombreProducto` as producto
+    FROM `usuarios` u
+  inner JOIN `productosasociadosusuarios` pau ON u.`idUsuarios`= pau.`usuariosId`
+  INNER JOIN `productos` p ON pau.`productosId` = p.`idProductos`
+  INNER JOIN `estadosusuarios` e ON u.`estadoUser`=e.`idEstadoUsuario`
+  WHERE u.`cedula` = $P{cc}]]>
+	</queryString>
+	<field name="producto" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ff978040-e9e6-4f83-a682-9619d287860a" x="19" y="3" width="95" height="14"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

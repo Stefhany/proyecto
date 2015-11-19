@@ -72,6 +72,18 @@
         <servlet-name>ReporteCertificacion</servlet-name>
         <servlet-class>reports.ReporteCertificacion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReporteProductos</servlet-name>
+        <servlet-class>reports.ReporteProductos</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControllerProducts</servlet-name>
+        <servlet-class>controller.ControllerProducts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Certificado</servlet-name>
+        <servlet-class>reports.Certificado</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Conectar</servlet-name>
         <url-pattern>/con</url-pattern>
@@ -143,6 +155,18 @@
     <servlet-mapping>
         <servlet-name>ReporteCertificacion</servlet-name>
         <url-pattern>/rc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteProductos</servlet-name>
+        <url-pattern>/rp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerProducts</servlet-name>
+        <url-pattern>/cp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Certificado</servlet-name>
+        <url-pattern>/Certificado</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

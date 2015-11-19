@@ -24,6 +24,9 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -158,6 +161,22 @@
                     <div class="col-lg-12">
                         <h1 class="page-header">Registrar envío de pedido</h1>
                     </div>
+                    
+                    <div style="margin-top: 0%;">
+                            <%
+                                String tipo = "";
+                                String mensaje = "";
+                                if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                                    tipo = request.getParameter("tipo");
+                                    mensaje = request.getParameter("msg");
+                            %>
+                            <jsp:include page="msg.jsp" flush="true">
+                                <jsp:param name="tipo" value="<%=tipo%>" /> 
+                                <jsp:param name="sal" value="<%=mensaje%>" /> 
+                            </jsp:include>
+
+                            <%}%>
+                        </div>
 
                     <form name="despacharPedido" method="post" action="../cor" role="form">
 

@@ -29,15 +29,16 @@ public class ProductoDAO {
         int resultado = 0;
         String msgSalida = "";
         try {
-            pstmt = cnn.prepareStatement("INSERT INTO productos VALUES (null, ?,?,?);");
+            pstmt = cnn.prepareStatement("INSERT INTO productos VALUES (null, ?,?,?,1,?);");
             pstmt.setString(1, nuevoProducto.getNombre());
             pstmt.setString(2, nuevoProducto.getUnidad());
             pstmt.setInt(3, nuevoProducto.getCategoriaId().getIdCategoria());
+            pstmt.setInt(4, nuevoProducto.getPrecioProducto());  
             resultado = pstmt.executeUpdate();
             if (resultado != 0) {
-                msgSalida = "El registro del producto " + resultado + " ha sido exitoso";
+                msgSalida = "ok";
             } else {
-                msgSalida = "No se pudo realizar el registro";
+                msgSalida = "no";
             }
         } catch (SQLException sqle) {
             msgSalida = "Ha ocurrido la siguiente exepción.. " + sqle.getMessage();
@@ -66,16 +67,18 @@ public class ProductoDAO {
         return msgSalida;
     }
 
-    public String eliminarProducto(int id, Connection cnn) {
+    public String deshabilitarProducto(int id, Connection cnn) {
         this.cnn = cnn;
         int rtdo = 0;
         String msgSalida = "";
         try {
-            pstmt = cnn.prepareStatement("DELETE FROM productos WHERE idProductos = ?;");
+            pstmt = cnn.prepareStatement("update productos set estado = 2 WHERE idProductos = ?;");
             pstmt.setInt(1, id);
             rtdo = pstmt.executeUpdate();
             if (rtdo != 0) {
-                msgSalida = "Registro " + rtdo + " eliminado. Exitosamente";
+                msgSalida = "ok";
+            }else {
+                msgSalida = "no";
             }
         } catch (SQLException sqle) {
             msgSalida = "Ocurrio esta excepción " + sqle.getMessage();
@@ -87,14 +90,16 @@ public class ProductoDAO {
         this.cnn = cnn;
         LinkedList<ProductoDTO> products = new LinkedList();
         try {
-            String queryAllPro = " select idproductos, nombreProducto, unidad, idcategorias, nombreCategoria "
+            String queryAllPro = " select idproductos, nombreProducto, unidad, idcategorias, nombreCategoria, precioProducto "
                     + " from productos p inner join categorias c on p.categoriasid=c.idcategorias"
+                    + " where estado = 1"
                     + " order by nombreProducto asc";
             pstmt = cnn.prepareStatement(queryAllPro);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 CategoriaDTO cdto = new CategoriaDTO(rs.getInt("idcategorias"), rs.getString("nombreCategoria"));
                 ProductoDTO prodto = new ProductoDTO(rs.getInt("idproductos"), rs.getString("nombreProducto"), rs.getString("unidad"), cdto);
+                prodto.setPrecioProducto(rs.getInt("precioProducto"));
                 products.add(prodto);
             }
         } catch (SQLException sqle) {

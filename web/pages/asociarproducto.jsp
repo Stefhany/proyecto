@@ -4,6 +4,7 @@
     Author     : Mona
 --%>
 
+<%@page import="dtos.RolesDTO"%>
 <%@page import="dtos.ProductosAsociadosUsuariosDTO"%>
 <%@page import="facade.FacadeProductosAsociadosUsuarios"%>
 <%@page import="dtos.RolesUsuariosDTO"%>
@@ -29,6 +30,9 @@
         <title>Asociar Producto - SIGAA</title>
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -86,10 +90,13 @@
             if (miSesion.getAttribute("usr") != null) {
                 UsuariosDTO userdto = (UsuariosDTO) miSesion.getAttribute("usr");
                 String menu = (String) miSesion.getAttribute("mp");
+                RolesDTO rol = (RolesDTO) miSesion.getAttribute("rol");
 
-                FacadeProductosAsociadosUsuarios facadeProducts = new FacadeProductosAsociadosUsuarios();
-                LinkedList<ProductoDTO> productos = new LinkedList();
-                productos = (LinkedList<ProductoDTO>) facadeProducts.asociarProductos(userdto.getIdUsuarios());
+                if (rol.getIdRol() != 3) {
+
+                    FacadeProductosAsociadosUsuarios facadeProducts = new FacadeProductosAsociadosUsuarios();
+                    LinkedList<ProductoDTO> productos = new LinkedList();
+                    productos = (LinkedList<ProductoDTO>) facadeProducts.asociarProductos(userdto.getIdUsuarios());
         %>
     </head>
 
@@ -193,6 +200,21 @@
                 <!-- /.row -->
                 <div class="row" >
                     <div class="col-lg-12">
+                        <div style="margin-top: 0%;">
+                            <%
+                                String tipo = "";
+                                String mensaje = "";
+                                if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                                    tipo = request.getParameter("tipo");
+                                    mensaje = request.getParameter("msg");
+                            %>
+                            <jsp:include page="msg.jsp" flush="true">
+                                <jsp:param name="tipo" value="<%=tipo%>" /> 
+                                <jsp:param name="sal" value="<%=mensaje%>" /> 
+                            </jsp:include>
+
+                            <%}%>
+                        </div>
                         <div class="panel panel-success">
                             <div class="panel-heading">
                                 <i class="fa fa-shopping-cart fa-fw"></i> Asociar Productos
@@ -258,6 +280,9 @@
     </div>
     <%
 
+            } else {
+                response.sendRedirect("../index.jsp");
+            }
         } else {
             response.sendRedirect("../index.jsp");
         }

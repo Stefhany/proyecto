@@ -234,7 +234,7 @@ public class ProductosAsociadosUsuariosDAO {
         String salida = "";
         int res = 0;
         try {
-            String querryCambiarEstado = "update productosasociadosusuarios set estado = 0 where "
+            String querryCambiarEstado = " update productosasociadosusuarios set estado = 0 where "
                     + " idProductosAsociadosUsuarios = ?";
 
             pstmt = cnn.prepareStatement(querryCambiarEstado);

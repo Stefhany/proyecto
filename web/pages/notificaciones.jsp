@@ -26,6 +26,9 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -46,7 +49,7 @@
         <link rel="icon" href="../img/portfolio/favicon.ico" type="image/x-ico"/>
 
         <script src="http://code.jquery.com/jquery-latest.js" <meta charset="utf-8"> type = "text/javascript" ></script>
-        
+
         <script type="text/javascript">
                     $(document).ready(function () {
 
@@ -134,18 +137,18 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                        <%
-                                                                                                  if (uregistrado.getGenero() == 1) {%>
-                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>" 
-                                                                                                  title="Eres: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>"></i>
+                                                                                              <%
+                                            if (uregistrado.getGenero() == 1) {%>
+                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
+                                                                                              title="Eres: <%if (uregistrado != null) {
+                                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                      }%>"></i>
                                             <% } else {%>
-                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>" 
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
                                                                                  title="Eres: <%if (uregistrado != null) {
                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
                                                                                      }%>"></i>
@@ -174,6 +177,21 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">Notificaciones</h1>
+                    </div>
+                    <div style="margin-top: 0%;">
+                        <%
+                            String tipo = "";
+                            String mensaje = "";
+                            if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                                tipo = request.getParameter("tipo");
+                                mensaje = request.getParameter("msg");
+                        %>
+                        <jsp:include page="msg.jsp" flush="true">
+                            <jsp:param name="tipo" value="<%=tipo%>" /> 
+                            <jsp:param name="sal" value="<%=mensaje%>" /> 
+                        </jsp:include>
+
+                        <%}%>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -235,7 +253,7 @@
                                                         <td><%=user.getDireccion()%></td>
                                                         <td><%=user.getCorreo()%></td>
                                                     </tr>    
-                                                        <%i++;
+                                                    <%i++;
                                                             }%>
                                                 </tbody>
                                             </table>          
@@ -249,7 +267,7 @@
                             <!-- /.panel-body -->
                         </div>
                         <!-- /.panel -->
-                                            <input type="hidden" name="contador" value="<%= i%>">   
+                        <input type="hidden" name="contador" value="<%= i%>">   
                     </form></div>
                 <!-- /.col-lg-4 -->
             </div>

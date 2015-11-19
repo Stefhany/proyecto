@@ -25,6 +25,9 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Estilos para mensajes -->
+        <link href="../css/estilos.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -168,6 +171,22 @@
                             <div class="panel-heading">
                                 <i class="fa fa-calendar-o fa-fw"></i>Mis Ofertas
                             </div>
+                            
+                            <div style="margin-top: 0%;">
+                            <%
+                                String tipo = "";
+                                String mensaje = "";
+                                if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                                    tipo = request.getParameter("tipo");
+                                    mensaje = request.getParameter("msg");
+                            %>
+                            <jsp:include page="msg.jsp" flush="true">
+                                <jsp:param name="tipo" value="<%=tipo%>" /> 
+                                <jsp:param name="sal" value="<%=mensaje%>" /> 
+                            </jsp:include>
+
+                            <%}%>
+                        </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <div class="dataTable_wrapper">

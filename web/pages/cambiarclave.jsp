@@ -24,6 +24,9 @@
     <!-- Bootstrap Core CSS -->
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Estilos para mensajes -->
+    <link href="../css/estilos.css" rel="stylesheet">
+
     <!-- MetisMenu CSS -->
     <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
 
@@ -104,41 +107,41 @@
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                        <ul class="nav" id="side-menu">
-                            <li class="sidebar-search">
-                                <div class="input-group custom-search-form">
-                                    <button class="btn btn-default" type="button">
-                                        <%
-                                                                                                  if (uregistrado.getGenero() == 1) {%>
-                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>" 
-                                                                                                  title="Eres: <%if (uregistrado != null) {
-                                                                                                      out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                                  }%>"></i>
-                                            <% } else {%>
-                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>" 
-                                                                                 title="Eres: <%if (uregistrado != null) {
-                                                                                         out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
-                                                                                     }%>"></i>
-                                            <%}
-                                            %>
-                                    </button>
-                                    </span>
-                                </div>
-                                <!-- /input-group -->
-                            </li>
-                        </ul>
-                        <ul style="margin-left: 1,5%;">
-                            <li>
-                                <%
-                                    out.print(menu);
-                                %>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <button class="btn btn-default" type="button">
+                                                                                          <%
+                                            if (uregistrado.getGenero() == 1) {%>
+                                                                                          <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
+                                                                                          title="Eres: <%if (uregistrado != null) {
+                                                                                                          out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                                      }%>"></i>
+                                        <% } else {%>
+                                                                             <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (uregistrado != null) {
+                                                out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                            }%>" 
+                                                                             title="Eres: <%if (uregistrado != null) {
+                                                                                     out.print(uregistrado.getNombres() + " " + uregistrado.getApellidos());
+                                                                                 }%>"></i>
+                                        <%}
+                                        %>
+                                </button>
+                                </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                    </ul>
+                    <ul style="margin-left: 1,5%;">
+                        <li>
+                            <%
+                                out.print(menu);
+                            %>
+                        </li>
+                    </ul>
+                </div>
                 <!-- /.sidebar-collapse -->
             </div>
             <!-- /.navbar-static-side -->
@@ -148,6 +151,22 @@
             <div class="row" style="width:50%;">
                 <div class="col-lg-12">
                     <h1 class="page-header">Actualizar contraseña</h1>
+                </div>
+
+                <div style="margin-top: 0%;">
+                    <%
+                        String tipo = "";
+                        String mensaje = "";
+                        if (request.getParameter("msg") != null && request.getParameter("tipo") != null) {
+                            tipo = request.getParameter("tipo");
+                            mensaje = request.getParameter("msg");
+                    %>
+                    <jsp:include page="msg.jsp" flush="true">
+                        <jsp:param name="tipo" value="<%=tipo%>" /> 
+                        <jsp:param name="sal" value="<%=mensaje%>" /> 
+                    </jsp:include>
+
+                    <%}%>
                 </div>
 
                 <form action="../cu" method="post" name="formcontactenos" id="formReestablcer">

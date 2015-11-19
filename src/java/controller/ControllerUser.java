@@ -64,26 +64,40 @@ public class ControllerUser extends HttpServlet {
                 Date fechaActual = (Date) facadeConsult.consultarFechaActual();
                 int año = facadeConsult.diferenciasDeFechas(fechaNac, fechaActual);
                 if (año > 365 || año == 365) {
-                    salida = facadeUser.ingresarRegistro(udto);
-                    if (salida.equals("ok")) {
+                    String registrarPersona = facadeUser.ingresarRegistro(udto);
+                    if (registrarPersona.equals("ok")) {
 
                         Mail.sendMail("Bienvenid@", "Ahora eres parte del Sistema de Información para"
                                 + " la Gestión de Alimentos Agrícolas."
                                 + " En donde encontraras un facil acceso para generar cada uno de "
-                                + " tus negocios.", correo);
-                        response.sendRedirect("index.jsp?msgSalida=<strong>Registro éxitoso</Strong>");
+                                + " tus negocios.<br><br>"
+                                + " Gracias por pertenecer a SIGAA <br>"
+                                + " Persona encargada: Stefhany Alfonso Rincón <br>"
+                                + " Líneas de atención: 3213018539", correo);
+
+                        String mensajeRegistro = "El registro ha sido exitoso.";
+                        response.sendRedirect("index.jsp?tipo=1&msg=" + mensajeRegistro);
+
                     } else {
-                        response.sendRedirect("index.jsp?msgSalida=<strong>Hay problemas!</Strong>");
+                        String mensajeRegistro = "No se pudo hacer el registro.";
+                        response.sendRedirect("index.jsp?tipo=0&msg=" + mensajeRegistro);
                     }
                 } else {
-                    response.sendRedirect("index.jsp?msgSalida=<strong>No se aceptan usuarios menores de edad.</Strong>");
+                    String mensajeEdad = "En este sistema no se permiten personas menores de edad.";
+                    response.sendRedirect("index.jsp?tipo=0&msg=" + mensajeEdad);
                 }
 
             } else if (request.getParameter("btnReestablecer") != null && request.getParameter("reestablecer") != null) {
                 userDto.setClave(request.getParameter("txtConfirmarClave").trim());
                 userDto.setIdUsuarios(Integer.parseInt(request.getParameter("txtIdUsuario").trim()));
                 String sal = facadeUser.modificarClave(userDto);
-                response.sendRedirect("pages/cambiarclave.jsp?msgSalida= <strong>La contraseña ha sido actualizada.</Strong>");
+                if (sal.equals("ok")) {
+                    String msg = "La contraseña ha sido actualiazada";
+                    response.sendRedirect("pages/cambiarclave.jsp?tipo=1&msg=" + msg);
+                } else {
+                    String msg = "La contraseña no se pudo cambiar.";
+                    response.sendRedirect("pages/cambiarclave.jsp?tipo=0&msg=" + msg);
+                }
 
             } else if (request.getParameter("btnModificarUsuario") != null && request.getParameter("modificarUsuario") != null) {
                 //out.print("ok");
@@ -92,30 +106,73 @@ public class ControllerUser extends HttpServlet {
                 userDto.setCorreo(request.getParameter("txtCorreo").trim());
                 userDto.setCiudad(request.getParameter("txtCiudad").trim());
                 userDto.setIdUsuarios(Integer.parseInt(request.getParameter("txtId").trim()));
-                salida = facadeUser.modificarUsuario(userDto);
 
-                response.sendRedirect("pages/modificarusuario.jsp?msgSalida = <strong>Los datos han sido actualizados.</Strong>");
+                String modificarUsuario = facadeUser.modificarUsuario(userDto);
+
+                if (modificarUsuario.equals("ok")) {
+                    String modificar = "Sus datos han sido actualizados.";
+                    response.sendRedirect("pages/modificarusuario.jsp?tipo=1&msg=" + modificar);
+                } else {
+                    String modificar = "Sus datos no han sido actualizados.";
+                    response.sendRedirect("pages/modificarusuario.jsp?tipo=0&msg=" + modificar);
+                }
+
             } else if (request.getParameter("btnEnviarCorreoReestablecerClave") != null && request.getParameter("enviarCorreoReestablecerClave") != null) {
                 String correo = request.getParameter("txtCorreo").trim();
 
                 int idUser = facadeUser.buscarIdUser(correo);
 
                 if (idUser > 0) {
-                    response.sendRedirect("pages/login.jsp?msgSalida=<strong>Revisa tu correo electrónico</Strong>");
                     Mail.sendMail("Reestablecer contraseña de SIGAA ", " Gracias por permitirnos ayudarle en la "
                             + " recuperación de su contraseña. Para ello debe digitar el siguiente código: <a href='#'>00000" + idUser + "</a> "
-                            + " dandole click al siguiente enlace: http://localhost:8080/FarmersMarket-cambios/paginas/recuperarclave.jsp"
+                            + " dandole click al siguiente enlace: http://localhost:8080/ProyectoSigaa/pages/recuperarclave.jsp"
                             + " Gracias por pertenecer a SIGAA <br>"
                             + " Persona encargada: Stefhany Alfonso Rincón <br>"
                             + " Líneas de atención: 3213018539", correo);
+
+                    String reestablecer = "Revise su correo electronico, en el cual se le enviara la información "
+                            + " para poder reestablecer su contraseña ";
+                    response.sendRedirect("pages/login.jsp?tipo=1&msg=" + reestablecer);
                 } else {
-                    response.sendRedirect("pages/login.jsp?msgSalida=<strong>No se pudo hacer la operación.</Strong>");
+                    String mensaje = "Hemos tenido problemas al enviar el correo para reestablecer su contraseña.";
+                    response.sendRedirect("pages/login.jsp?tipo=0&msg=" + mensaje);
                 }
             } else if (request.getParameter("idUser") != null) {
 
                 String salidaDos = facadeUser.deshabilitarUser(Integer.parseInt(request.getParameter("idUser")));
-                response.sendRedirect("paginas/tablagestionarrol.jsp?msgSalida= <strong>El usuario ha sido deshabilitado.</Strong>");
+                if (salidaDos.equals("ok")) {
+                    String mensaje = "El usuario ha sido deshabilitado.";
+                    response.sendRedirect("paginas/tablagestionarrol.jsp?tipo=1&msg=" + mensaje);
+                } else {
+                    String mensaje = "El usuario no ha sido deshabilitado.";
+                    response.sendRedirect("paginas/tablagestionarrol.jsp?tipo=0&msg=" + mensaje);
+                }
 
+            } else if (request.getParameter("btnRecuperarClave") != null && request.getParameter("recuperarClave") != null) {
+
+                int codigo = Integer.parseInt(request.getParameter("txtCode").trim());
+                String clave = request.getParameter("txtConfirmarClave").trim();
+                String correoUser = facadeUser.confirmarRecuperacionClaveCorreo(codigo);
+                String nameUser = facadeUser.confirmarRecuperacionClaveNameUser(codigo);
+                String sal = facadeUser.recuperarClave(clave, codigo);
+
+                if (sal.equals("ok")) {
+
+                    Mail.sendMail("Se ha modificado la contraseña", " Hola, " + nameUser + "<br>"
+                            + " La contraseña de tu cuenta de SIGAA con el correo " + correoUser + " se ha modificado recientemente.<br>"
+                            + " si desconoces esta acción, diríjase al siguiente enlace: http://localhost:8080/ProyectoSigaa/pages/recuperarclave.jsp"
+                            + " Gracias por pertenecer a SIGAA<br>"
+                            + " Persona encargada: Stefhany Alfonso Rincón <br>"
+                            + " Líneas de atención: 3213018539", correoUser);
+                    String mensaje = "Ya puedes ingresar nuevamente a nuestro sistema";
+                    response.sendRedirect("pages/login.jsp?tipo=1&msg=" + mensaje);
+                } else {
+                    String mensaje = "Tenemos problemas para finalizar el cambio de la contraseña.";
+                    response.sendRedirect("pages/login.jsp?tipo=0&msg=" + mensaje);
+                }
+
+            } else {
+                out.println("Su ingreso no es permitido");
             }
         } finally {
             out.close();

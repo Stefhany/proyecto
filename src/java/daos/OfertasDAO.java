@@ -308,9 +308,9 @@ public class OfertasDAO {
             rtdo = pstmt.executeUpdate();
 
             if (rtdo != 0) {
-                msgSalida = "La modificación " + rtdo + " se pudo realizar, exitosamente";
+                msgSalida = "ok";
             } else {
-                msgSalida = "No se pudo realizar la modificación";
+                msgSalida = "no";
             }
         } catch (SQLException sqle) {
             msgSalida = "Ha ocurrido lo siguiente... " + sqle.getMessage();

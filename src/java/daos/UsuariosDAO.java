@@ -77,9 +77,9 @@ public class UsuariosDAO {
             res = pstmt.executeUpdate();
 
             if (res != 0) {
-                msgSalida = "El campo se ha modificado: " + res + " satisfactoriamente.";
+                msgSalida = "ok";
             } else {
-                msgSalida = "Error";
+                msgSalida = "no";
             }
         } catch (SQLException sqle) {
             throw new MyException("Lo siento, ocurrio lo siguiente: " + sqle.getSQLState() + " y " + sqle.getMessage());
@@ -775,7 +775,7 @@ public class UsuariosDAO {
         this.cnn = cn;
         String res = "";
         try {
-            String queryConsultConfirmation = "select correo from usuarios where idusuarios = ? + 2;";
+            String queryConsultConfirmation = "select correo from usuarios where idusuarios = ?;";
             pstmt = cnn.prepareStatement(queryConsultConfirmation);
             pstmt.setInt(1, iduser);
             rs = pstmt.executeQuery();
@@ -795,7 +795,7 @@ public class UsuariosDAO {
         this.cnn = cn;
         String res = "";
         try {
-            String queryConsultConfirmation = "select nombres from usuarios where idusuarios = ? + 2;";
+            String queryConsultConfirmation = "select nombres from usuarios where idusuarios = ?;";
             pstmt = cnn.prepareStatement(queryConsultConfirmation);
             pstmt.setInt(1, iduser);
             rs = pstmt.executeQuery();

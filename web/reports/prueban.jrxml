@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="prueban" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ce15c0b0-6733-4eef-8e48-9d817486c88e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select nombreProducto, concat(productosId) as numero
+from solicituddistribuidor s
+inner join productos p on s.productosId = p.idProductos
+group by productosId;]]>
+	</queryString>
+	<field name="nombreProducto" class="java.lang.String"/>
+	<field name="numero" class="java.lang.String"/>
+	<group name="estadistica">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="6dbfd49a-e443-455a-8e3e-a6b7c45d5245" x="164" y="17" width="237" height="47"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NÚMERO DE PEDIDOS POR PRODUCTOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<summary>
+		<band height="229" splitType="Stretch">
+			<pieChart>
+				<chart>
+					<reportElement uuid="489abfdd-525b-4f23-8417-3aaf89241144" x="29" y="17" width="500" height="185"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend position="Left"/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{nombreProducto}]]></keyExpression>
+					<valueExpression><![CDATA[$V{estadistica_COUNT}]]></valueExpression>
+					<labelExpression><![CDATA[$F{nombreProducto}+" - "+$V{estadistica_COUNT}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</summary>
+</jasperReport>
