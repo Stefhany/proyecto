@@ -92,7 +92,7 @@
                 String menu = (String) miSesion.getAttribute("mp");
                 RolesDTO rol = (RolesDTO) miSesion.getAttribute("rol");
 
-                if (rol.getIdRol() != 3) {
+                //if (rol.getIdRol() != 3) {
 
                     FacadeProductosAsociadosUsuarios facadeProducts = new FacadeProductosAsociadosUsuarios();
                     LinkedList<ProductoDTO> productos = new LinkedList();
@@ -233,6 +233,7 @@
                                                 <th>Categoría</th>
                                                 <th>Nombre Producto</th>
                                                 <th>Unidad</th>
+                                                <th>Precio</th>
                                                 <th>Asociar</th>
                                             </tr>
                                         </thead>
@@ -245,6 +246,7 @@
                                                 <td><%=p.getCategoriaId().getNombre()%></td>
                                                 <td><%=p.getNombre()%></td>
                                                 <td><%=p.getUnidad()%></td>
+                                                <td><%=p.getPrecioProducto()%></td>
                                                 <!--<td class="squaredFour">
                                                     <input type="checkbox" value="None" id="squaredFour" name="idProAsociado" />
                                                     <label for="squaredFour"></label>
@@ -280,9 +282,9 @@
     </div>
     <%
 
-            } else {
-                response.sendRedirect("../index.jsp");
-            }
+            //} else {
+              //  response.sendRedirect("../index.jsp");
+            //}
         } else {
             response.sendRedirect("../index.jsp");
         }

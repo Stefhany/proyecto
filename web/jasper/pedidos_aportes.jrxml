@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedidos_aportes" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ddd9ebd8-eab6-46bc-bd90-bb622763011d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select idAportesProductores, concat_ws(' ',u.nombres,u.apellidos) as Productor,
+cantidad, unidad, nombreEstadoAporteProductor, solicitudDistribuidorId
+from aportesproductores ap
+inner join solicituddistribuidor sd on ap.solicitudDistribuidorId = sd.idSolicitudDistribuidor
+inner join productosasociadosusuarios pau on ap.productosAsociadosUsuariosId = pau.idProductosAsociadosUsuarios
+inner join usuarios u on pau.usuariosId = u.idUsuarios
+inner join productos p on pau.productosId = p.idProductos
+inner join estadoaportesproductores esp on ap.estadoAporteProductorId = esp.idEstadoAporteProductor
+order by solicitudDistribuidorId;]]>
+	</queryString>
+	<field name="idAportesProductores" class="java.lang.Integer"/>
+	<field name="Productor" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="unidad" class="java.lang.String"/>
+	<field name="nombreEstadoAporteProductor" class="java.lang.String"/>
+	<field name="solicitudDistribuidorId" class="java.lang.Integer"/>
+	<detail>
+		<band height="101" splitType="Stretch">
+			<textField>
+				<reportElement uuid="27c212da-8fca-48e8-b026-0e2a536c544d" x="45" y="37" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Productor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="68344063-4924-4aa0-918e-9b577c6c090c" x="164" y="37" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7192d826-cc4f-454e-ad7e-9170c9fd6ceb" x="281" y="37" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{unidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1da33dda-c075-4ee6-bbd6-6c225741a423" x="394" y="37" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nombreEstadoAporteProductor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2df5b0ea-73ff-4b4e-9091-9d08b8254b73" mode="Transparent" x="45" y="3" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Productor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3d07fda6-2e77-4fb8-91f1-1c3860ee3fed" x="281" y="3" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[unidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="59d864ab-2ae8-4495-9b69-daf795862c4d" x="394" y="3" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[nombreEstadoAporteProductor]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="86402941-2255-492d-b335-3ef81c6f951f" x="23" y="71" width="516" height="20" forecolor="#F0F0F0" backcolor="#CCFFCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="7bccdf5f-e91f-400a-9f3a-da241a499285" x="164" y="3" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[cantidad]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="94ffeb87-bdc2-4d67-a2ba-2b0115aa7163" x="515" y="37" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{solicitudDistribuidorId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2193f78e-8f2a-4ce1-838c-9efd4525966a" x="515" y="3" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[solicitudDistribuidorId]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

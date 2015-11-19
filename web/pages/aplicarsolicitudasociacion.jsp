@@ -59,7 +59,7 @@
                 String menu = (String) miSesion.getAttribute("mp");
                 RolesDTO rol = (RolesDTO) miSesion.getAttribute("rol");
 
-                if (rol.getIdRol() != 3 && rol.getIdRol() != 1) {
+                //if (rol.getIdRol() != 3 && rol.getIdRol() != 1) {
 
                     if (request.getParameter("idSolicitud") != null) {
                         int id = Integer.parseInt(request.getParameter("idSolicitud"));
@@ -239,9 +239,9 @@
             </div>
             <%
 
-                    } else {
-                        response.sendRedirect("../index.jsp");
-                    }
+                   // } else {
+                      //  response.sendRedirect("../index.jsp");
+                    //}
                 } else {
                     response.sendRedirect("../index.jsp");
                 }

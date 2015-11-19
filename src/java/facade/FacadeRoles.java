@@ -11,6 +11,7 @@ import dtos.RolesDTO;
 import java.sql.Connection;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -34,5 +35,9 @@ public class FacadeRoles {
     
     public Date consultarFechaActual(){
         return rolDao.consultarFechaActual2(cnn);
+    }
+    
+    public List<RolesDTO> enviarCorreosProgramados(){
+        return rolDao.enviarCorreosProgramados(cnn);
     }
 }

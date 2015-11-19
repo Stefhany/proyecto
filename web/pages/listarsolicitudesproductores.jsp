@@ -60,7 +60,7 @@
                 String menu = (String) miSesion.getAttribute("mp");
                 RolesDTO rol = (RolesDTO) miSesion.getAttribute("rol");
 
-                if (rol.getIdRol() == 2 || rol.getIdRol() == 4) {
+                //if (rol.getIdRol() == 2 || rol.getIdRol() == 4) {
 
                 FacadeAportesProductores facadeAportes = new FacadeAportesProductores();
 
@@ -252,9 +252,10 @@
     </div>
     <%
 
-        } else {
-            response.sendRedirect("../index.jsp");
-        }} else {
+        //} else {
+         //   response.sendRedirect("../index.jsp");
+    //    }
+    } else {
             response.sendRedirect("../index.jsp");
         }
     %>

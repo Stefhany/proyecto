@@ -257,7 +257,8 @@ public class ProductosAsociadosUsuariosDAO {
         this.cnn = cnn;
         LinkedList<ProductoDTO> products = new LinkedList();
         try {
-            String querryAsociarProductos = " select idCategorias, nombreCategoria, idProductos, nombreProducto, unidad"
+            String querryAsociarProductos = " select idCategorias, nombreCategoria, idProductos, nombreProducto, unidad, "
+                    + "precioProducto"
                     + " from categorias "
                     + " inner join productos on categorias.idCategorias = productos.categoriasId "
                     + " where idProductos not in (select productosId from productosasociadosusuarios where usuariosId=? and estado = 1)"
@@ -268,6 +269,7 @@ public class ProductosAsociadosUsuariosDAO {
             while (rs.next()) {
                 CategoriaDTO cdto = new CategoriaDTO(rs.getInt("idCategorias"), rs.getString("nombreCategoria"));
                 ProductoDTO prodto = new ProductoDTO(rs.getInt("idProductos"), rs.getString("nombreProducto"), rs.getString("unidad"), cdto);
+                prodto.setPrecioProducto(rs.getInt("precioProducto"));
                 products.add(prodto);
             }
         } catch (SQLException sqle) {

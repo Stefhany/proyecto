@@ -26,7 +26,7 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-        
+
         <!-- Estilos para mensajes -->
         <link href="../css/estilos.css" rel="stylesheet">
 
@@ -135,18 +135,18 @@
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <button class="btn btn-default" type="button">
-                                                                                              <%
-                                            if (userdto.getGenero() == 1) {%>
-                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (userdto != null) {
-                                                out.print(userdto.getNombres() + " " + userdto.getApellidos());
-                                            }%>" 
-                                                                                              title="Eres: <%if (userdto != null) {
-                                                                                                          out.print(userdto.getNombres() + " " + userdto.getApellidos());
-                                                                                                      }%>"></i>
+                                        <%
+                                                                                                  if (userdto.getGenero() == 1) {%>
+                                        <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (userdto != null) {
+                                                                                                      out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                                  }%>" 
+                                                                                                  title="Eres: <%if (userdto != null) {
+                                                                                                      out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                                  }%>"></i>
                                             <% } else {%>
-                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (userdto != null) {
-                                                out.print(userdto.getNombres() + " " + userdto.getApellidos());
-                                            }%>" 
+                                        <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (userdto != null) {
+                                                                                         out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                     }%>" 
                                                                                  title="Eres: <%if (userdto != null) {
                                                                                          out.print(userdto.getNombres() + " " + userdto.getApellidos());
                                                                                      }%>"></i>
@@ -228,18 +228,18 @@
                                                     <a href="../pages/registrarmioferta.jsp?idProAsoOfertar=<%=pro.getIdProductosAsociadosUsuarios()%>">
                                                         <img src="../img/prueba/ofertar.png" alt="Ofertar producto" title="Ofertar producto"</a></td>
                                                         <%} else if (pro.getEstado() == 2) {%>
-                                        <img src="../img/prueba/ofertaInhabilitada.png" alt="No puede ofertar este producto, 
-                                             ya encuentra con una publicación de ese mismo producto." title="No puede ofertar este producto, ya hizo una publicación de ese mismo producto."</a></td>
-                                        <%} else {
-                                                out.print("No se que paso");
-                                            }
-                                        %>
+                                                    <img src="../img/prueba/ofertaInhabilitada.png" alt="No puede ofertar este producto, 
+                                                         ya encuentra con una publicación de ese mismo producto." title="No puede ofertar este producto, ya hizo una publicación de ese mismo producto."</a></td>
+                                                    <%} else {
+                                                            out.print("No se que paso");
+                                                        }
+                                                    %>
 
 
-                                        <td>
-                                            <%
-                                                if (pro.getEstado() == 1) {%>
-                                            <a href="../co?idProAso=<%=pro.getIdProductosAsociadosUsuarios()%>"><img src="../img/prueba/deleteNew.png" 
+                                                    <td>
+                                                        <%
+                                                            if (pro.getEstado() == 1) {%>
+                                                    <a href="../co?idProAso=<%=pro.getIdProductosAsociadosUsuarios()%>"><img src="../img/prueba/deleteNew.png" 
                                                                                                                      alt="Deshabilitar el producto: <%=pro.getIdProductosAsociadosUsuarios()%>" 
                                                                                                                      title="Deshabilitar el producto: <%=pro.getProducto().getNombre()%>" 
                                                                                                                      onclick="return confirmar();">

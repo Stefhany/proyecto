@@ -9,6 +9,7 @@ import dtos.RolesDTO;
 import dtos.UsuariosDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +32,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
  *
  * @author Stefhany Alfonso
  */
-public class Certificado extends HttpServlet {
+public class Certificado extends HttpServlet implements Serializable{
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

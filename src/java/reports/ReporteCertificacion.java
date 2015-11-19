@@ -10,6 +10,7 @@ import dtos.UsuariosDTO;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,7 +33,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
  *
  * @author Stefhany Alfonso
  */
-public class ReporteCertificacion extends HttpServlet {
+public class ReporteCertificacion extends HttpServlet implements Serializable{
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -65,14 +66,16 @@ public class ReporteCertificacion extends HttpServlet {
                 parametros.put("cedula", idUsuario);
                 parametros.put("agricola", getServletContext().getRealPath("jasper/logoFinal.png"));
                 parametros.put("firma", getServletContext().getRealPath("jasper/firma.png"));
+                parametros.put("subreporte", getServletContext().getRealPath("jasper/Certificado_productos.jasper"));
+                
                 //Se intancia la conexión a la base de datos
                 Connection conn = utilities.Connection.getInstance();
 
                 //En la variable reporte se carga el reporte compilado es decir el jasper
                 // la instrucción  getServletContext().getRealPath("/jasper/reporteVentas.jasper")  devuelve la ruta completa desde el directorio local. para el caso es
-                JasperReport reporte = (JasperReport) JRLoader.loadObject(getServletContext().getRealPath("jasper/Certificado.jasper"));
-//                JasperReport reporteFinal = (JasperReport) JRLoader.loadObject(new File(getServletContext().getRealPath("jasper/Certificado.jasper")));
-                //JasperReport reporte = (JasperReport) JRLoader.loadObject((request.getContextPath() + "/reports/Certificado.jasper"));
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getServletContext().getRealPath("jasper/Certificado_productos.jasper"));
+                //JasperReport reporteFinal = (JasperReport) JRLoader.loadObject(new File(getServletContext().getRealPath("jasper/Certificado.jasper")));
+                //JasperReport reporte = (JasperReport) JRLoader.loadObject((request.getContextPath() + "/jasper/Certificado_productos.jasper"));
 
                 //La variable bytes toma el reporte jasper le pasa los parámetros y va a la base de datos a traer
                 // la consulta que se convierte en pdf.
