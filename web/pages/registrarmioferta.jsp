@@ -162,6 +162,16 @@
                     <div class="col-lg-12">
                         <h1 class="page-header">Registrar Oferta</h1>
                     </div>
+                    
+                    <div class="alert alert-warning" style="margin-top: 20%;">
+                        <img src="../img/mensajes/warning.png">
+                        <span>¡Información!</span>
+                        <p>Recuerde tener presente que el precio postulado en esta oferta debe 
+                            ser por kilogramo. 
+                            Además, recuerde que la vigencia de esta publicación es de quince (15) días.
+                        </p>
+                    </div>
+                    
                     <div style="margin-top: 0%;">
                             <%
                                 String tipo = "";
@@ -200,7 +210,7 @@
 
                         <div class="form-group">
                             <label for ="txtCantidad">Cantidad a ofertar:</label>
-                            <input name="txtCantidad" id="txtCantidad" type="text" placeholder="Cantidad de la oferta" class="form-control"/><br>
+                            <input name="txtCantidad" id="txtCantidad" type="text" placeholder="Cantidad de la oferta" required="true" class="form-control"/><br>
                         </div>
                         
                         <div class="form-group" style="margin-top:-5%;">
@@ -210,7 +220,7 @@
 
                         <div class="form-group" style="margin-top:-5%;">
                             <label for ="txtPrecio">Precio del producto:</label>
-                            <input name="txtPrecio" id="txtPrecio" type="text" placeholder="Precio de la oferta" class="form-control"/><br>
+                            <input name="txtPrecio" id="txtPrecio" type="text" placeholder="Precio de la oferta" required="true" class="form-control"/><br>
                         </div>
 
                         <input name="txtId" id="txtId" type="hidden" value=""/><br>

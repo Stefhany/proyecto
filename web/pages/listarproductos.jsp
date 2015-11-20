@@ -273,6 +273,7 @@
                                                 <th>Nombre producto</th>
                                                 <th>Unidad</th>
                                                 <th>Precio</th>
+                                                <th>Actualizar</th>
                                                 <th>Deshabilitar</th>
                                             </tr>
                                         </thead>
@@ -286,6 +287,14 @@
                                                 <td><%=p.getNombre()%></td>
                                                 <td><%=p.getUnidad()%></td>
                                                 <td><%=p.getPrecioProducto()%></td>
+                                                <td>
+                                                    <a href="actualizarprecioproducto.jsp?idProduct=<%=p.getIdProductos()%>">
+                                                        <span class="glyphicon glyphicon-refresh" style="font-size:145%; color: #16700C; margin-left: 15%;"
+                                                              alt="Actualizar el producto: <%=p.getNombre()%>" 
+                                                              title="Actualizar el producto: <%=p.getNombre()%>">                                                                  
+                                                        </span>
+                                                    </a>
+                                                </td>
                                                 <td>
                                                     <a href="../cp?idProducto=<%=p.getIdProductos()%>" onclick="return confirmar();">
                                                         <span class="glyphicon glyphicon-remove" style="font-size:145%; color: #c23321; margin-left: 15%;"

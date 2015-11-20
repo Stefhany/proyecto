@@ -106,7 +106,7 @@ public class ControllerOrders extends HttpServlet {
                                     + " Gracias por pertenecer a SIGAA <br>"
                                     + " Persona encargada: Stefhany Alfonso Rincón <br>"
                                     + " Líneas de atención: 3213018539", correoDistribuidor);
-                            String mensaje = "Su pedido ha sido enviado sactisfactoriamente";
+                            String mensaje = "Su pedido ha sido enviado sactisfactoriamente. A su correo le llegara el mensaje de confirmación.";
                             String advertencia = "Recuerde que el precio que se va a tener en cuenta para el envio de este pedido "
                                     + " es de acuerdo a la postulación que hizo el productor. Se le enviara un correo de confirmación "
                                     + " para más detalles del pedido";
@@ -322,8 +322,8 @@ public class ControllerOrders extends HttpServlet {
                                         + " espera su pedido en esta fecha, se procede a enviarle un correo para que conozca la situación. ";
                                 response.sendRedirect("pages/listardespachos.jsp?tipo=2&msg=" + msg);
                             } else {
-                                String msg = "El pedido ha sido despachado. No dudes en utilizar nuestros servicios.";
-                                response.sendRedirect("pages/listardespachos.jsp?tipo=1&msg=" + msg);
+                                String msg = "El pedido no ha sido despachado.";
+                                response.sendRedirect("pages/listardespachos.jsp?tipo=0&msg=" + msg);
                             }
                         } else {
                             FacadeDespachosPedidos facadeDispatchOrder = new FacadeDespachosPedidos();

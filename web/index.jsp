@@ -68,10 +68,7 @@
                             <a class="page-scroll" href="#about">Regístrate</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="#team">Búsqueda</a>
-                        </li>
-                        <li>
-                            <a class="page-scroll" href="#contact">Contáctenos</a>
+                            <a class="page-scroll" href="pages/contactenos.jsp">Contáctenos</a>
                         </li>
                     </ul>
                 </div>
@@ -205,18 +202,18 @@
                     <form name="registrarUsuario" role="form" action="cu" method="get" id="formRegistro">
                         <div class="form-group">
                             <label  for="txtnombre">Nombres:</label>
-                            <input class="form-control" type="text" id="txtnombre" required name="txtnombre"  placeholder="Ingrese sus nombres"/>
+                            <input class="form-control" type="text" id="txtnombre" required="true" name="txtnombre"  placeholder="Ingrese sus nombres"/>
                             <!--<p class="help-block">Example block-level help text here.</p>-->
                         </div>
 
                         <div class="form-group">
                             <label for="txtapellido">Apellidos:</label>
-                            <input class="form-control" type="text" id="txtapellido" name="txtpellido"  placeholder="Ingrese sus apellidos"/>
+                            <input class="form-control" type="text" id="txtapellido" required="true" name="txtpellido"  placeholder="Ingrese sus apellidos"/>
                         </div>
 
                         <div class="form-group">
                             <label for="txtcedula">Cédula:</label>
-                            <input  type="text" name="txtcedula" id="txtcedula" placeholder="Ingrese su cédula" 
+                            <input  type="text" name="txtcedula" required="true" id="txtcedula" placeholder="Ingrese su cédula" 
                                     onchange="validarCedula(this);" class="form-control"/>
                             <div id="empResult" style="background-color: white; font-size: 12px;color:red;">
                             </div><div id="empResult2" style="background-color: white; font-size: 12px;color:green;">
@@ -225,17 +222,17 @@
 
                         <div class="form-group">
                             <label for="txttelefono">Telefono:</label>
-                            <input class="form-control" type="text" name="txttelefono" id="txttelefono" placeholder="Ingrese su telefono" />
+                            <input class="form-control" type="text" required="true" name="txttelefono" id="txttelefono" placeholder="Ingrese su telefono" />
                         </div>
 
                         <div class="form-group">
                             <label for="txtdireccion">Dirección:</label>
-                            <input class="form-control" type="text" name="txtdireccion" id="txtdireccion" placeholder="Ingrese su dirección"/>
+                            <input class="form-control" type="text" required="true" name="txtdireccion" id="txtdireccion" placeholder="Ingrese su dirección"/>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="txtGenero">Género:</label>
-                            <select class="form-control" name="txtGenero">
+                            <select class="form-control" name="txtGenero" required="true">
                                 <option value="0">Masculino</option>
                                 <option value="1">Femenino</option>                                        
                             </select>
@@ -243,7 +240,7 @@
 
                         <div class="form-group">
                             <label for="txtcorreo">Correo:</label>
-                            <input type="email" name="txtcorreo" id="txtcorreo"  placeholder="Ingrese el correo electrónico" 
+                            <input type="email" name="txtcorreo" id="txtcorreo"  required="true" placeholder="Ingrese el correo electrónico" 
                                    onchange="validarCorreo(this);" class="form-control"/>
                             <div id="empResult1" style="background-color: white; font-size: 12px;color:red;">
                             </div><div id="empResult3" style="background-color: white; font-size: 12px;color:green;">
@@ -252,22 +249,22 @@
 
                         <div class="form-group">
                             <label for="txtConfirmarCorreo">Confirmar correo:</label>
-                            <input class="form-control" type="email" placeholder="Ingrese nuevamente el correo electrónico" name="txtConfirmarCorreo"/>
+                            <input class="form-control"  required="true" type="email" placeholder="Ingrese nuevamente el correo electrónico" name="txtConfirmarCorreo"/>
                         </div>
 
                         <div class="form-group">   
                             <label for="txtclave">Contraseña:</label>
-                            <input class="form-control" type="password" id="txtclave" name="txtclave" placeholder="Contraseña"/>
+                            <input class="form-control" type="password" required="true" id="txtclave" name="txtclave" placeholder="Contraseña"/>
                         </div> 
 
                         <div class="form-group">
                             <label for="txtconfirmar">Confirmar Contraseña:</label>
-                            <input class="form-control" type="password" id="txtconfirmar" name="txtConfirmarClave"  placeholder="Repita su contraseña"/>
+                            <input class="form-control" type="password" required="true" id="txtconfirmar" name="txtConfirmarClave"  placeholder="Repita su contraseña"/>
                         </div> 
 
                         <div class="form-group">
                             <label for="txtciudad">Ciudad:</label>
-                            <input class="form-control" type="text" name="txtciudad" id="txtciudad" placeholder="Ingrese su ciudad"/>
+                            <input class="form-control" type="text" required="true" name="txtciudad" id="txtciudad" placeholder="Ingrese su ciudad"/>
                         </div>
 
                         <div class="form-group">
@@ -280,18 +277,21 @@
 
                         <div class="form-group">
                             <label for="txtnotificacion">Desea recibir notificaciones:</label>
-                            <select class="form-control" name="txtnotificacion">
+                            <select class="form-control" name="txtnotificacion" required="true">
                                 <option value="0">No</option>
                                 <option value="1">Si</option>                                        
                             </select>
                         </div>
 
-                        <div class="form-group" align="center">
-                            <div class="checkbox">
+                        <div class="form-group">
+                            <label style="color:#00529B">Términos y condiciones</label>
+                            <textarea style="resize:none;" required="true" class="form-control" rows="3" name="txtObservacion" readonly="true" placeholder="SIGAA es un sistema de información que permite a los usuarios, mejorar la comunicación que existe entre la cadena de comercialización. Al participar en SIGAA debe tener presente que la información suministrada es indispensable, dado que si se genera algún inconveniente con un pedido, serán con estos datos que se logre la pronta solución. Ademas, se debe tener presente que al solicitar un pedido de una oferta o a una asociación es indispensable que sea seguro por quien lo solicita, pues SIGAA trata en lo posible de cumplirles a los usuarios todo lo que se genera dentro del sistema."></textarea>
+                        </div>
+                        
+                        <div class="checkbox">
                                 <label id="txtTerminos" for="txtTerminos"></label>
-                                <input id="textTerminos" name="textTerminos" type="checkbox"/>
-                                <a href="terminos.jsp" style="color:blue;"> Leer términos y condiciones</a>
-                            </div>
+                                <input id="textTerminos" name="textTerminos" type="checkbox" required="true"
+                                       <p style="font-size: 12px;">Acepto términos y condiciones</p>
                         </div>
 
 
@@ -302,84 +302,6 @@
                         </div>
 
                     </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- Filtro en SIGAA -->
-        <section id="team" class="bg-light-gray">
-            <div class="container" style="width:70%;">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h2 class="section-heading">Búsqueda</h2>
-                        <h3 class="section-subheading text-muted">La manera más sencilla para informarte de SIGAA</h3>
-                    </div>
-                </div>
-                <div class="row">
-                    <form name="filtro" action="cf" role="form">
-                        <table name="tableFiltro">
-                            <th><label for="txtProductor">Nombre Productor:</label></th>
-                            <th><div class="col-sm-11" >
-                                <input name="txtProductor"  id="txtProductor" type="text" class="form-control">
-                            </div></th>
-
-                            <th><label for="txtProducto" >Nombre Producto:</label></th>
-                            <th><div class="col-sm-11">
-                                <input name="txtProducto" id="txtProducto" type="text" class="form-control">
-                            </div></th>
-                            <th><label for="txtFecha" class="col-sm-2 control-label">Fecha ofertas:</label></th>
-                            <th><div class="col-sm-11">
-                                <input name="txtFecha" id="txtFecha" type="date" class="form-control"></div></th>
-
-                            <th><button type="submit" value="Consultar" name="consultar" class="btn btn-success">Consultar</button></th>
-                        </table>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contacto con SIGAA -->
-        <section id="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h2 class="section-heading">Contáctanos</h2>
-                        <h3 class="section-subheading text-muted">Siempre estamos de la mano con nuestro cliente</h3>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <form name="sentMessage" id="contactForm" action="ccu">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="txtNombre" placeholder="Nombre" id="txtNombre" required data-validation-required-message="Por favor ingresar el nombre.">
-                                        <p class="help-block text-danger"></p>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="email" class="form-control" name="txtCorreo" placeholder="Correo electrónico" id="txtCorreo" required data-validation-required-message="Por favor ingresar su correo electrónico.">
-                                        <p class="help-block text-danger"></p>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="tel" class="form-control" name="txtTelefono" placeholder="Teléfono" id="txtTelefono" required data-validation-required-message="Por favor ingrese el teléfono.">
-                                        <p class="help-block text-danger"></p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <textarea class="form-control" style="resize: none;" name="txtMensaje" placeholder="Mensaje" id="txtMensaje" required data-validation-required-message="Por favor ingrese el mensaje."></textarea>
-                                        <p class="help-block text-danger" ></p>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                                <div class="col-lg-12 text-center">
-                                    <div id="success"></div>
-                                    <submit type="hidden" name="enviarHidden"/>
-                                    <button type="submit" class="btn btn-xl" name="enviar">Enviar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
         </section>

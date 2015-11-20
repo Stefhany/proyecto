@@ -54,12 +54,13 @@ public class ControllerIngressAndPermits extends HttpServlet {
                     menuAPintar = registro.getValue();
                 }
                 // out.print("documento " + datosUsuario.getDocumento());
-                
-                if (datosUsuario.getCedula().equals("") && 
-                        datosUsuario.getEstado() == 2 || 
+               // System.out.println(datosUsuario.getEstado());
+                //System.out.println(datosUsuario.getCedula());
+                if (!datosUsuario.getCedula().equals("") && (
                         datosUsuario.getEstado() == 3 || 
-                        datosUsuario.getEstado() == 6 || 
-                        datosUsuario.getEstado() == 5) {
+                        datosUsuario.getEstado() == 9 ||
+                        datosUsuario.getEstado() == 5 ||
+                        datosUsuario.getEstado() == 6) ){
                     HttpSession miSesion = request.getSession(true);
                     miSesion.setAttribute("usr", datosUsuario);
                     miSesion.setAttribute("mp", menuAPintar);

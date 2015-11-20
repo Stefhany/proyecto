@@ -75,7 +75,7 @@ public class ControllerUser extends HttpServlet {
                                 + " Persona encargada: Stefhany Alfonso Rincón <br>"
                                 + " Líneas de atención: 3213018539", correo);
 
-                        String mensajeRegistro = "El registro ha sido exitoso.";
+                        String mensajeRegistro = "El registro ha sido exitoso. Se le enviara un correo de bienvenida.";
                         response.sendRedirect("index.jsp?tipo=1&msg=" + mensajeRegistro);
 
                     } else {
@@ -125,7 +125,7 @@ public class ControllerUser extends HttpServlet {
                 if (idUser > 0) {
                     Mail.sendMail("Reestablecer contraseña de SIGAA ", " Gracias por permitirnos ayudarle en la "
                             + " recuperación de su contraseña. Para ello debe digitar el siguiente código: <a href='#'>00000" + idUser + "</a> "
-                            + " dandole click al siguiente enlace: http://localhost:8080/ProyectoSigaa/pages/recuperarclave.jsp"
+                            + " dandole click al siguiente enlace: www.proyectoscsf.com:3080/proyectosigaa/pages/recuperarclave.jsp"
                             + " Gracias por pertenecer a SIGAA <br>"
                             + " Persona encargada: Stefhany Alfonso Rincón <br>"
                             + " Líneas de atención: 3213018539", correo);
@@ -160,11 +160,11 @@ public class ControllerUser extends HttpServlet {
 
                     Mail.sendMail("Se ha modificado la contraseña", " Hola, " + nameUser + "<br>"
                             + " La contraseña de tu cuenta de SIGAA con el correo " + correoUser + " se ha modificado recientemente.<br>"
-                            + " si desconoces esta acción, diríjase al siguiente enlace: http://localhost:8080/ProyectoSigaa/pages/recuperarclave.jsp"
+                            + " si desconoces esta acción, diríjase al siguiente enlace: www.proyectoscsf.com:3080/proyectosigaa/pages/recuperarclave.jsp"
                             + " Gracias por pertenecer a SIGAA<br>"
                             + " Persona encargada: Stefhany Alfonso Rincón <br>"
                             + " Líneas de atención: 3213018539", correoUser);
-                    String mensaje = "Ya puedes ingresar nuevamente a nuestro sistema";
+                    String mensaje = "Ya puedes ingresar nuevamente a nuestro sistema. Te enviamos un correo con la notificación del cambio de la contraseña.";
                     response.sendRedirect("pages/login.jsp?tipo=1&msg=" + mensaje);
                 } else {
                     String mensaje = "Tenemos problemas para finalizar el cambio de la contraseña.";

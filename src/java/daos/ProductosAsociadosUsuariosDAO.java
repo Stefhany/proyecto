@@ -257,12 +257,13 @@ public class ProductosAsociadosUsuariosDAO {
         this.cnn = cnn;
         LinkedList<ProductoDTO> products = new LinkedList();
         try {
-            String querryAsociarProductos = " select idCategorias, nombreCategoria, idProductos, nombreProducto, unidad, "
-                    + "precioProducto"
+            String querryAsociarProductos = " select idCategorias, nombreCategoria, "
+                    + " idProductos, nombreProducto, unidad, "
+                    + " precioProducto "
                     + " from categorias "
                     + " inner join productos on categorias.idCategorias = productos.categoriasId "
-                    + " where idProductos not in (select productosId from productosasociadosusuarios where usuariosId=? and estado = 1)"
-                    + " order by idProductos;";
+                    + " where idProductos not in (select productosId from productosasociadosusuarios "
+                    + " where usuariosId=?);";
             pstmt = cnn.prepareStatement(querryAsociarProductos);
             pstmt.setInt(1, idUsuario);
             rs = pstmt.executeQuery();
@@ -294,7 +295,7 @@ public class ProductosAsociadosUsuariosDAO {
                     usuarios.add(user);
                 }
             }
-            
+
         } catch (SQLException sqle) {
             System.out.println("Se ha producido esta excepción.. " + sqle.getMessage());
         }
@@ -314,29 +315,28 @@ public class ProductosAsociadosUsuariosDAO {
                     + " where estadoUser = 3 or estadoUser=5;";
             pstmt = con.prepareStatement(consultarAsociaciones);
             rs = pstmt.executeQuery();
-            
+
             if (rs != null) {
-                while(rs.next()){
-                 
-                    
+                while (rs.next()) {
+
                     UsuariosDTO user = new UsuariosDTO();
                     user.setNombres(rs.getString("Asociacion"));
-                    
+
                     CategoriaDTO categoria = new CategoriaDTO();
                     categoria.setNombre(rs.getString("nombreCategoria"));
-                    
+
                     ProductoDTO producto = new ProductoDTO(categoria);
                     producto.setNombre(rs.getString("nombreProducto"));
                     producto.setPrecioProducto(rs.getInt("precioProducto"));
-                    
+
                     ProductosAsociadosUsuariosDTO proAso = new ProductosAsociadosUsuariosDTO(user, producto);
                     proAso.setProductoId(rs.getInt("productosId"));
                     proAso.setUsuarioId(rs.getInt("usuariosId"));
-                    
+
                     productosAsociados.add(proAso);
                 }
             }
-        }catch(SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("No se encontraron asociaciones, con sus productos respectivos.");
         }
         return productosAsociados;

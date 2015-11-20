@@ -32,9 +32,11 @@
         
         <!-- Favicon de SIGAA -->
         <link rel="icon" href="../img/portfolio/favicon.ico" type="image/x-ico"/>
+        
+        <SCRIPT language="JavaScript" src="../js/validarcorreo.js   "></SCRIPT>
     </head>
 
-    <body>
+    <body style="background-image: url(../img/reesta.jpg);">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
@@ -49,7 +51,7 @@
                                         <label for="txtCorreo">Correo electrónico (*):</label>
                                         <input type="email" class="form-control" name="txtCorreo" id="txtCorreo"
                                                placeholder="Correo electrónico" onchange="validarCorreoReestablecerClave(this);">
-                                        <div id="empResult" style="background-color: white; font-size: 12px;color:red;">
+                                        <div id="empResult2" style="background-color: white; font-size: 12px;color:red;">
                                         </div><div id="empResult2" style="background-color: white; font-size: 12px;color:green;">
                                         </div>
                                     </div> 

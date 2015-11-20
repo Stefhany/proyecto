@@ -59,7 +59,8 @@ public class SolicitudDistribuidorDAO {
                     + " from solicituddistribuidor s "
                     + " inner join productos p on p.idProductos = s.productosId "
                     + " inner join usuarios u on u.idUsuarios = s.distribuidorId "
-                    + " where estadoSolicitudDistribuidorId = 1;";
+                    + " where estadoSolicitudDistribuidorId = 1"
+                    + " and if (fechaSolicitud > current_date,1,0) = 1;";
             pstmt = cnn.prepareStatement(querrySolicitudesDistribuidor);
             rs = pstmt.executeQuery();
             if (rs != null) {

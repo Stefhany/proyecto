@@ -51,15 +51,14 @@ public class ProductoDAO {
         int rtdo = 0;
         String msgSalida = "";
         try {
-            pstmt = cnn.prepareStatement("UPDATE productos SET nombre = ?, unidad = ?, categoriasId =  ? WHERE  idProductos =  ?;");
-            pstmt.setString(1, modProducto.getNombre());
-            pstmt.setString(2, modProducto.getUnidad());
-            pstmt.setFloat(3, modProducto.getCategoriaId().getIdCategoria());
+            pstmt = cnn.prepareStatement("UPDATE productos SET precioProducto = ? WHERE  idProductos =  ?;");
+            pstmt.setInt(1, modProducto.getPrecioProducto());
+            pstmt.setInt(2, modProducto.getIdProductos());
             rtdo = pstmt.executeUpdate();
             if (rtdo != 0) {
-                msgSalida = "La modificación " + rtdo + " se pudo realizar, exitosamente";
+                msgSalida = "ok";
             } else {
-                msgSalida = "No se pudo realizar la modificación";
+                msgSalida = "no";
             }
         } catch (SQLException sqle) {
             msgSalida = "Ha ocurrido lo siguiente... " + sqle.getMessage();
@@ -113,7 +112,7 @@ public class ProductoDAO {
         ProductoDTO onlyProduct = null;
         try {
             String querryByIdProduct = "select idProductos as id,nombreProducto, unidad, "
-                    + " categoriasId, nombreCategoria "
+                    + " categoriasId, nombreCategoria, precioProducto "
                     + " from productos p "
                     + " inner join categorias c on p.categoriasId = c.idCategorias "
                     + " WHERE idProductos = ?;";
@@ -129,6 +128,7 @@ public class ProductoDAO {
                     onlyProduct.setIdProductos(rs.getInt("id"));
                     onlyProduct.setNombre(rs.getString("nombreProducto"));
                     onlyProduct.setUnidad(rs.getString("unidad"));
+                    onlyProduct.setPrecioProducto(rs.getInt("precioProducto"));
                 }
             } else {
                 throw new MyException("No hay registros, por esa busqueda... ");

@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 var req;
 function validarCorreoReestablecerClave(campo) {
     if(campo.value==='') return false;
@@ -23,14 +24,14 @@ function callback( ) {
     if (req.readyState === 4) {  
         if (req.status === 200) {
             //para efectos visuales se utilizan dos div con colores rojo y verde
-            if (req.responseText.toString() === alert("El correo se encuentra registrado!")) {
+            if (req.responseText.toString() === "El correo se encuentra registrado!") {
                 document.getElementById('empResult').innerHTML = "";  //se limpia el div rojo
                 document.getElementById('empResult2').innerHTML = req.responseText;  // se escribe en verde
-                document.getElementById('reestablecer').removeAttribute('disabled', 'true');  // se habilita el boton registrar
+                document.getElementById('btnEnviarCorreoReestablecerClave').removeAttribute('disabled');  // se habilita el boton registrar
             } else {
                document.getElementById('empResult').innerHTML === ("El correo no se encuentra registrado."); //se escribe en rojo
                document.getElementById('empResult2').innerHTML="";  // se limpia el div verde
-               document.getElementById('reestablecer').setAttribute('disabled');   // se dehabilita el boton       
+               document.getElementById('btnEnviarCorreoReestablecerClave').setAttribute('disabled','true');   // se dehabilita el boton       
                
             }
         }
@@ -41,4 +42,3 @@ function callback( ) {
 function focusIn( ) {
     document.getElementById("txtCorreo").focus( );
 }
-

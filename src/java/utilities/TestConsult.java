@@ -37,18 +37,15 @@ public class TestConsult {
      */
     public static void main(String[] args) throws MyException, SQLException {
         // TODO code application logic here
-        
+
 //        System.out.println(Connection.getInstance());**/
 //        //System.out.println(Connection.getInstance());
 //        Consultas c = new Consultas();
 //System.out.println(c.consultarFechaActual(utilities.Connection.getInstance()));
 //        
-  //UsuariosDAO u = new UsuariosDAO();
-        
+        //UsuariosDAO u = new UsuariosDAO();
 //        FacadeUsuarios f = new FacadeUsuarios();
 //        UsuariosDTO u = new UsuariosDTO();
-            
-
 //        
 //        u.setNombres("Juan");
 //        u.setApellidos("Perez");
@@ -75,7 +72,6 @@ public class TestConsult {
 //        System.out.println(f.consultarMiAporte(33));
 //        System.out.println(f.participarASolicitudAsociacion("2015-11-14",200,10,2));
         //System.out.println(f.buscarMisIdAsociados(19, 10));
-        
         //FacadeProductosAsociadosUsuarios f = new FacadeProductosAsociadosUsuarios();
         //System.out.println(f.enviarCorreoAProductores(3));
 //        System.out.println("=============");
@@ -89,14 +85,12 @@ public class TestConsult {
 //        AportesProductoresDTO a = new AportesProductoresDTO();
 //        
 //        System.out.println(f.modificarCantidadSolicitud(10000, 1));
-            
 //        List<ProductosAsociadosUsuariosDTO> p  = new ArrayList();
 //        FacadeProductosAsociadosUsuarios f = new FacadeProductosAsociadosUsuarios();
 //        p = (ArrayList<ProductosAsociadosUsuariosDTO>) f.enviarCorreoAProductores(3);
 //        for (ProductosAsociadosUsuariosDTO r :p) {
 //            System.out.println(r.getUsuarioId()+" ");
 //        }
-        
 //        FacadeSolicitudDistribuidor fsd = new FacadeSolicitudDistribuidor();
 //        SolicitudDistribuidorDTO s = new SolicitudDistribuidorDTO();
 //        s.setCantidadSolicitada(500);
@@ -105,10 +99,16 @@ public class TestConsult {
 //        s.setDistribuidorId(8);
 //        s.setCantidadSolicitudFinal(500);
 //        s.setObservacion("prueba");
-//        System.out.println(fsd.insertarSolicitudDistribuidor(s));
-        FacadeUsuarios u = new FacadeUsuarios();
-        System.out.println(u.confirmarRecuperacionClaveCorreo(9));
-                 
+////        System.out.println(fsd.insertarSolicitudDistribuidor(s));
+//        FacadeUsuarios u = new FacadeUsuarios();
+//        System.out.println(u.confirmarRecuperacionClaveCorreo(9));
+        ProductoDTO prdto = new ProductoDTO();
+        prdto.setIdProductos(1);
+        prdto.setPrecioProducto(690);
+        FacadeProductos facadeProducto = new FacadeProductos();
+        String salida = facadeProducto.actualizarProducto(prdto);
+        System.out.println(salida);
+
     }
-        
+
 }

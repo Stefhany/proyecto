@@ -55,10 +55,10 @@ public class ControllerContactUs extends HttpServlet {
                     Mail.sendMail("Contacto", mensaje, "contactosigaa@gmail.com");
                     Mail.sendMail("Confirmación", "El mensaje ha sido enviado al Sistema SIGAA", correo);
                 } else {
-                    response.sendRedirect("index.jsp?msgSalida= <strong>Su mensaje fue enviado al Sistema SIGAA.</Strong>");
+                    response.sendRedirect("pages/contactenos.jsp?msgSalida= <strong>Su mensaje fue enviado al Sistema SIGAA.</Strong>");
                 }
             } else {
-                response.sendRedirect("index.jsp?msgSalida= <strong>No se pudo enviar el correo al Sistema SIGAA</Strong>");
+                response.sendRedirect("pages/contactenos.jsp?msgSalida= <strong>No se pudo enviar el correo al Sistema SIGAA</Strong>");
             }
         } finally {
             out.close();

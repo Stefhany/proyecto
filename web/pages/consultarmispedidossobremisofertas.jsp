@@ -167,7 +167,7 @@ no puede retratarse. ')) {
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Pedidos de distrbuidores a mis promociones publicadas</h1>
+                    <h1 class="page-header">Pedidos de distribuidores a mis promociones publicadas</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -192,10 +192,10 @@ no puede retratarse. ')) {
                 <div class="col-lg-12">
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                            <i class="fa fa-calendar-o fa-fw"></i>Pedidos de distrbuidores a mis promociones publicadas
-                            <div style="margin-left: 97%; margin-top: -2%;">
-                            <form action="../ho">
-                            <input type="hidden" value="<%if (uregistrado != null) {
+                            <i class="fa fa-calendar-o fa-fw"></i>Pedidos de distribuidores a mis promociones publicadas
+                            <!--<div style="margin-left: 97%; margin-top: -2%;">
+                            <!--<form action="../ho">
+                            <input type="hidden" value="<if (uregistrado != null) {
                                     out.print(uregistrado.getIdUsuarios());
                                 }
                                    %>" name="txtIdUsuario">
@@ -204,7 +204,7 @@ no puede retratarse. ')) {
                                 <span class="glyphicon glyphicon-download-alt" 
                                       title="Generar pdf de mis productos"
                                       alt="Generar pdf de mis productos"></span></button>
-                            </form></div>
+                            </form></div>-->
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -234,8 +234,8 @@ no puede retratarse. ')) {
                                             <td><%=pedido.getFechaSolicitud()%></td>
                                             <td><a href="../co?idPedido=<%=pedido.getIdPedidosOfertas()%>"> <span class="fa fa-truck" 
                                                                                                                  style="font-size:140%; color:green; margin-left:35%;" onclick="return confirmar();"
-                                                                                                                 alt="Despachar pedido de: <%=pedido.getUser().getNombres()%>" 
-                                                                                                                 title="Cancelar pedido de: <%=pedido.getUser().getNombres()%>"></span></a>
+                                                                                                                 alt="Despachar el pedido de: <%=pedido.getUser().getNombres()%>" 
+                                                                                                                 title="Despachar el pedido de: <%=pedido.getUser().getNombres()%>"></span></a>
                                             </td>
                                         </tr>
 
@@ -247,8 +247,7 @@ no puede retratarse. ')) {
                             </div>
                             <div style="cursor: pointer; text-align:center;" id="pageNavPosition"></div>
 
-                        </div>        
-                        </table>
+                        </div>     
                     </div>
 
                     <!-- /.list-group -->

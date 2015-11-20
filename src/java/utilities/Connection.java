@@ -22,7 +22,7 @@ public class Connection {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            cnn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sigaa", "root", "");
+            cnn = DriverManager.getConnection("jdbc:mysql://localhost:3306/EC2685_sigaa", "EC268_stefhany", "stefhanyalfonso1125@");
         } catch (SQLException sqle) {
             System.out.println("Error Inesperado" + sqle);
 

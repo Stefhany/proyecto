@@ -45,7 +45,7 @@
         <script src="../dist/js/sb-admin-2.js"></script>
     </head>
 
-    <body>
+    <body style="background-image: url(../img/recuperar.jpg);">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">

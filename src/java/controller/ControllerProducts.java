@@ -65,6 +65,21 @@ public class ControllerProducts extends HttpServlet {
                     String mensajeRegistro = "El producto no se ha registrado.";
                     response.sendRedirect("pages/listarproductos.jsp?tipo=0&msg=" + mensajeRegistro);
                 }                               
+            }else if (request.getParameter("btnActualizarProducto") != null && request.getParameter("actualizarProducto") != null) {
+                ProductoDTO prdto = new ProductoDTO();
+                prdto.setIdProductos(Integer.parseInt(request.getParameter("txtIdProducto").trim()));                
+                prdto.setPrecioProducto(Integer.parseInt(request.getParameter("txtPrecio").trim()));
+                
+                FacadeProductos facadeProducto = new FacadeProductos();
+                String salida = facadeProducto.actualizarProducto(prdto);
+                
+                if (salida.equals("ok")) {
+                    String mensaje = "Los datos del producto han sido actualizados.";
+                    response.sendRedirect("pages/listarproductos.jsp?tipo=1&msg=" + mensaje);
+                }else{
+                    String mensaje = "Los datos del producto no han sido actualizados.";
+                    response.sendRedirect("pages/listarproductos.jsp?tipo=0&msg=" + mensaje);
+                }                            
             }
         }finally{
             out.print("Esta ingresando de mala manera");
