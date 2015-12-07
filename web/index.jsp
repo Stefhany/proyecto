@@ -35,7 +35,6 @@
         <link rel="icon" href="img/portfolio/favicon.ico" type="image/x-ico"/>
 
     </head>
-
     <body id="page-top" class="index">
 
         <!-- Navigation -->

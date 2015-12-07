@@ -8,6 +8,7 @@ package utilities;
 import daos.AportesProductoresDAO;
 import daos.Consultas;
 import dtos.AportesProductoresDTO;
+import dtos.ContactUsDTO;
 import dtos.PedidoSobreOfertaDTO;
 import dtos.ProductoDTO;
 import dtos.ProductosAsociadosUsuariosDTO;
@@ -15,6 +16,7 @@ import dtos.SolicitudDistribuidorDTO;
 import dtos.UsuariosDTO;
 import facade.FacadeAportesProductores;
 import facade.FacadeConsultas;
+import facade.FacadeContactUs;
 import facade.FacadePedidoSobreOferta;
 import facade.FacadeProductos;
 import facade.FacadeProductosAsociadosUsuarios;
@@ -102,12 +104,20 @@ public class TestConsult {
 ////        System.out.println(fsd.insertarSolicitudDistribuidor(s));
 //        FacadeUsuarios u = new FacadeUsuarios();
 //        System.out.println(u.confirmarRecuperacionClaveCorreo(9));
-        ProductoDTO prdto = new ProductoDTO();
-        prdto.setIdProductos(1);
-        prdto.setPrecioProducto(690);
-        FacadeProductos facadeProducto = new FacadeProductos();
-        String salida = facadeProducto.actualizarProducto(prdto);
-        System.out.println(salida);
+//        ProductoDTO prdto = new ProductoDTO();
+//        prdto.setIdProductos(1);
+//        prdto.setPrecioProducto(690);
+//        FacadeProductos facadeProducto = new FacadeProductos();
+//        String salida = facadeProducto.actualizarProducto(prdto);
+//        System.out.println(salida);
+        
+        FacadeContactUs c = new FacadeContactUs();
+        ContactUsDTO contactDto = new ContactUsDTO();
+                contactDto.setNombrePersona("Maria");
+                contactDto.setCorreo("sdkfk");
+                contactDto.setTelefono(2312312);
+                
+                System.out.println(c.insertarMensaje(contactDto));
 
     }
 

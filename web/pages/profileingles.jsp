@@ -23,8 +23,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Perfil - SIGAA</title>
-        <link type="text/css" href="../css/menu.css" rel="stylesheet" />
+        <title>Profile - SIGAA</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -38,9 +37,6 @@
         <!-- Custom CSS -->
         <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
-        <script type="text/javascript" src="../js/jquery.js"></script>
-        <script type="text/javascript" src="../js/menu.js"></script>
-
         <!-- Morris Charts CSS -->
         <link href="../bower_components/morrisjs/morris.css" rel="stylesheet">
 
@@ -49,13 +45,12 @@
 
         <!-- Favicon de SIGAA -->
         <link rel="icon" href="../img/portfolio/favicon.ico" type="image/x-ico"/>
-
         <%
             response.setHeader("Cache-Control", "no-cache");
             response.setHeader("Cache-Control", "no-store");
             response.setDateHeader("Expires", 0);
         %>
-        <%
+        <%    
             HttpSession miSesion = request.getSession(false);
             if (miSesion.getAttribute("usr") != null) {
                 UsuariosDTO userdto = (UsuariosDTO) miSesion.getAttribute("usr");
@@ -72,8 +67,7 @@
         <div id="wrapper" style="scroll:none;">
 
             <!-- Navegación -->
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; margin-right: 10px; height:15px; border: none; background-color: #0075b0;"
-                 >
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
@@ -81,14 +75,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand page-scroll" href="profile.jsp" style="color:#ffffff;"><i><span class="glyphicon glyphicon-home" style="font-size:140%; color:#ffffff; margin-left:15%;">&nbsp;<font face="Comic Sans MS">SIGAA</font></span></i></a>
+                    <a class="navbar-brand page-scroll" href="profile.jsp" style="color:#16700C;"><i>SIGAA</i></a>
                 </div>
                 <!-- /.navbar-header -->
 
                 <ul class="nav navbar-top-links navbar-right">
                     <!-- /.dropdown -->
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#ffffff; background-color: #0075b0; height: 15px;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#16700C;">
                             <p>
                                 <%                                    int idUsuario = userdto.getIdUsuarios();
                                     FacadeRolesUsuarios facadeRoles = new FacadeRolesUsuarios();
@@ -96,17 +90,21 @@
                                     u = facadeRoles.mostrarRol(idUsuario);
                                     for (RolesUsuariosDTO roles : u) {
                                         out.print(roles.getRolId().getNombre());
-
+                                        
                                 %> 
                                 <i class="fa fa-user fa-fw" ></i> <i class="fa fa-caret-down"></i></p>
                         </a>
-                                <ul class="dropdown-menu dropdown-user">
-                            <li><a href="modificarusuario.jsp"><i class="fa fa-user fa-fw"></i> Datos Personales</a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="modificarusuario.jsp"><i class="fa fa-user fa-fw"></i>Personal data</a>
                             </li>
-                            <li><a href="cambiarclave.jsp"><i class="fa fa-gear fa-fw"></i> Cambiar contraseña</a>
+                            <li><a href="cambiarclave.jsp"><i class="fa fa-gear fa-fw"></i> Change Password</a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="logout.jsp"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
+                            <li><a href="logout.jsp"><i class="fa fa-sign-out fa-fw"></i> Close session</a>
+
+
+
+
                             </li>
                         </ul>
                         <!-- /.dropdown-user -->
@@ -115,14 +113,14 @@
                 </ul>
                 <!-- /.navbar-top-links -->
 
-                <div class="navbar-default sidebar" role="navigation" style="width: 206px;">
+                <div class="navbar-default sidebar" role="navigation">
                     <div class="sidebar-nav navbar-collapse">
                         <ul class="nav" id="side-menu">
                             <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
-                                    <button class="btn btn-default" type="button" style="width: 150px; height: 150px; margin-left: 13px;">
+                                    <button class="btn btn-default" type="button">
                                                                                               <%                                            if (userdto.getGenero() == 1) {%>
-                                                                                              <i style="width:30px; height:30px;"><img src="../img/iconos/mujer.png" width="120px" height="120px" alt="Usuario: <%if (userdto != null) {
+                                                                                              <i style="width:50px; height:50px; margin-left: 5%;"><img src="../img/iconos/mujer.png" alt="Usuario: <%if (userdto != null) {
                                                 out.print(userdto.getNombres() + " " + userdto.getApellidos());
                                             }%>" 
                                                                                               title="Eres: <%if (userdto != null) {
@@ -130,16 +128,16 @@
                                                                                                       }%>"></i>
                                             <% } else if (userdto.getGenero() == 0) {
                                             %>
-                                                                                 <i style="width:30px; height:30px"><img src="../img/iconos/hombre.png" width="120px" height="120px" alt="Usuario: <%if (userdto != null) {
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/hombre.png" alt="Usuario: <%if (userdto != null) {
                                                 out.print(userdto.getNombres() + " " + userdto.getApellidos());
                                             }%>" 
                                                                                  title="Eres: <%if (userdto != null) {
                                                                                          out.print(userdto.getNombres() + " " + userdto.getApellidos());
                                                                                      }%>"></i>
                                             <%} else if (roles.getRolId().getIdRol() == 1) {%>
-                                        <i style="width:50px; height:50px;"><img src="../img/iconos/grupo.jpg" alt="Usuario: <%if (userdto != null) {
-                                                out.print(userdto.getNombres() + " " + userdto.getApellidos());
-                                            }%>" 
+                                                                                 <i style="width:50px; height:50px;"><img src="../img/iconos/grupo.jpg" alt="Usuario: <%if (userdto != null) {
+                                                                                             out.print(userdto.getNombres() + " " + userdto.getApellidos());
+                                                                                         }%>" 
                                                                                  title="Eres: <%if (userdto != null) {
                                                                                          out.print(userdto.getNombres() + " " + userdto.getApellidos());
                                                                                      }%>"></i>
@@ -154,64 +152,60 @@
                                 <!-- /input-group -->
                             </li>
                         </ul>
-                                    <ul style="margin-left: -24px; margin-top: 20px;" >
-                            <div id="menu">
-                                <ul class="menu">
-                                        <%
-                                            out.print(menu);
-                                        %>
-                                </ul>
-                            </div>
+                        <ul style="margin-left: 1,5%;">
+                            <li>
+                                <%
+                                    out.print(menu);
+                                %>
+                            </li>
                         </ul>
-
-                        <div id="copyright"><a href="http://apycom.com/"></a></div>
                     </div>
                     <!-- /.sidebar-collapse -->
                 </div>
                 <!-- /.navbar-static-side -->
             </nav>
 
-                                <div id="page-wrapper" style="background-image: url(../img/fondo.png);">
+            <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Bienvenido</h1>
+                        <h1 class="page-header">Welcome</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
-                        <div>
+                        <div style="background-color: #fff; border: 1px; border-color: green; border-style: outset;">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <img src="../img/portfolio/foto1.jpg" style="width: 248px; height: 99px;">
+                                    <img src="../img/portfolio/foto1.png" style="margin-left: 15%;">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div>
+                    <div class="col-lg-3 col-md-6" style="width: 25%;">
+                        <div style="background-color: #fff; border: 1px; border-color: green; border-style: outset;">
                             <div class="panel-heading" >
                                 <div class="row">
-                                    <img src="../img/portfolio/foto2.jpg" style="width: 248px; height: 99px;">
+                                    <img src="../img/portfolio/foto2.png" style="margin-left:7%; margin-top: 5%; margin-bottom: 4%;">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <div>
+                        <div style="background-color: #fff; border: 1px; border-color: green; border-style: outset;">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <img src="../img/portfolio/foto3.jpg" style="width: 247px; height: 99px;">
+                                    <img src="../img/portfolio/foto3.png" style="margin-left:7%; margin-top: 7%; margin-bottom: 7%;">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <div>
+                        <div style="background-color: #fff; border: 1px; border-color: green; border-style: outset;">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <img src="../img/portfolio/foto4.jpg" style="width: 247px; height: 99px;">
+                                    <img src="../img/portfolio/foto4.png" style="margin-left:5%; margin-top: -2%;">
                                 </div>
                             </div>
                         </div>
@@ -222,24 +216,24 @@
                     <div class="col-lg-12">
                         <div class="panel panel-success">
                             <div class="panel-heading">
-                                <i class="fa fa-shopping-cart fa-fw"></i> Top de productos más ofertados
+                                <i class="fa fa-shopping-cart fa-fw"></i>  Top of more products offered
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <div class="dataTable_wrapper">
 
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead style="background-color: #449d44;">
+                                        <thead>
                                             <tr>
-                                                <th class="odd gradeX"><i class="fa fa-user fa-fw"></i>Nombre Productor</th>
-                                                <th class="even gradeC">Categoría Producto</th>
-                                                <th class="odd gradeA">Nombre Producto</th>
-                                                <th class="odd gradeA">Precio</th>
-                                                <th class="odd gradeA">Fecha fin</th>
+                                                <th class="odd gradeX"><i class="fa fa-user fa-fw"></i>Name producer</th>
+                                                <th class="even gradeC">Category Product</th>
+                                                <th class="odd gradeA">Name Product</th>
+                                                <th class="odd gradeA">Price</th>
+                                                <th class="odd gradeA">Expiration date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <%
+                                            <%                
                                                 for (OfertasDTO offers : ofertas) {
                                             %>
                                         <td><%=offers.getUser().getNombres()%></td> 

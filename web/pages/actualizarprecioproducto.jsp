@@ -15,7 +15,7 @@
 <%@page import="dtos.ProductoDTO"%>
 <%@page import="facade.FacadeProductos"%>
 <%@page import="dtos.UsuariosDTO"%>
-<%@page contentType="text/html" pageEncoding="UTF-8" errorPage="../error404.jsp"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>

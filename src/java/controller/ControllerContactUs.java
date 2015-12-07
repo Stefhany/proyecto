@@ -37,28 +37,33 @@ public class ControllerContactUs extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        FacadeContactUs facadeContact = new FacadeContactUs();
-        ContactUsDTO contactDto = new ContactUsDTO();
+
         String salida = "";
         try {
-            if (request.getParameter("enviar") != null && request.getParameter("enviarHidden") != null) {
+            if (request.getParameter("btnEnviar") != null && request.getParameter("btnEnviar").equals("enviar")) {
+                out.print("ok");
                 String correo = request.getParameter("txtCorreo").trim();
                 String nombres = request.getParameter("txtNombre").trim();
                 int telefono = Integer.parseInt(request.getParameter("txtTelefono").trim());
                 String mensaje = request.getParameter("txtMensaje");
-                contactDto.setNombrePersona(nombres);
-                contactDto.setCorreo(correo);
-                contactDto.setTelefono(telefono);
+                FacadeContactUs facadeContact = new FacadeContactUs();
+                ContactUsDTO contactDto = new ContactUsDTO();
+                contactDto.setNombrePersona(request.getParameter("txtNombre").trim());
+                contactDto.setCorreo(request.getParameter("txtCorreo").trim());
+                contactDto.setTelefono(Integer.parseInt(request.getParameter("txtTelefono").trim()));
+
+                //out.print(nombres+" - "+telefono+" - "+correo+" - "+mensaje);
                 String salidaDos = facadeContact.insertarMensaje(contactDto);
 
                 if (salidaDos.equals("ok")) {
                     Mail.sendMail("Contacto", mensaje, "contactosigaa@gmail.com");
                     Mail.sendMail("Confirmación", "El mensaje ha sido enviado al Sistema SIGAA", correo);
-                } else {
                     response.sendRedirect("pages/contactenos.jsp?msgSalida= <strong>Su mensaje fue enviado al Sistema SIGAA.</Strong>");
+                } else {
+                    response.sendRedirect("pages/contactenos.jsp?msgSalida= <strong>No se pudo enviar el correo al Sistema SIGAA</Strong>");
                 }
             } else {
-                response.sendRedirect("pages/contactenos.jsp?msgSalida= <strong>No se pudo enviar el correo al Sistema SIGAA</Strong>");
+                out.print("tenemos problemas...");
             }
         } finally {
             out.close();

@@ -4,6 +4,7 @@
     Author     : Stefhany Alfonso
 --%>
 
+<%@page import="java.sql.SQLException"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <!DOCTYPE html>
     <html lang="en">
@@ -54,6 +55,7 @@
                     <img src="img/error/error500.png">
                 <h1>¡ERROR INTERNO EN EL SERVIDOR!</h1>
                 <h5>Lo sentimos, ocurrio un error y su solicitud no se pudo completar. Por favor, inténtalo de nuevo</h5>
+                <h6>Revise: <%SQLException sqle = new SQLException(); sqle.getMessage();%></h6>
                 <button class="btn btn-danger"><a style="color:#fff" href="javascript:location.reload()">Actualizar</a></button>
                 </div>            
             </div>

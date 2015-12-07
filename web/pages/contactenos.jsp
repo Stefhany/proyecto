@@ -29,8 +29,8 @@
     </head>
     <body>
         <!-- Contacto con SIGAA -->
-        <section id="contact">
-            <div class="container">
+        <section id="contact" style="overflow-y:hidden;" >
+            <div class="container" style="margin-top: -5%; margin-bottom: -5%;">
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <h2 class="section-heading">Contáctenos</h2>
@@ -64,8 +64,7 @@
                                 <div class="clearfix"></div>
                                 <div class="col-lg-12 text-center">
                                     <div id="success"></div>
-                                    <submit type="hidden" name="enviarHidden"/>
-                                    <button type="submit" name="enviar" class="btn btn-xl">Enviar</button>
+                                    <button type="submit" name="btnEnviar" value="enviar" class="btn btn-xl">Enviar</button>
                                 </div>
                             </div>
                         </form>

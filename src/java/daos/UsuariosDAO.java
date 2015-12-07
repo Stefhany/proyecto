@@ -312,22 +312,25 @@ public class UsuariosDAO {
                     user.setFechaNacimiento(rs.getString("Fechanacimiento"));
                     user.setEstado(rs.getInt("estadoUser"));
                     user.setGenero(rs.getInt("genero"));
-                    menu += "<li>";
-                    // menu+="<a href='"+rs.getString("url")+"'>"+rs.getString("descripcion")+"</a>";
-                    menu += rs.getString("nombre");
+                    //menu += "<li class=\"parent\">";
+                    
+                    menu+="<li><a class=\"parent\" href='"+rs.getString("url")+"'><span>"+rs.getString("p.nombre")+"</span></a>";
+                    //menu += rs.getString("nombre");
                     ResultSet rsSub = cnn.prepareStatement(" SELECT p.idPermisos, p.nombre, p.url "
                             + " FROM permisos p INNER JOIN permisosroles pr ON p.idPermisos = pr.permisosId "
                             + " WHERE padre = " + rs.getInt("idPermisos")
                             + " AND pr.rolesId = " + rs.getInt("idRoles")).executeQuery();
-
+                    
+                    menu += "<div>";
                     menu += "<ul>";
                     while (rsSub.next()) {
                         menu += "<li>";
-                        menu += "<a href='" + rsSub.getString("url") + "'>" + rsSub.getString("p.nombre") + "</a>";
+                        menu += "<a href='" + rsSub.getString("url") + "'><span>" + rsSub.getString("p.nombre") + "</span></a>";
                         menu += "</li>";
                     }
 
                     menu += "</ul>";
+                    menu += "</div>";
                     menu += "</li>";
 
                 }

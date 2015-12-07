@@ -49,14 +49,6 @@
         <servlet-class>reports.ReporteCategorias</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Prueba</servlet-name>
-        <servlet-class>reports.Prueba</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>NewServlet</servlet-name>
-        <servlet-class>reports.NewServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ControllerAportProducer</servlet-name>
         <servlet-class>controller.ControllerAportProducer</servlet-class>
     </servlet>
@@ -95,6 +87,10 @@
     <servlet>
         <servlet-name>ReportePedidos</servlet-name>
         <servlet-class>reports.ReportePedidos</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteCertificado</servlet-name>
+        <servlet-class>reports.ReporteCertificado</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Conectar</servlet-name>
@@ -145,14 +141,6 @@
         <url-pattern>/ReporteCategorias</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Prueba</servlet-name>
-        <url-pattern>/Prueba</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>NewServlet</servlet-name>
-        <url-pattern>/NewServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ControllerAportProducer</servlet-name>
         <url-pattern>/cap</url-pattern>
     </servlet-mapping>
@@ -192,6 +180,10 @@
         <servlet-name>ReportePedidos</servlet-name>
         <url-pattern>/rped</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteCertificado</servlet-name>
+        <url-pattern>/rca</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -200,9 +192,5 @@
     <error-page>
         <error-code>404</error-code>
         <location>/error404.jsp</location>
-    </error-page>
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/error500.jsp</location>
     </error-page>
 </web-app>
